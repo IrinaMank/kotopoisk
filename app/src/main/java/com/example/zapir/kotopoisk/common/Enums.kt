@@ -21,7 +21,7 @@ enum class Size(val value: Int) {
 
 }
 
-enum class FutLength(val value: Int) {
+enum class FurLength(val value: Int) {
     SHORT(0),
     MEDIUM(1),
     LONG(2),
