@@ -1,4 +1,4 @@
-package com.example.zapir.kotopoisk
+package com.example.zapir.kotopoisk.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
