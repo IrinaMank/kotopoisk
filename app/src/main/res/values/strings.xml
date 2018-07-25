@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Kotopoisk</string>
-    <string name="map">Map</string>
-    <string name="search">Search</string>
-    <string name="profile">Profile</string>
-    <string name="sign_out">Sign Out</string>
+    <string name="item_string_search">Search</string>
+    <string name="item_string_map">Map</string>
+    <string name="item_string_profile">Profile</string>
+    <string name="toolbar_string_map">Map</string>
+    <string name="toolbar_string_search">Search</string>
+    <string name="toolbar_string_profile">Profile</string>
 </resources>
