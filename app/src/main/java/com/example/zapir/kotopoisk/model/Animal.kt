@@ -5,6 +5,6 @@ data class Animal(val id: String = "",
                   val color: Int = 0,
                   val size: Int = 0,
                   val hasCollar: Boolean = false,
-                  val breed: Int = 0,
+                  val breed: Int? = 0,
                   val furLength: Int = 0,
                   val isFound: Boolean = false)
