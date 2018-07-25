@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
+import com.example.zapir.kotopoisk.firestoreApi.FirestoreController
+import com.example.zapir.kotopoisk.model.Ticket
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -42,6 +44,9 @@ class MainActivity : BaseActivity() {
 
         toolbar = supportActionBar!!
         navigation_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        val co = FirestoreController()
+        val ticket = Ticket(overview = "test")
+        co.publishTicket(ticket, {})
     }
 
     private fun openFragment(fragment: Fragment) {

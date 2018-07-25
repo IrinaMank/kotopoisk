@@ -16,19 +16,24 @@ interface FirestoreInterface {
     //Tickets
     fun getAllTickets(completion: (List<Ticket>) -> Unit)
     fun getTicket(tickedId: String, completion: (Ticket?) -> Unit)
-    fun getUserTickets(userId: String, completion: (Ticket) -> Unit)
+    fun getUserTickets(userId: String, completion: (List<Ticket>) -> Unit)
     fun getSavedTickets(userId: String, completion: (List<Ticket>) -> Unit)
     fun getFavouriteTickets(userId: String, completion: (List<Ticket>) -> Unit)
     //fun searchTicket(animal: Animal, completion: (List<Animal>) -> Unit)
-    fun saveTicket(ticket: Ticket, completion: (Ticket) -> Unit)
-    fun publishTicket(ticket: Ticket, completion: (Ticket) -> Unit)
-    fun updateTicket(newTicket: Ticket, completion: (Ticket) -> Unit)
+    fun uploadTicket(ticket: Ticket, completion: () -> Unit)// Send ticket into db
+    fun publishTicket(ticket: Ticket, completion: () -> Unit)// Make saved ticked published
+    fun updateTicket(newTicket: Ticket, completion: () -> Unit)
+    fun deleteTicket(ticket: Ticket, completion: () -> Unit)
+    fun doTicketFavourite(ticket: Ticket, completion: () -> Unit)
+    fun undoTicketFavourite(ticket: Ticket, completion: () -> Unit)
 
-
+    //Animals
     fun getAllAnimals(completion: (List<Animal>) -> Unit)
     fun getAnimal(animalId: String, completion: (Animal?) -> Unit)
-    fun saveAnimal(animal: Animal, completion: (Animal) -> Unit)
+    fun saveAnimal(animal: Animal, completion: () -> Unit)
 
+    //Photos
+    fun uploadPhoto()
 
 
 }
