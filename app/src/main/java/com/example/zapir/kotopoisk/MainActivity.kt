@@ -5,8 +5,9 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
-import com.example.zapir.kotopoisk.firestoreApi.FirestoreController
+import com.example.zapir.kotopoisk.firestoreApi.ticket.TicketFirestoreController
 import com.example.zapir.kotopoisk.model.Ticket
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -30,6 +31,18 @@ class MainActivity : BaseActivity() {
             R.id.navigation_profile -> {
                 logger.info("Navigation: profile")
                 toolbar.title = getString(R.string.toolbar_string_profile)
+                val co = TicketFirestoreController()
+                val ticket = Ticket(overview = "test")
+                co.getAllTickets().observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                {
+                                    text.text = it.map { el -> el.id + " " }.toString()
+
+                                },
+                                {
+                                    text.setText("FUUUUUUUUUUU")
+                                }
+                        )
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -44,9 +57,7 @@ class MainActivity : BaseActivity() {
 
         toolbar = supportActionBar!!
         navigation_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        val co = FirestoreController()
-        val ticket = Ticket(overview = "test")
-        co.publishTicket(ticket, {})
+
     }
 
     private fun openFragment(fragment: Fragment) {
