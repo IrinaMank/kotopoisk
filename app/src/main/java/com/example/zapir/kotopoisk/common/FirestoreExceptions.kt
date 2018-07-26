@@ -1,7 +1,73 @@
 package com.example.zapir.kotopoisk.common
 
-class FirestoreProblemsException(msg: String): Exception(msg)
-class SerializationException: Exception()
-class NonAuthorizedException: Exception()
-class NotFoundObject: Exception()
-class AlreadyExists: Exception()
+import com.example.zapir.kotopoisk.R
+
+class NoConnectivityException: Exception()
+
+open class ApiBaseException: Exception() {
+    open fun getDefaultRationale(): Int {
+        return R.string.default_error_message
+    }
+}
+
+open class NotFoundException: Exception() {
+    open fun getDefaultRationale(): Int {
+        return R.string.default_error_message
+    }
+}
+
+class SerializationExceptionApi: ApiBaseException()
+
+class NonAuthorizedExceptionApi: ApiBaseException() {
+    override fun getDefaultRationale(): Int {
+        return R.string.auth_error_message
+    }
+}
+
+//User
+class getUserException: NotFoundException() {
+    override fun getDefaultRationale(): Int {
+        return R.string.user_not_found
+    }
+}
+
+class updateUserExceptionApi: ApiBaseException() {
+    override fun getDefaultRationale(): Int {
+        return R.string.update_profile_error
+    }
+}
+
+//Tickets
+class getTicketException: NotFoundException() {
+    override fun getDefaultRationale(): Int {
+        return R.string.ticket_not_found
+    }
+}
+
+class getTicketsListExceptionApi: ApiBaseException() {
+    override fun getDefaultRationale(): Int {
+        return R.string.tickets_error
+    }
+}
+
+class uploadTicketExceptionApi: ApiBaseException() {
+    override fun getDefaultRationale(): Int {
+        return R.string.upload_ticket_error
+    }
+}
+
+
+class updateTicketExceptionApi: ApiBaseException() {
+    override fun getDefaultRationale(): Int {
+        return R.string.update_ticket_error
+    }
+}
+
+class deleteTicketExceptionApi: ApiBaseException() {
+    override fun getDefaultRationale(): Int {
+        return R.string.update_ticket_error
+    }
+}
+
+
+

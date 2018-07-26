@@ -1,9 +1,8 @@
 package com.example.zapir.kotopoisk.firestoreApi.ticket
 
 import android.net.Uri
-import com.example.zapir.kotopoisk.common.SerializationException
+import com.example.zapir.kotopoisk.common.*
 import com.example.zapir.kotopoisk.model.Ticket
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Single
@@ -32,8 +31,8 @@ class TicketFirestoreController : TicketFirestoreInterface {
                         emitter.onSuccess(tickets)
                     }
                     .addOnFailureListener {
-                        logger.error("Error getting ticket favourite: $it")
-                        emitter.onError(it)
+                        logger.error("Error getting tickets: $it")
+                        emitter.onError(getTicketsListExceptionApi())
                     }
         }
     }
@@ -53,14 +52,14 @@ class TicketFirestoreController : TicketFirestoreInterface {
                             return@addOnSuccessListener
                         }
                         if (ticket == null) {
-                            emitter.onError(SerializationException())
+                            emitter.onError(SerializationExceptionApi())
                             return@addOnSuccessListener
                         }
                         emitter.onSuccess(ticket)
                     }
                     .addOnFailureListener {
                         logger.error("Error getting ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(getTicketException())
                     }
         }
 
@@ -83,7 +82,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error getting user ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(getTicketsListExceptionApi())
                     }
         }
     }
@@ -106,7 +105,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error getting saved ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(getTicketsListExceptionApi())
                     }
         }
     }
@@ -127,7 +126,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error getting ticket favourite: $it")
-                        emitter.onError(it)
+                        emitter.onError(getTicketsListExceptionApi())
                     }
         }
     }
@@ -148,7 +147,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error uploading ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(updateTicketExceptionApi())
                     }
         }
     }
@@ -170,7 +169,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(uploadTicketExceptionApi())
                     }
         }
     }
@@ -191,7 +190,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error updating ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(updateTicketExceptionApi())
                     }
         }
     }
@@ -212,7 +211,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error deleting ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(deleteTicketExceptionApi())
                     }
         }
     }
@@ -233,7 +232,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(ApiBaseException())
                     }
         }
     }
@@ -254,7 +253,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(ApiBaseException())
                     }
         }
     }
@@ -282,7 +281,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error uploading photo: $it")
-                        emitter.onError(it)
+                        emitter.onError(ApiBaseException())
                     }
         }
     }

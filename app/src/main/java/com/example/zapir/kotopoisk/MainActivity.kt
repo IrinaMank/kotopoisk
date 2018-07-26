@@ -33,18 +33,18 @@ class MainActivity : BaseActivity() {
             R.id.navigation_profile -> {
                 logger.info("Navigation: profile")
                 toolbar.title = getString(R.string.toolbar_string_profile)
-                val co = UserFirestoreController()
-                val user = User(id="keZgEqkYVGUIswHwW3fV", nickname = "Ira")
-                co.registerOrUpdateUser(user).observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                {
-                                    text.text = user.nickname
-
-                                },
-                                {
-                                    text.setText(it.message)
-                                }
-                        )
+//                val co = UserFirestoreController()
+//                val user = User(id="keZgEqkYVGUIswHwW3fV", nickname = "Ira")
+//                co.registerOrUpdateUser(user).observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(
+//                                {
+//                                    text.text = user.nickname
+//
+//                                },
+//                                {
+//                                    text.setText(it.message)
+//                                }
+//                        )
                 return@OnNavigationItemSelectedListener true
             }
         }
