@@ -34,7 +34,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error getting ticket favourite: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -62,7 +61,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error getting ticket: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
 
@@ -86,7 +84,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error getting user ticket: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -110,7 +107,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error getting saved ticket: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -132,7 +128,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error getting ticket favourite: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -154,7 +149,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error uploading ticket: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -177,7 +171,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -199,7 +192,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error updating ticket: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -221,7 +213,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error deleting ticket: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -243,7 +234,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -265,7 +255,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -298,7 +287,3 @@ class TicketFirestoreController : TicketFirestoreInterface {
         }
     }
 }
-//
-//    private fun kilometersToLat(radius: Double, lat: Double, lng: Double) {
-//        6371 * acos( cos(lat) * cos( lat ) * cos( lng ) - lng ) + sin( lat ) * sin( lat )
-//    }

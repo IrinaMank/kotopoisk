@@ -40,7 +40,6 @@ class UserFirestoreController : UserFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error getting user: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
@@ -73,17 +72,12 @@ class UserFirestoreController : UserFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error getting user: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
 
     }
 
-    override fun registerUser(user: User): Single<Unit> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun updateUser(user: User): Single<Unit> {
+    override fun registerOrUpdateUser(user: User): Single<Unit> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -101,7 +95,6 @@ class UserFirestoreController : UserFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error updating user: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
