@@ -1,78 +1,135 @@
 package com.example.zapir.kotopoisk.firestoreApi.user
 
-import com.example.zapir.kotopoisk.common.NetworkProblemsException
+import com.example.zapir.kotopoisk.common.NonAuthorizedException
 import com.example.zapir.kotopoisk.common.SerializationException
 import com.example.zapir.kotopoisk.model.User
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
+import io.reactivex.Single
 import org.slf4j.LoggerFactory
 
-class UserFirestoreController: UserFirestoreInterface {
-    override fun logOut(completion: () -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun logIn(completion: () -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class UserFirestoreController : UserFirestoreInterface {
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
 
-    override fun getMe(completion: (User) -> Unit) {
-        val myId = auth.uid
-        if (myId != null) {
-            db.collection("users").document(myId).get()
+    override fun getUser(userId: String): Single<User> {
+        return Single.create { emitter ->
+            if (emitter.isDisposed) {
+                return@create
+            }
+            db.collection("users")
+                    .document(userId)
+                    .get()
                     .addOnSuccessListener {
-                        if (it.exists()) {
-                            val me = it.toObject(User::class.java)
-                            if (me != null) {
-                                logger.info("Get me is successful")
-                                completion(me)
-                            } else {
-                                logger.error("Error getting me: Serialization")
-                                throw SerializationException()
-                            }
+                        logger.info("Get user is successful")
+                        val user = it.toObject(User::class.java)
+                        if (emitter.isDisposed) {
+                            return@addOnSuccessListener
                         }
+                        if (user == null) {
+                            emitter.onError(SerializationException())
+                            return@addOnSuccessListener
+                        }
+                        emitter.onSuccess(user)
                     }
                     .addOnFailureListener {
-                        logger.error("Error getting me: No such element")
-                        throw NoSuchElementException()
+                        logger.error("Error getting user: $it")
+                        emitter.onError(it)
+                        //NetworkProblemsException(it.toString())
                     }
         }
     }
 
-    override fun getUser(userId: String, completion: (User?) -> Unit) {
-        db.collection("users").document(userId).get().addOnCompleteListener {
-            if (it.isSuccessful) {
-                val document = it.result
-                if (document.exists()) {
-                    logger.info("Get user is successful")
-                    val user = document.toObject(User::class.java)
-                    completion(user)
-                } else {
-                    logger.error("Error getting user: No such element")
-                    throw NoSuchElementException()
-                }
-            } else {
-                logger.error("Error getting user: ${it.exception}")
-                NetworkProblemsException(it.exception.toString())
+    override fun getCurrentUser(): Single<User> {
+        val myId = auth.uid
+        return Single.create { emitter ->
+            if (emitter.isDisposed) {
+                return@create
             }
+            if (myId == null) {
+                emitter.onError(NonAuthorizedException())
+                return@create
+            }
+            db.collection("users")
+                    .document(myId)
+                    .get()
+                    .addOnSuccessListener {
+                        logger.info("Get user is successful")
+                        val user = it.toObject(User::class.java)
+                        if (emitter.isDisposed) {
+                            return@addOnSuccessListener
+                        }
+                        if (user == null) {
+                            emitter.onError(SerializationException())
+                            return@addOnSuccessListener
+                        }
+                        emitter.onSuccess(user)
+                    }
+                    .addOnFailureListener {
+                        logger.error("Error getting user: $it")
+                        emitter.onError(it)
+                        //NetworkProblemsException(it.toString())
+                    }
+        }
+
+    }
+
+    override fun registerUser(user: User): Single<Unit> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun updateUser(user: User): Single<Unit> {
+        return Single.create { emitter ->
+            if (emitter.isDisposed) {
+                return@create
+            }
+            db.collection("users")
+                    .document(user.id)
+                    .set(user)
+                    .addOnSuccessListener {
+                        logger.info("Get user is successful")
+                        if (emitter.isDisposed) {
+                            return@addOnSuccessListener
+                        }
+                        emitter.onSuccess(Unit)
+                    }
+                    .addOnFailureListener {
+                        logger.error("Error updating user: $it")
+                        emitter.onError(it)
+                        //NetworkProblemsException(it.toString())
+                    }
         }
     }
 
-    override fun updateMe(user: User, completion: () -> Unit) {
-        db.collection("users").document(user.id).set(user).addOnCompleteListener {
-            if (it.isSuccessful) {
-                logger.info("Update me is successful")
-                completion()
-            } else {
-                logger.error("Error updating me: ${it.exception}")
-                NetworkProblemsException(it.exception.toString())
+    override fun logInWithGoogle(account: GoogleSignInAccount): Single<FirebaseUser> {
+        return Single.create { emitter ->
+            if (emitter.isDisposed) {
+                return@create
             }
+            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+            auth?.signInWithCredential(credential)
+                    ?.addOnSuccessListener {
+                        logger.info("Get user is successful")
+                        if (emitter.isDisposed) {
+                            return@addOnSuccessListener
+                        }
+                        emitter.onSuccess(auth.currentUser!!)
+                    }
+                    ?.addOnFailureListener {
+                        logger.error("Error updating user: $it")
+                        emitter.onError(it)
+                    }
         }
     }
+
+    override fun logOut(){
+            auth.signOut()
+    }
+
 
 }

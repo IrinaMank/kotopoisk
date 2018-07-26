@@ -8,18 +8,18 @@ import java.io.File
 interface TicketFirestoreInterface {
 
     fun getAllTickets(): Single<List<Ticket>>
-//    fun getTicket(tickedId: String, completion: (Ticket?) -> Unit)
-//    fun getUserTickets(userId: String, completion: (List<Ticket>) -> Unit)
-//    fun getSavedTickets(userId: String, completion: (List<Ticket>) -> Unit)
-//    fun getFavouriteTickets(userId: String, completion: (List<Ticket>) -> Unit)
+    fun getTicket(tickedId: String): Single<Ticket?>
+    fun getUserTickets(userId: String): Single<List<Ticket>>
+    fun getSavedTickets(userId: String): Single<List<Ticket>>
+    fun getFavouriteTickets(userId: String): Single<List<Ticket>>
 //    fun searchTicket(ticket: Ticket, radius: Double, completion: (List<Ticket>) -> Unit)
-//    fun uploadTicket(ticket: Ticket, completion: () -> Unit)// Send ticket into db
-//    fun publishTicket(ticket: Ticket, completion: () -> Unit)// Make saved ticked published
-//    fun updateTicket(newTicket: Ticket, completion: () -> Unit)
-//    fun deleteTicket(ticket: Ticket, completion: () -> Unit)
-//    fun doTicketFavourite(ticket: Ticket, completion: () -> Unit)
-//    fun undoTicketFavourite(ticket: Ticket, completion: () -> Unit)
+    fun uploadTicket(ticket: Ticket): Single<Unit>
+    fun publishTicket(ticket: Ticket): Single<Unit>
+    fun updateTicket(newTicket: Ticket): Single<Unit>
+    fun deleteTicket(ticket: Ticket): Single<Unit>
+    fun makeTicketFavourite(ticket: Ticket): Single<Unit>
+    fun makeTicketUnFavourite(ticket: Ticket): Single<Unit>
 //
-//    fun uploadPhoto(file: File, completion: () -> Unit)
+    fun uploadPhoto(file: File): Single<String>//return URI of upload file
 
 }

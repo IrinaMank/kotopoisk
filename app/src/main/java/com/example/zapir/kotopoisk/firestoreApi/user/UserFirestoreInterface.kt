@@ -1,13 +1,17 @@
 package com.example.zapir.kotopoisk.firestoreApi.user
 
 import com.example.zapir.kotopoisk.model.User
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.auth.FirebaseUser
+import io.reactivex.Single
 
 interface UserFirestoreInterface {
 
-    fun getUser(userId: String, completion: (User?) -> Unit)
-    fun getMe(completion: (User) -> Unit = {})
-    fun updateMe(user: User, completion: () -> Unit)
-    fun logIn(completion: () -> Unit)
-    fun logOut(completion: () -> Unit)
+    fun getUser(userId: String): Single<User>
+    fun getCurrentUser(): Single<User>
+    fun registerUser(user: User): Single<Unit>
+    fun updateUser(user: User): Single<Unit>
+    fun logInWithGoogle(account: GoogleSignInAccount): Single<FirebaseUser>
+    fun logOut()
 
 }
