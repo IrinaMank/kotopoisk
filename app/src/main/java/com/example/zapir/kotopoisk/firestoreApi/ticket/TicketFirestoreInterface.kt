@@ -13,13 +13,14 @@ interface TicketFirestoreInterface {
     fun getSavedTickets(userId: String): Single<List<Ticket>>
     fun getFavouriteTickets(userId: String): Single<List<Ticket>>
 //    fun searchTicket(ticket: Ticket, radius: Double, completion: (List<Ticket>) -> Unit)
-    fun uploadTicket(ticket: Ticket): Single<Unit>
-    fun publishTicket(ticket: Ticket): Single<Unit>
+    fun uploadTicket(ticket: Ticket): Single<Unit>//save unpublished ticket
+    fun publishTicket(ticket: Ticket): Single<Unit>//make saved ticket published or publish new
+    // ticket
     fun updateTicket(newTicket: Ticket): Single<Unit>
     fun deleteTicket(ticket: Ticket): Single<Unit>
     fun makeTicketFavourite(ticket: Ticket): Single<Unit>
     fun makeTicketUnFavourite(ticket: Ticket): Single<Unit>
-//
+
     fun uploadPhoto(file: File): Single<String>//return URI of upload file
 
 }

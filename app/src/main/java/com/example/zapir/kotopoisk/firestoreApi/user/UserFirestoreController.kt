@@ -40,23 +40,22 @@ class UserFirestoreController : UserFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error getting user: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
 
     override fun getCurrentUser(): Single<User> {
-        val myId = auth.uid
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
-            if (myId == null) {
+            val firebaseUser = auth.currentUser
+            if (firebaseUser == null) {
                 emitter.onError(NonAuthorizedException())
                 return@create
             }
             db.collection("users")
-                    .document(myId)
+                    .document(firebaseUser.getIdToken(true).toString())
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get user is successful")
@@ -73,27 +72,12 @@ class UserFirestoreController : UserFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error getting user: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
 
     }
 
-    override fun isAuthorized(): Single<Boolean> {
-        return Single.create { emitter ->
-            val myId = auth.uid
-            if (emitter.isDisposed) {
-                return@create
-            }
-            if (myId == null) {
-                emitter.onSuccess(false)
-            } else {
-                emitter.onSuccess(true)
-            }
-        }
-    }
-
-    override fun updateUser(user: User): Single<Unit> {
+    override fun registerOrUpdateUser(user: User): Single<Unit> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -111,12 +95,11 @@ class UserFirestoreController : UserFirestoreInterface {
                     .addOnFailureListener {
                         logger.error("Error updating user: $it")
                         emitter.onError(it)
-                        //NetworkProblemsException(it.toString())
                     }
         }
     }
 
-    override fun logInWithGoogle(account: GoogleSignInAccount): Single<FirebaseUser> {
+    override fun logInWithGoogle(account: GoogleSignInAccount): Single<User> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -128,7 +111,8 @@ class UserFirestoreController : UserFirestoreInterface {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(auth.currentUser!!)
+                        val user = User(id = it.user.getIdToken(true).toString())
+                        emitter.onSuccess(user)
                     }
                     ?.addOnFailureListener {
                         logger.error("Error updating user: $it")
