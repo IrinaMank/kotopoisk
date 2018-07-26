@@ -1,6 +1,7 @@
 package com.example.zapir.kotopoisk.common
 
-class NetworkProblemsException(msg: String): Exception(msg)
-
-class NoSuchElementException: Exception()
-class ElementAlreadyExistsException: Exception()
+class FirestoreProblemsException(msg: String): Exception(msg)
+class SerializationException: Exception()
+class NonAuthorizedException: Exception()
+class NotFoundObject: Exception()
+class AlreadyExists: Exception()

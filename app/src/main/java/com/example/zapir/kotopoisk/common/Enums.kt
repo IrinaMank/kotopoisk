@@ -30,6 +30,6 @@ enum class FurLength(val value: Int) {
 
 enum class TicketType(val value: Boolean) {
     SAVED(true),
-    FAVOURED(false),
+    FAVOURITE(false),
 
 }
