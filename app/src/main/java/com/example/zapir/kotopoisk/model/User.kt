@@ -1,10 +1,12 @@
 package com.example.zapir.kotopoisk.model
 
-data class User(val id: String = "",
-                val nickname: String = "",
-                val email: String = "",
-                val name: String = "",
-                val phone: String = "",
-                val petCount: Int = 0,
-                val foundPetCount: Int = 0) {
+import java.util.*
+
+data class User(val id: String = UUID.randomUUID().toString(),
+                var nickname: String = "",
+                var email: String = "",
+                var name: String = "",
+                var phone: String = "",
+                var petCount: Int = 0,
+                var foundPetCount: Int = 0) {
 }

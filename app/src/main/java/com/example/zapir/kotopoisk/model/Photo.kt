@@ -1,5 +1,8 @@
 package com.example.zapir.kotopoisk.model
 
-data class Photo(val url: String = "",
+import java.util.*
+
+data class Photo(val id: String = UUID.randomUUID().toString(),
+                 val url: String = "",
                  val userId: String = "",
                  val animalId: String = "")
