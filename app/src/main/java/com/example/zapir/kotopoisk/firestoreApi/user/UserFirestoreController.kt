@@ -45,17 +45,17 @@ class UserFirestoreController : UserFirestoreInterface {
     }
 
     override fun getCurrentUser(): Single<User> {
-        val myId = auth.uid
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
-            if (myId == null) {
+            val firebaseUser = auth.currentUser
+            if (firebaseUser == null) {
                 emitter.onError(NonAuthorizedException())
                 return@create
             }
             db.collection("users")
-                    .document(myId)
+                    .document(firebaseUser.getIdToken(true).toString())
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get user is successful")
@@ -99,7 +99,7 @@ class UserFirestoreController : UserFirestoreInterface {
         }
     }
 
-    override fun logInWithGoogle(account: GoogleSignInAccount): Single<FirebaseUser> {
+    override fun logInWithGoogle(account: GoogleSignInAccount): Single<User> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -111,7 +111,8 @@ class UserFirestoreController : UserFirestoreInterface {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(auth.currentUser!!)
+                        val user = User(id = it.user.getIdToken(true).toString())
+                        emitter.onSuccess(user)
                     }
                     ?.addOnFailureListener {
                         logger.error("Error updating user: $it")
