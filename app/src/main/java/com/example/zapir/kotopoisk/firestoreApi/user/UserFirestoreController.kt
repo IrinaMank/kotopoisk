@@ -79,8 +79,18 @@ class UserFirestoreController : UserFirestoreInterface {
 
     }
 
-    override fun registerUser(user: User): Single<Unit> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun isAuthorized(): Single<Boolean> {
+        return Single.create { emitter ->
+            val myId = auth.uid
+            if (emitter.isDisposed) {
+                return@create
+            }
+            if (myId == null) {
+                emitter.onSuccess(false)
+            } else {
+                emitter.onSuccess(true)
+            }
+        }
     }
 
     override fun updateUser(user: User): Single<Unit> {
