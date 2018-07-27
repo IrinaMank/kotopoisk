@@ -6,4 +6,9 @@
     <string name="toolbar_string_map">Map</string>
     <string name="toolbar_string_search">Search</string>
     <string name="toolbar_string_profile">Profile</string>
+    <string name="enter_your_nickname">Enter nickname</string>
+    <string name="enter_full_name">Enter full name</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_phone">Enter phone</string>
+    <string name="register">Register</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.zapir.kotopoisk.firestoreApi.user
 
 import com.example.zapir.kotopoisk.common.NonAuthorizedException
+import com.example.zapir.kotopoisk.common.NotFoundObject
 import com.example.zapir.kotopoisk.common.SerializationException
 import com.example.zapir.kotopoisk.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -27,6 +28,10 @@ class UserFirestoreController : UserFirestoreInterface {
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get user is successful")
+                        if (!it.exists()) {
+                            emitter.onError(NotFoundObject())
+                            return@addOnSuccessListener
+                        }
                         val user = it.toObject(User::class.java)
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
@@ -59,6 +64,10 @@ class UserFirestoreController : UserFirestoreInterface {
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get user is successful")
+                        if (it.exists()) {
+                            emitter.onError(NotFoundObject())
+                            return@addOnSuccessListener
+                        }
                         val user = it.toObject(User::class.java)
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
@@ -98,7 +107,19 @@ class UserFirestoreController : UserFirestoreInterface {
                     }
         }
     }
-
+    override fun isAuthorized(): Single<Boolean> {
+        return Single.create { emitter ->
+            val myId = auth.uid
+            if (emitter.isDisposed) {
+                return@create
+            }
+            if (myId == null) {
+                emitter.onSuccess(false)
+            } else {
+                emitter.onSuccess(true)
+            }
+        }
+    }
     override fun logInWithGoogle(account: GoogleSignInAccount): Single<User> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
@@ -111,7 +132,7 @@ class UserFirestoreController : UserFirestoreInterface {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        val user = User(id = it.user.getIdToken(true).toString())
+                        val user = User(id = it.user.uid.toString())
                         emitter.onSuccess(user)
                     }
                     ?.addOnFailureListener {
