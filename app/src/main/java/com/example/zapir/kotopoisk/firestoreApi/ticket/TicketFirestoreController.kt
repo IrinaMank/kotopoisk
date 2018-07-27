@@ -3,6 +3,7 @@ package com.example.zapir.kotopoisk.firestoreApi.ticket
 import android.net.Uri
 import com.example.zapir.kotopoisk.common.*
 import com.example.zapir.kotopoisk.model.Ticket
+import com.fernandocejas.arrow.optional.Optional
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Single
@@ -37,7 +38,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
         }
     }
 
-    override fun getTicket(tickedId: String): Single<Ticket?> {
+    override fun getTicket(tickedId: String): Single<Optional<Ticket>> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -47,6 +48,10 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get ticket is successful")
+                        if (!it.exists()) {
+                            emitter.onSuccess(Optional.of(null))
+                            return@addOnSuccessListener
+                        }
                         val ticket = it.toObject(Ticket::class.java)
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
@@ -55,7 +60,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                             emitter.onError(SerializationExceptionApi())
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(ticket)
+                        emitter.onSuccess(Optional.of(ticket))
                     }
                     .addOnFailureListener {
                         logger.error("Error getting ticket: $it")

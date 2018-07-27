@@ -10,9 +10,9 @@ open class ApiBaseException: Exception() {
     }
 }
 
-open class NotFoundException: Exception() {
-    open fun getDefaultRationale(): Int {
-        return R.string.default_error_message
+open class BaseNotFoundException: ApiBaseException() {
+    override fun getDefaultRationale(): Int {
+        return R.string.object_not_found
     }
 }
 

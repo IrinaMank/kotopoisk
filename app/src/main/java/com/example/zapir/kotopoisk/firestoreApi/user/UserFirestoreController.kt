@@ -2,6 +2,7 @@ package com.example.zapir.kotopoisk.firestoreApi.user
 
 import com.example.zapir.kotopoisk.common.*
 import com.example.zapir.kotopoisk.model.User
+import com.fernandocejas.arrow.optional.Optional
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -15,7 +16,7 @@ class UserFirestoreController : UserFirestoreInterface {
     private val auth = FirebaseAuth.getInstance()
     private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
 
-    override fun getUser(userId: String): Single<User> {
+    override fun getUser(userId: String): Single<Optional<User>> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -25,6 +26,10 @@ class UserFirestoreController : UserFirestoreInterface {
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get user is successful")
+                        if (!it.exists()) {
+                            emitter.onSuccess(Optional.of(null))
+                            return@addOnSuccessListener
+                        }
                         val user = it.toObject(User::class.java)
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
@@ -33,7 +38,7 @@ class UserFirestoreController : UserFirestoreInterface {
                             emitter.onError(SerializationExceptionApi())
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(user)
+                        emitter.onSuccess(Optional.of(user))
                     }
                     .addOnFailureListener {
                         logger.error("Error getting user: $it")
@@ -53,7 +58,7 @@ class UserFirestoreController : UserFirestoreInterface {
                 return@create
             }
             db.collection("users")
-                    .document(firebaseUser.getIdToken(true).toString())
+                    .document(firebaseUser.uid)
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get user is successful")
@@ -126,7 +131,7 @@ class UserFirestoreController : UserFirestoreInterface {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        val user = User(id = it.user.getIdToken(true).toString())
+                        val user = User(id = it.user.uid.toString())
                         emitter.onSuccess(user)
                     }
                     ?.addOnFailureListener {
