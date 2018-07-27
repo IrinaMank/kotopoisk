@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
+import android.widget.Toast
+import com.example.zapir.kotopoisk.R.id.text
+import com.example.zapir.kotopoisk.common.ErrorDialogDisplayer
+import com.example.zapir.kotopoisk.common.ExceptionHandler
 import com.example.zapir.kotopoisk.firestoreApi.ticket.TicketFirestoreController
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.model.Ticket
@@ -12,7 +16,7 @@ import com.example.zapir.kotopoisk.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity()/*, ErrorDialogDisplayer */ {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -33,18 +37,7 @@ class MainActivity : BaseActivity() {
             R.id.navigation_profile -> {
                 logger.info("Navigation: profile")
                 toolbar.title = getString(R.string.toolbar_string_profile)
-//                val co = UserFirestoreController()
-//                val user = User(id="keZgEqkYVGUIswHwW3fV", nickname = "Ira")
-//                co.registerOrUpdateUser(user).observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(
-//                                {
-//                                    text.text = user.nickname
-//
-//                                },
-//                                {
-//                                    text.setText(it.message)
-//                                }
-//                        )
+
                 return@OnNavigationItemSelectedListener true
             }
         }

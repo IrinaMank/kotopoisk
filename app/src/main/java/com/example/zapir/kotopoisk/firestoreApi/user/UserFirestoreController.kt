@@ -94,6 +94,9 @@ class UserFirestoreController : UserFirestoreInterface {
                         logger.error("Error updating user: $it")
                         emitter.onError(updateUserExceptionApi())
                     }
+                    .addOnCanceledListener {
+                        emitter.onError(updateUserExceptionApi())
+                    }
         }
     }
 

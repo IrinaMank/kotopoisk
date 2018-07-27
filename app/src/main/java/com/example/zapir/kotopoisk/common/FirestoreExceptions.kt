@@ -25,7 +25,7 @@ class NonAuthorizedExceptionApi: ApiBaseException() {
 }
 
 //User
-class getUserException: NotFoundException() {
+class getUserException: ApiBaseException() {
     override fun getDefaultRationale(): Int {
         return R.string.user_not_found
     }
@@ -38,7 +38,7 @@ class updateUserExceptionApi: ApiBaseException() {
 }
 
 //Tickets
-class getTicketException: NotFoundException() {
+class getTicketException: ApiBaseException() {
     override fun getDefaultRationale(): Int {
         return R.string.ticket_not_found
     }
