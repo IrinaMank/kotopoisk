@@ -9,6 +9,7 @@ import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Single
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.util.*
 
 class TicketFirestoreController : TicketFirestoreInterface {
 
@@ -17,6 +18,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
     private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
 
     override fun getAllTickets(): Single<List<Ticket>> {
+        var isComplete = false
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -29,14 +31,18 @@ class TicketFirestoreController : TicketFirestoreInterface {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
+                        isComplete = true
                         emitter.onSuccess(tickets)
                     }
                     .addOnFailureListener {
                         logger.error("Error getting tickets: $it")
                         emitter.onError(getTicketsListExceptionApi())
+                        isComplete = true
                     }
+
         }
     }
+
 
     override fun getTicket(tickedId: String): Single<Optional<Ticket>> {
         return Single.create { emitter ->

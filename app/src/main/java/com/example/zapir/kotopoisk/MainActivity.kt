@@ -16,7 +16,17 @@ import com.example.zapir.kotopoisk.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity()/*, ErrorDialogDisplayer */ {
+class MainActivity : BaseActivity(), ErrorDialogDisplayer  {
+
+    //it's just for test
+    override fun showOkErrorDialog(msg: Int) {
+        Toast.makeText(this, "ETO OK DIALOG)))0)))", Toast.LENGTH_LONG).show()
+    }
+
+    override fun showConnectivityErrorDialog() {
+        Toast.makeText(this, "ETO OY OY CONNECTION FUUU DIALOG)))0)))", Toast.LENGTH_LONG).show()
+    }
+
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -37,7 +47,21 @@ class MainActivity : BaseActivity()/*, ErrorDialogDisplayer */ {
             R.id.navigation_profile -> {
                 logger.info("Navigation: profile")
                 toolbar.title = getString(R.string.toolbar_string_profile)
+                val handler = ExceptionHandler.defaultHandler(this)
+                val co = TicketFirestoreController()
+                val user = User(id="dfrfrf", nickname = "Ira")
+                co.getAllTickets().observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                {
 
+                                    Toast.makeText(this, "opaaaaaaa OK DIALOG)))0)))", Toast
+                                            .LENGTH_LONG).show()
+
+                                },
+                                {
+                                    handler.handleException(it)
+                                }
+                        )
                 return@OnNavigationItemSelectedListener true
             }
         }
