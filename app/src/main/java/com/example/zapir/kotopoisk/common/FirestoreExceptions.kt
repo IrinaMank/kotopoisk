@@ -65,7 +65,7 @@ class updateTicketExceptionApi : ApiBaseException() {
 
 class deleteTicketExceptionApi : ApiBaseException() {
     override fun getDefaultRationale(): Int {
-        return R.string.update_ticket_error
+        return R.string.delete_ticket
     }
 }
 

@@ -19,4 +19,5 @@
     <string name="delete_ticket_error">Ticket not deleted</string>
     <string name="timout_error">Request time out</string>
     <string name="object_not_found">Sorry, object not found</string>
+    <string name="delete_ticket">Delete ticket</string>
 </resources>
