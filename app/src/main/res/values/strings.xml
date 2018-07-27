@@ -6,4 +6,12 @@
     <string name="toolbar_string_map">Map</string>
     <string name="toolbar_string_search">Search</string>
     <string name="toolbar_string_profile">Profile</string>
+
+    <string name="dialog_title">Фотография</string>
+    <string name="photo">Photo</string>
+    <string name="confirm">ПОДТВЕРДИТЬ</string>
+    <string name="change">ИЗМЕНИТЬ</string>
+    <string name="dialog1">Загрузить из галереи</string>
+    <string name="dialog2">Сделать снимок</string>
+
 </resources>
