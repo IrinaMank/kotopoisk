@@ -5,9 +5,12 @@ import android.support.v7.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
+import android.view.animation.AnimationUtils
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.activity_splash.*
 
 
 class SplashActivity: AppCompatActivity() {
@@ -15,8 +18,13 @@ class SplashActivity: AppCompatActivity() {
     val userController = UserFirestoreController()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
         // Start home activity
         // close splash activity
+        val animFadeIn = AnimationUtils.loadAnimation(applicationContext,
+                R.anim.fade_in);
+        splash_text_title.visibility = View.VISIBLE;
+        splash_text_title.startAnimation(animFadeIn);
         scheduleSplashScreen()
     }
 
@@ -39,11 +47,11 @@ class SplashActivity: AppCompatActivity() {
             true -> {
                 // If this is the first launch, make it slow (> 3 seconds) and set flag to false
                 sp.edit().putBoolean(prefKeyFirstLaunch, false).apply()
-                4000
+                5000
             }
             false -> {
                 // If the user has launched the app, make the splash screen fast (<= 1 seconds)
-                2000
+                3000
             }
         }
     }
@@ -66,4 +74,6 @@ class SplashActivity: AppCompatActivity() {
                 )
         finish()
     }
+
+
 }

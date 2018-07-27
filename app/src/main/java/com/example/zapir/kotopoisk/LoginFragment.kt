@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
+import com.example.zapir.kotopoisk.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -23,6 +24,8 @@ import kotlinx.android.synthetic.main.fragment_auth.*
 class LoginFragment: Fragment() {
 
     companion object {
+
+        private const val ARG_USER = "Arg_user"
 
         fun newInstance(): LoginFragment = LoginFragment()
 

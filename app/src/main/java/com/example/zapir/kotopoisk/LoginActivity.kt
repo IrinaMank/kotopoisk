@@ -25,7 +25,6 @@ class LoginActivity: AppCompatActivity() {
         val loginFragment = LoginFragment.newInstance()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.login_container, loginFragment)
-                .addToBackStack(LoginFragment.TAG)
                 .commit()
     }
 
@@ -40,7 +39,8 @@ class LoginActivity: AppCompatActivity() {
                         {
                             if (it is NotFoundObject) {
                                 supportFragmentManager.beginTransaction()
-                                        .replace(R.id.login_container, RegisterFragment.newInstance())
+                                        .replace(R.id.login_container, RegisterFragment
+                                                .newInstance(user))
                                         .addToBackStack(LoginFragment.TAG)
                                         .commit()
                             }
