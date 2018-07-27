@@ -1,9 +1,9 @@
 package com.example.zapir.kotopoisk.firestoreApi.ticket
 
 import android.net.Uri
-import com.example.zapir.kotopoisk.common.SerializationException
+import com.example.zapir.kotopoisk.common.exceptions.*
 import com.example.zapir.kotopoisk.model.Ticket
-import com.google.firebase.auth.FirebaseAuth
+import com.fernandocejas.arrow.optional.Optional
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Single
@@ -32,13 +32,15 @@ class TicketFirestoreController : TicketFirestoreInterface {
                         emitter.onSuccess(tickets)
                     }
                     .addOnFailureListener {
-                        logger.error("Error getting ticket favourite: $it")
-                        emitter.onError(it)
+                        logger.error("Error getting tickets: $it")
+                        emitter.onError(GetTicketsListExceptionApi())
                     }
+
         }
     }
 
-    override fun getTicket(tickedId: String): Single<Ticket?> {
+
+    override fun getTicket(tickedId: String): Single<Optional<Ticket>> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -48,19 +50,23 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get ticket is successful")
+                        if (!it.exists()) {
+                            emitter.onSuccess(Optional.of(null))
+                            return@addOnSuccessListener
+                        }
                         val ticket = it.toObject(Ticket::class.java)
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
                         if (ticket == null) {
-                            emitter.onError(SerializationException())
+                            emitter.onError(SerializationExceptionApi())
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(ticket)
+                        emitter.onSuccess(Optional.of(ticket))
                     }
                     .addOnFailureListener {
                         logger.error("Error getting ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(GetTicketException())
                     }
         }
 
@@ -83,7 +89,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error getting user ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(GetTicketsListExceptionApi())
                     }
         }
     }
@@ -106,7 +112,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error getting saved ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(GetTicketsListExceptionApi())
                     }
         }
     }
@@ -127,7 +133,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error getting ticket favourite: $it")
-                        emitter.onError(it)
+                        emitter.onError(GetTicketsListExceptionApi())
                     }
         }
     }
@@ -148,7 +154,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error uploading ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(UpdateTicketExceptionApi())
                     }
         }
     }
@@ -170,7 +176,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(UploadTicketExceptionApi())
                     }
         }
     }
@@ -191,7 +197,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error updating ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(UpdateTicketExceptionApi())
                     }
         }
     }
@@ -212,7 +218,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error deleting ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(DeleteTicketExceptionApi())
                     }
         }
     }
@@ -233,7 +239,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(ApiBaseException())
                     }
         }
     }
@@ -254,7 +260,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
-                        emitter.onError(it)
+                        emitter.onError(ApiBaseException())
                     }
         }
     }
@@ -267,7 +273,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
             }
             val photoRef = storageRef.child("images/" + newFile.lastPathSegment)
             val uploadTask = photoRef.putFile(newFile)
-            val uriTask = uploadTask
+            uploadTask
                     .continueWithTask {
                         if (!it.isSuccessful) {
                             emitter.onError(it.exception!!)
@@ -282,7 +288,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error uploading photo: $it")
-                        emitter.onError(it)
+                        emitter.onError(ApiBaseException())
                     }
         }
     }

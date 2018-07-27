@@ -1,14 +1,14 @@
 package com.example.zapir.kotopoisk.firestoreApi.ticket
 
 import com.example.zapir.kotopoisk.model.Ticket
-import io.reactivex.Observable
+import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Single
 import java.io.File
 
 interface TicketFirestoreInterface {
 
     fun getAllTickets(): Single<List<Ticket>>
-    fun getTicket(tickedId: String): Single<Ticket?>
+    fun getTicket(tickedId: String): Single<Optional<Ticket>>
     fun getUserTickets(userId: String): Single<List<Ticket>>
     fun getSavedTickets(userId: String): Single<List<Ticket>>
     fun getFavouriteTickets(userId: String): Single<List<Ticket>>

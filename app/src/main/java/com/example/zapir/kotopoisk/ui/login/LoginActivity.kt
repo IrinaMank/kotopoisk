@@ -3,13 +3,16 @@ package com.example.zapir.kotopoisk
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.example.zapir.kotopoisk.common.NotFoundObject
+import android.widget.Toast
+import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
+import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
-class LoginActivity: AppCompatActivity() {
+class LoginActivity: AppCompatActivity(), ErrorDialogDisplayer {
 
     companion object {
 
@@ -22,10 +25,7 @@ class LoginActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val loginFragment = LoginFragment.newInstance()
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.login_container, loginFragment)
-                .commit()
+        returnToLoginFragment()
     }
 
     fun onLogin(user: User) {
@@ -33,21 +33,41 @@ class LoginActivity: AppCompatActivity() {
         userController.getUser(userId = user.id).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                            finish()
-                        },
-                        {
-                            if (it is NotFoundObject) {
+                            if (it.isPresent) {
+                                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                finish()
+                            } else {
                                 supportFragmentManager.beginTransaction()
                                         .replace(R.id.login_container, RegisterFragment
                                                 .newInstance(user))
                                         .addToBackStack(LoginFragment.TAG)
                                         .commit()
                             }
+                        },
+                        {
+                            ExceptionHandler.defaultHandler(this).handleException(it, this)
                         }
                 )
 
 
 
+    }
+
+    override fun showOkErrorDialog(msg: Int) {
+        Toast.makeText(this, "Sorry, some problems with authentification. Please, try again",
+                Toast.LENGTH_LONG).show()
+        returnToLoginFragment()
+    }
+
+    override fun showConnectivityErrorDialog() {
+        Toast.makeText(this, R.string.no_connection_error, Toast.LENGTH_LONG).show()
+        returnToLoginFragment()
+    }
+
+    private fun returnToLoginFragment() {
+        val loginFragment = LoginFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.login_container, loginFragment)
+                .commit()
     }
 }

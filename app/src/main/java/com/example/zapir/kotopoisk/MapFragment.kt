@@ -18,7 +18,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     companion object {
 
         fun newInstance(): MapFragment = MapFragment()
-        private val MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey"
+        private const val MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey"
 
     }
 

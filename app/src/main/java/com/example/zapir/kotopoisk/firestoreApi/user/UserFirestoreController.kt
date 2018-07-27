@@ -1,12 +1,10 @@
 package com.example.zapir.kotopoisk.firestoreApi.user
 
-import com.example.zapir.kotopoisk.common.NonAuthorizedException
-import com.example.zapir.kotopoisk.common.NotFoundObject
-import com.example.zapir.kotopoisk.common.SerializationException
+import com.example.zapir.kotopoisk.common.exceptions.*
 import com.example.zapir.kotopoisk.model.User
+import com.fernandocejas.arrow.optional.Optional
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Single
@@ -18,7 +16,7 @@ class UserFirestoreController : UserFirestoreInterface {
     private val auth = FirebaseAuth.getInstance()
     private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
 
-    override fun getUser(userId: String): Single<User> {
+    override fun getUser(userId: String): Single<Optional<User>> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -29,7 +27,7 @@ class UserFirestoreController : UserFirestoreInterface {
                     .addOnSuccessListener {
                         logger.info("Get user is successful")
                         if (!it.exists()) {
-                            emitter.onError(NotFoundObject())
+                            emitter.onSuccess(Optional.of(null))
                             return@addOnSuccessListener
                         }
                         val user = it.toObject(User::class.java)
@@ -37,14 +35,14 @@ class UserFirestoreController : UserFirestoreInterface {
                             return@addOnSuccessListener
                         }
                         if (user == null) {
-                            emitter.onError(SerializationException())
+                            emitter.onError(SerializationExceptionApi())
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(user)
+                        emitter.onSuccess(Optional.of(user))
                     }
                     .addOnFailureListener {
                         logger.error("Error getting user: $it")
-                        emitter.onError(it)
+                        emitter.onError(GetUserException())
                     }
         }
     }
@@ -56,31 +54,27 @@ class UserFirestoreController : UserFirestoreInterface {
             }
             val firebaseUser = auth.currentUser
             if (firebaseUser == null) {
-                emitter.onError(NonAuthorizedException())
+                emitter.onError(NonAuthorizedExceptionApi())
                 return@create
             }
             db.collection("users")
-                    .document(firebaseUser.getIdToken(true).toString())
+                    .document(firebaseUser.uid)
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get user is successful")
-                        if (it.exists()) {
-                            emitter.onError(NotFoundObject())
-                            return@addOnSuccessListener
-                        }
                         val user = it.toObject(User::class.java)
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
                         if (user == null) {
-                            emitter.onError(SerializationException())
+                            emitter.onError(SerializationExceptionApi())
                             return@addOnSuccessListener
                         }
                         emitter.onSuccess(user)
                     }
                     .addOnFailureListener {
                         logger.error("Error getting user: $it")
-                        emitter.onError(it)
+                        emitter.onError(GetUserException())
                     }
         }
 
@@ -103,10 +97,14 @@ class UserFirestoreController : UserFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error updating user: $it")
-                        emitter.onError(it)
+                        emitter.onError(UpdateUserExceptionApi())
+                    }
+                    .addOnCanceledListener {
+                        emitter.onError(UpdateUserExceptionApi())
                     }
         }
     }
+
     override fun isAuthorized(): Single<Boolean> {
         return Single.create { emitter ->
             val myId = auth.uid
@@ -120,6 +118,7 @@ class UserFirestoreController : UserFirestoreInterface {
             }
         }
     }
+
     override fun logInWithGoogle(account: GoogleSignInAccount): Single<User> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
@@ -132,7 +131,7 @@ class UserFirestoreController : UserFirestoreInterface {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        val user = User(id = it.user.uid.toString())
+                        val user = User(id = it.user.uid)
                         emitter.onSuccess(user)
                     }
                     ?.addOnFailureListener {
@@ -145,6 +144,5 @@ class UserFirestoreController : UserFirestoreInterface {
     override fun logOut(){
             auth.signOut()
     }
-
 
 }

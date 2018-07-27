@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
+import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -17,8 +19,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.flags.impl.SharedPreferencesFactory.getSharedPreferences
+import com.google.protobuf.DescriptorProtos
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_auth.*
+import java.util.concurrent.TimeUnit
 
 
 class LoginFragment: Fragment() {
@@ -73,9 +77,9 @@ class LoginFragment: Fragment() {
 
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)
+            val account = task.getResult(ApiException::class.java)
                 listener?.userController?.logInWithGoogle(account)
+                        ?.timeout(4, TimeUnit.SECONDS)
                         ?.observeOn(AndroidSchedulers.mainThread())
                         ?.subscribe(
                                 {
@@ -85,13 +89,9 @@ class LoginFragment: Fragment() {
                                     listener?.onLogin(it)
                                 },
                                 {
-                                    //ToDo: exception handling
+                                    ExceptionHandler.defaultHandler(listener as ErrorDialogDisplayer).handleException(it, context!!)
                                 }
                         )
-            } catch (e: ApiException) {
-                //
-            }
-
         }
     }
 
