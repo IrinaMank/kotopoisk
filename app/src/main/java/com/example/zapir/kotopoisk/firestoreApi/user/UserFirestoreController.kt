@@ -1,9 +1,9 @@
 package com.example.zapir.kotopoisk.firestoreApi.user
 
-import com.example.zapir.kotopoisk.common.NonAuthorizedExceptionApi
-import com.example.zapir.kotopoisk.common.SerializationExceptionApi
-import com.example.zapir.kotopoisk.common.getUserException
-import com.example.zapir.kotopoisk.common.updateUserExceptionApi
+import com.example.zapir.kotopoisk.common.exceptions.NonAuthorizedExceptionApi
+import com.example.zapir.kotopoisk.common.exceptions.SerializationExceptionApi
+import com.example.zapir.kotopoisk.common.exceptions.getUserException
+import com.example.zapir.kotopoisk.common.exceptions.updateUserExceptionApi
 import com.example.zapir.kotopoisk.model.User
 import com.fernandocejas.arrow.optional.Optional
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount

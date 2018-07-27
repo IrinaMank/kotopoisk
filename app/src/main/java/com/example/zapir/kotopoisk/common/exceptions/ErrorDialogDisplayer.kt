@@ -1,4 +1,4 @@
-package com.example.zapir.kotopoisk.common
+package com.example.zapir.kotopoisk.common.exceptions
 
 interface ErrorDialogDisplayer {
 

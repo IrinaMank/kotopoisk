@@ -1,7 +1,7 @@
 package com.example.zapir.kotopoisk.firestoreApi.ticket
 
 import android.net.Uri
-import com.example.zapir.kotopoisk.common.*
+import com.example.zapir.kotopoisk.common.exceptions.*
 import com.example.zapir.kotopoisk.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,7 +9,6 @@ import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Single
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.util.*
 
 class TicketFirestoreController : TicketFirestoreInterface {
 

@@ -1,21 +1,10 @@
 package com.example.zapir.kotopoisk
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
-import android.widget.Toast
-import com.example.zapir.kotopoisk.R.id.text
-import com.example.zapir.kotopoisk.common.ErrorDialogDisplayer
-import com.example.zapir.kotopoisk.common.ExceptionHandler
-import com.example.zapir.kotopoisk.firestoreApi.ticket.TicketFirestoreController
-import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
-import com.example.zapir.kotopoisk.model.Ticket
-import com.example.zapir.kotopoisk.model.User
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.concurrent.TimeUnit
 
 class MainActivity : BaseActivity() {
 
