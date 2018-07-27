@@ -1,9 +1,6 @@
 package com.example.zapir.kotopoisk.firestoreApi.user
 
-import com.example.zapir.kotopoisk.common.exceptions.NonAuthorizedExceptionApi
-import com.example.zapir.kotopoisk.common.exceptions.SerializationExceptionApi
-import com.example.zapir.kotopoisk.common.exceptions.getUserException
-import com.example.zapir.kotopoisk.common.exceptions.updateUserExceptionApi
+import com.example.zapir.kotopoisk.common.exceptions.*
 import com.example.zapir.kotopoisk.model.User
 import com.fernandocejas.arrow.optional.Optional
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -45,7 +42,7 @@ class UserFirestoreController : UserFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error getting user: $it")
-                        emitter.onError(getUserException())
+                        emitter.onError(GetUserException())
                     }
         }
     }
@@ -77,7 +74,7 @@ class UserFirestoreController : UserFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error getting user: $it")
-                        emitter.onError(getUserException())
+                        emitter.onError(GetUserException())
                     }
         }
 
@@ -100,10 +97,10 @@ class UserFirestoreController : UserFirestoreInterface {
                     }
                     .addOnFailureListener {
                         logger.error("Error updating user: $it")
-                        emitter.onError(updateUserExceptionApi())
+                        emitter.onError(UpdateUserExceptionApi())
                     }
                     .addOnCanceledListener {
-                        emitter.onError(updateUserExceptionApi())
+                        emitter.onError(UpdateUserExceptionApi())
                     }
         }
     }
