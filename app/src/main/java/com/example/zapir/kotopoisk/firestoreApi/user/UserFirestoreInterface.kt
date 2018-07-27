@@ -3,7 +3,6 @@ package com.example.zapir.kotopoisk.firestoreApi.user
 import com.example.zapir.kotopoisk.model.User
 import com.fernandocejas.arrow.optional.Optional
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.FirebaseUser
 import io.reactivex.Single
 
 interface UserFirestoreInterface {

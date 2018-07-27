@@ -7,7 +7,7 @@
     <string name="toolbar_string_search">Search</string>
     <string name="toolbar_string_profile">Profile</string>
 
-    <string name="default_error_message">Sorry, some unknown error occured</string>
+    <string name="default_error_message">Oops, something is wrong</string>
     <string name="auth_error_message">Authorizaton problems. Please, log in</string>
     <string name="user_not_found">User not found</string>
     <string name="registration_error">Registration failed!</string>

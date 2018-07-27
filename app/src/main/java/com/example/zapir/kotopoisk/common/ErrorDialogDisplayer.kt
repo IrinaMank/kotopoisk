@@ -4,4 +4,5 @@ interface ErrorDialogDisplayer {
 
     fun showOkErrorDialog(msg: Int)
     fun showConnectivityErrorDialog()
+
 }

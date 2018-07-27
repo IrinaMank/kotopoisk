@@ -18,7 +18,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
     private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
 
     override fun getAllTickets(): Single<List<Ticket>> {
-        var isComplete = false
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -31,13 +30,11 @@ class TicketFirestoreController : TicketFirestoreInterface {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        isComplete = true
                         emitter.onSuccess(tickets)
                     }
                     .addOnFailureListener {
                         logger.error("Error getting tickets: $it")
                         emitter.onError(getTicketsListExceptionApi())
-                        isComplete = true
                     }
 
         }
@@ -277,7 +274,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
             }
             val photoRef = storageRef.child("images/" + newFile.lastPathSegment)
             val uploadTask = photoRef.putFile(newFile)
-            val uriTask = uploadTask
+            uploadTask
                     .continueWithTask {
                         if (!it.isSuccessful) {
                             emitter.onError(it.exception!!)

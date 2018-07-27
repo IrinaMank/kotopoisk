@@ -1,8 +1,6 @@
 package com.example.zapir.kotopoisk.common
 
 import android.content.Context
-import android.net.NetworkInfo
-import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
 
 

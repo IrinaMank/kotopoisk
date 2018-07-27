@@ -1,8 +1,9 @@
 package com.example.zapir.kotopoisk.common
 
+import android.content.Context
 import com.example.zapir.kotopoisk.R
-import com.google.firebase.firestore.FirebaseFirestoreException
 import java.net.SocketTimeoutException
+import java.util.concurrent.TimeoutException
 
 class ExceptionHandler(val doOnApiException: (ApiBaseException) -> Unit,
                        val doOnNotApiException: (Throwable) -> Unit,
@@ -24,13 +25,20 @@ class ExceptionHandler(val doOnApiException: (ApiBaseException) -> Unit,
                         } else {
                             dialogDisplayer.showConnectivityErrorDialog()
                         }
-                        }
+                    }
             )
         }
     }
 
-    fun handleException(ex: Throwable) {
-        when(ex) {
+    fun handleException(ex: Throwable, context: Context) {
+        when (ex) {
+            is TimeoutException -> {
+                if (NetworkUtils.isNetworkAvailable(context)) {
+                    doOnApiException(ApiBaseException())
+                } else {
+                    doOnNoConnectivity(NoConnectivityException())
+                }
+            }
             is ApiBaseException -> doOnApiException(ex)
             is NoConnectivityException -> doOnNoConnectivity(ex)
             else -> doOnNotApiException(ex)
