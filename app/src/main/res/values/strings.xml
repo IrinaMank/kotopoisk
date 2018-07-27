@@ -10,7 +10,6 @@
     <string name="default_error_message">Oops, something is wrong</string>
     <string name="auth_error_message">Authorizaton problems. Please, log in</string>
     <string name="user_not_found">User not found</string>
-    <string name="registration_error">Registration failed!</string>
     <string name="update_profile_error">Profile not updated</string>
     <string name="ticket_not_found">Ticket not found</string>
     <string name="tickets_error">Cannot show tickets</string>
@@ -19,5 +18,4 @@
     <string name="delete_ticket_error">Ticket not deleted</string>
     <string name="timout_error">Request time out</string>
     <string name="object_not_found">Sorry, object not found</string>
-    <string name="delete_ticket">Delete ticket</string>
 </resources>

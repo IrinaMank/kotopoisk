@@ -2,7 +2,6 @@ package com.example.zapir.kotopoisk.firestoreApi.ticket
 
 import com.example.zapir.kotopoisk.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
-import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
 
