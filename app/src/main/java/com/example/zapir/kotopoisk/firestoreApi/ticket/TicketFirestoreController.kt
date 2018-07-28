@@ -51,7 +51,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     .addOnSuccessListener {
                         logger.info("Get ticket is successful")
                         if (!it.exists()) {
-                            emitter.onSuccess(Optional.of(null))
+                            emitter.onSuccess(Optional.fromNullable(null))
                             return@addOnSuccessListener
                         }
                         val ticket = it.toObject(Ticket::class.java)

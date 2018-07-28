@@ -9,6 +9,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Single
 import org.slf4j.LoggerFactory
+import java.util.*
 
 class UserFirestoreController : UserFirestoreInterface {
 
@@ -27,7 +28,7 @@ class UserFirestoreController : UserFirestoreInterface {
                     .addOnSuccessListener {
                         logger.info("Get user is successful")
                         if (!it.exists()) {
-                            emitter.onSuccess(Optional.of(null))
+                            emitter.onSuccess(Optional.fromNullable(null))
                             return@addOnSuccessListener
                         }
                         val user = it.toObject(User::class.java)
@@ -107,11 +108,11 @@ class UserFirestoreController : UserFirestoreInterface {
 
     override fun isAuthorized(): Single<Boolean> {
         return Single.create { emitter ->
-            val myId = auth.uid
+            val firebaseUser = auth.currentUser
             if (emitter.isDisposed) {
                 return@create
             }
-            if (myId == null) {
+            if (firebaseUser == null) {
                 emitter.onSuccess(false)
             } else {
                 emitter.onSuccess(true)

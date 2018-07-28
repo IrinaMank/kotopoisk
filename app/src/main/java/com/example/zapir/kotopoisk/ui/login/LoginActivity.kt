@@ -1,22 +1,22 @@
-package com.example.zapir.kotopoisk
+package com.example.zapir.kotopoisk.ui.login
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.example.zapir.kotopoisk.MainActivity
+import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import java.util.concurrent.TimeUnit
 
-class LoginActivity: AppCompatActivity(), ErrorDialogDisplayer {
+class LoginActivity : AppCompatActivity(), ErrorDialogDisplayer {
 
     companion object {
-
-        const val PREFS_ID= "Saved pref id"
+        const val PREFS_ID = "User prefs"
     }
 
     val userController = UserFirestoreController()
@@ -31,6 +31,7 @@ class LoginActivity: AppCompatActivity(), ErrorDialogDisplayer {
     fun onLogin(user: User) {
         supportFragmentManager.popBackStack()
         userController.getUser(userId = user.id).observeOn(AndroidSchedulers.mainThread())
+                .timeout(5, TimeUnit.SECONDS)
                 .subscribe(
                         {
                             if (it.isPresent) {
@@ -38,8 +39,7 @@ class LoginActivity: AppCompatActivity(), ErrorDialogDisplayer {
                                 finish()
                             } else {
                                 supportFragmentManager.beginTransaction()
-                                        .replace(R.id.login_container, RegisterFragment
-                                                .newInstance(user))
+                                        .replace(R.id.login_container, RegisterFragment.newInstance(user))
                                         .addToBackStack(LoginFragment.TAG)
                                         .commit()
                             }
@@ -48,7 +48,6 @@ class LoginActivity: AppCompatActivity(), ErrorDialogDisplayer {
                             ExceptionHandler.defaultHandler(this).handleException(it, this)
                         }
                 )
-
 
 
     }

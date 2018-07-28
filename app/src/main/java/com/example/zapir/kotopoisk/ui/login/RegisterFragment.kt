@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.MainActivity
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
+import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_register.*
+import java.util.concurrent.TimeUnit
 
-class RegisterFragment: Fragment() {
+class RegisterFragment : Fragment() {
 
     companion object {
 
@@ -27,10 +30,7 @@ class RegisterFragment: Fragment() {
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private val listener by lazy { activity as? LoginActivity }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_register, container, false)
@@ -51,16 +51,8 @@ class RegisterFragment: Fragment() {
 
         register_button.setOnClickListener {
             if (validateText()) {
-                //            val id = activity?.getSharedPreferences("UserPrefs", Context
-//                    .MODE_PRIVATE)?.getString(LoginActivity.PREFS_ID, "") ?:
-//            UUID.randomUUID().toString()
-//            val user: User = User(
-//                    id = id,
-//                    nickname = nickname_edit_text.text.toString(),
-//                    name = name_edit_text.text.toString(),
-//                    email = email_edit_text.text.toString(),
-//                    phone = phone_edit_text.text.toString())
                 (activity as? LoginActivity)?.userController?.registerOrUpdateUser(user)
+                        ?.timeout(5, TimeUnit.SECONDS)
                         ?.observeOn(AndroidSchedulers.mainThread())
                         ?.subscribe(
                                 {
@@ -68,7 +60,7 @@ class RegisterFragment: Fragment() {
                                     activity?.finish()
                                 },
                                 {
-
+                                    ExceptionHandler.defaultHandler(listener as ErrorDialogDisplayer).handleException(it, context!!)
                                 }
                         )
             }
@@ -78,9 +70,9 @@ class RegisterFragment: Fragment() {
 
     private fun validateText() =
             when {
-                    nickname_edit_text.text.isEmpty() -> {
-                        nickname_edit_text.requestFocus()
-                        nickname_edit_text.error = getString(R.string.please_fill_field)
+                nickname_edit_text.text.isEmpty() -> {
+                    nickname_edit_text.requestFocus()
+                    nickname_edit_text.error = getString(R.string.please_fill_field)
                     false
                 }
                 name_edit_text.text.isEmpty() -> {

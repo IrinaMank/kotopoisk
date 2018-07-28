@@ -17,8 +17,7 @@
     </style>
 
     <!-- Splash Screen theme. -->
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
 
     <style name="SingleLineEditText" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -26,10 +25,11 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="MultiLineEditText" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:inputType">textMultiLine</item>
-        <item name="android:maxHeight">@dimen/edit_text_max_height</item>
-        <item name="android:scrollbars">vertical</item>
-    </style>
+    <!-- For overview. -->
+     <style name="MultiLineEditText" parent="Theme.AppCompat.Light.DarkActionBar">
+         <item name="android:inputType">textMultiLine</item>
+         <item name="android:maxHeight">@dimen/edit_text_max_height</item>
+         <item name="android:scrollbars">vertical</item>
+     </style>
 
-</resources>
+ </resources>

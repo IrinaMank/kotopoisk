@@ -11,7 +11,6 @@
     <string name="enter_email">Enter email</string>
     <string name="enter_phone">Enter phone</string>
     <string name="register">Register</string>
-    <string name="kotopoisk">Kotopoisk</string>
     <string name="please_fill_field">Please, fill field</string>
 
     <string name="default_error_message">Oops, something is wrong</string>
@@ -25,4 +24,9 @@
     <string name="delete_ticket_error">Ticket not deleted</string>
     <string name="timout_error">Request time out</string>
     <string name="object_not_found">Sorry, object not found</string>
+    <string name="no_connection_error">Problems with network. Please, check your connection
+    and try again</string>
+    <string name="error_occurred">Error occurred</string>
+    <string name="app_will_be_closed">Application will be closed</string>
+    <string name="try_again">Try again</string>
 </resources>

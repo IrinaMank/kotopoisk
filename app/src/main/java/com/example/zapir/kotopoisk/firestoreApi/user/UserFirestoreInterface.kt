@@ -9,7 +9,6 @@ interface UserFirestoreInterface {
 
     fun getUser(userId: String): Single<Optional<User>>
     fun getCurrentUser(): Single<User>
-    fun isAuthorized(): Single<Boolean>
     fun registerOrUpdateUser(user: User): Single<Unit>
     fun isAuthorized(): Single<Boolean>
     fun logInWithGoogle(account: GoogleSignInAccount): Single<User>
