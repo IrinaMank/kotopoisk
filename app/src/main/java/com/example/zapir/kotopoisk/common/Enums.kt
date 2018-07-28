@@ -1,5 +1,7 @@
 package com.example.zapir.kotopoisk.common
 
+import com.example.zapir.kotopoisk.R
+
 enum class Color(val value: Int) {
     WHITE(0),
     BLACK(1),
@@ -10,7 +12,7 @@ enum class Color(val value: Int) {
 
 enum class PetType(val value: Int) {
     CAT(0),
-    DOG(1),
+    DOG(1);
 
 }
 
@@ -28,8 +30,8 @@ enum class FurLength(val value: Int) {
 
 }
 
-enum class TicketType(val value: Boolean) {
-    SAVED(true),
-    FAVOURITE(false),
-
-}
+//enum class TicketType(val value: Boolean) {
+//    SAVED(true),
+//    FAVOURITE(false),
+//
+//}

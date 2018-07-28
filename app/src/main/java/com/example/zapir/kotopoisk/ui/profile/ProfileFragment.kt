@@ -83,27 +83,5 @@ class ProfileFragment: Fragment() {
                         },
                         {}
                 )
-
-
-        val drawable: BitmapDrawable = ContextCompat.getDrawable(context!!, R.drawable.logo) as
-                BitmapDrawable
-
-        // Get the bitmap from drawable object
-        val bitmap = drawable.bitmap
-
-
-        val path = Environment.getExternalStorageDirectory().toString()
-        val file2 = File(Uri.parse("android.resource://" + R::class.java.`package`.name + "/" +
-                R.drawable.ic_email_black_24dp).toString())
-
-        TicketFirestoreController().uploadPhoto(file2, "1112").observeOn(AndroidSchedulers
-                .mainThread()).subscribe(
-                {
-                    tv_full_name.text ="SDFDHFUDHFUDFHEUFHRUFHRU"
-                },
-                {
-
-                }
-        )
     }
 }

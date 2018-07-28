@@ -46,18 +46,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_element_type" />
 
         <TextView
-            android:id="@+id/tv_element_finder"
-            style="@style/MultiLineTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/size_small"
-            android:paddingStart="@dimen/size_small"
-            android:textSize="@dimen/text_size_medium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_element_type"
-            app:layout_constraintTop_toBottomOf="@id/tv_element_date" />
-
-        <TextView
             android:id="@+id/tv_element_is_found"
             style="@style/MultiLineTextView"
             android:layout_width="0dp"
@@ -67,7 +55,7 @@
             android:textSize="@dimen/text_size_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_element_type"
-            app:layout_constraintTop_toBottomOf="@id/tv_element_finder" />
+            app:layout_constraintTop_toBottomOf="@id/tv_element_date" />
 
         <CheckBox
             android:id="@+id/favor_checkbox"

@@ -3,36 +3,30 @@ package com.example.zapir.kotopoisk.ui.tickets_recycler
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.CheckBox
+import com.bumptech.glide.Glide
+import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.common.TypesConverter
+import com.example.zapir.kotopoisk.model.Photo
 import com.example.zapir.kotopoisk.model.Ticket
+import kotlinx.android.synthetic.main.ticket_element.view.*
 
 class TicketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(item: Ticket) {
+    fun bind(ticket: Ticket, photo: Photo) {
 
-//        itemView.apply {
-//            if (item. != null) {
-//                Glide.with(this)
-//                        .load(item.imageUrl)
-//                        .into(this.element_info_image_view)
-//            }
-//
-//            element_info_title.text = item.title
-//            element_info_author.text = item.author
-//            element_info_overview.text = item.overview
-//        }
-//
-//        val context = itemView.context as? BookListener
-//        itemView.star_checkbox.setOnClickListener {
-//            val isChecked = (it as CheckBox).isChecked
-//            item.isFavor = isChecked
-//            if (isChecked) {
-//                context?.onFavorBook(item)
-//            } else {
-//                context?.onUnFavorBook(item)
-//            }
-//
-//
-//        }
+
+        itemView.apply {
+
+            Glide.with(this)
+                    .load(photo.url)
+                    .into(this.iv_element)
+
+
+            tv_element_type.text = TypesConverter.getTypeString(ticket.type, itemView.context)
+            tv_element_date.text = ticket.date
+            tv_element_is_found.text = if (ticket.isFound) { context.getString(R.string
+                    .pet_is_found) } else { context.getString(R.string.pet_not_found) }
+        }
 
     }
 }

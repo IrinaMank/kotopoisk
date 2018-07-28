@@ -29,4 +29,16 @@
     <string name="error_occurred">Error occurred</string>
     <string name="app_will_be_closed">Application will be closed</string>
     <string name="try_again">Try again</string>
+    <string name="cat">Cat</string>
+    <string name="dog">Dog</string>
+    <string name="unknown">Unknown</string>
+    <string name="white">White</string>
+    <string name="black">Black</string>
+    <string name="red">Red</string>
+    <string name="short_word">Short</string>
+    <string name="medium">Medium</string>
+    <string name="big">Big</string>
+    <string name="long_word">Long</string>
+    <string name="pet_is_found">Pet is already found</string>
+    <string name="pet_not_found">Pet is not found yet</string>
 </resources>
