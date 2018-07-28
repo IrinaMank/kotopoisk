@@ -1,4 +1,4 @@
-package com.example.zapir.kotopoisk.fragment.photo
+package com.example.zapir.kotopoisk.photo
 
 import android.content.Context
 import android.content.Intent

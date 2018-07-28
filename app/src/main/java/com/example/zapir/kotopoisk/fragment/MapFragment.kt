@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.fragment.photo.PhotoDialog
+import com.example.zapir.kotopoisk.photo.PhotoDialog
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

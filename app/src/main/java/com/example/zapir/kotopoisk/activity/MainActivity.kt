@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import com.example.zapir.kotopoisk.BottomNavigationViewHelper
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.fragment.photo.AddPhotoListener
-import com.example.zapir.kotopoisk.fragment.photo.AddingPhoto
-import com.example.zapir.kotopoisk.fragment.photo.PhotoDialog
-import com.example.zapir.kotopoisk.fragment.photo.TicketActivity
+import com.example.zapir.kotopoisk.photo.AddPhotoListener
+import com.example.zapir.kotopoisk.photo.PhotoDialog
+import com.example.zapir.kotopoisk.photo.PhotoHandler
+import com.example.zapir.kotopoisk.photo.TicketActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), AddPhotoListener {
@@ -31,23 +31,18 @@ class MainActivity : BaseActivity(), AddPhotoListener {
     }
 
     override fun addPhotoToAdvert(photoUri: Uri){
-        Log.d("asking instance of", "AddingPhoto")
-//        supportFragmentManager.beginTransaction()
-//                .replace(R.id.container, AddingPhoto.newInstance(photoUri))
-//                .addToBackStack(AddingPhoto.TAG)
-//                .commit()
+        Log.d("asking instance of", "TicketActivity")
         startActivity(TicketActivity.newIntent(this, photoUri))
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PhotoDialog.CAMERA_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == PhotoHandler.CAMERA_CAPTURE && resultCode == RESULT_OK) {
             Log.d("received Intent", "CAMERA_CAPTURE")
             addPhotoToAdvert(photoURI)
-        } else if (requestCode == PhotoDialog.OPEN_GALLERY && resultCode == RESULT_OK) {
+        } else if (requestCode == PhotoHandler.OPEN_GALLERY && resultCode == RESULT_OK) {
             Log.d("received Intent", "OPEN_GALLERY")
-
             val imageUri = data?.data ?: throw Exception("empty data in OPEN_GALLERY")
             addPhotoToAdvert(imageUri)
         }

@@ -43,7 +43,7 @@
 
         <activity android:name=".activity.BaseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".fragment.photo.TicketActivity" />
+        <activity android:name="com.example.zapir.kotopoisk.photo.TicketActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
