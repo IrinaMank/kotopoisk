@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
+import com.example.zapir.kotopoisk.model.User
+import com.example.zapir.kotopoisk.ui.profile.ProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -27,7 +29,10 @@ class MainActivity : BaseActivity() {
             R.id.navigation_profile -> {
                 logger.info("Navigation: profile")
                 toolbar.title = getString(R.string.toolbar_string_profile)
-
+                val user = User(name =
+                "Ira M", nickname = "Ira", email = "shkdh@sjhdk.com")
+                val mapFragment = ProfileFragment.newInstance(user)
+                openFragment(mapFragment)
                 return@OnNavigationItemSelectedListener true
             }
         }

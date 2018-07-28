@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/size_small">
+
+            <ImageView
+                android:id="@+id/profile_icon"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/size_small"
+                android:src="@drawable/profile_icon" />
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_small"
+                android:layout_toEndOf="@id/profile_icon"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Ira"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="#212121" />
+
+            <TextView
+                android:id="@+id/tv_photo_pets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_small"
+                android:layout_toEndOf="@id/profile_icon"
+                android:layout_below="@id/tv_nickname"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="0 pets discovered"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="#212121" />
+
+            <TextView
+                android:id="@+id/tv_found_pets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_small"
+                android:layout_toEndOf="@id/profile_icon"
+                android:layout_below="@id/tv_photo_pets"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="0 pets found their masters"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="#212121" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Info"
+            android:textColor="@color/colorPrimary"
+            android:padding="@dimen/size_small"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:padding="@dimen/size_small">
+
+            <ImageView
+                android:id="@+id/iv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/size_small"
+                android:src="@drawable/ic_person_black_24dp" />
+
+            <TextView
+                android:id="@+id/tv_full_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_small"
+                android:layout_toEndOf="@id/iv_nickname"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Irina Mank"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:padding="@dimen/size_small">
+
+            <ImageView
+                android:id="@+id/ivContactItem1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/size_small"
+                android:src="@drawable/ic_phone_black_24dp" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_small"
+                android:layout_toEndOf="@id/ivContactItem1"
+                android:text="(123) 456-7890"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:padding="@dimen/size_small">
+
+            <ImageView
+                android:id="@+id/ivContactItem3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/size_small"
+                android:src="@drawable/ic_email_black_24dp" />
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_small"
+                android:layout_toEndOf="@id/ivContactItem3"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="chintan@letsnurture.com"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/edit_profile_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginStart="32dp"
+            android:padding="@dimen/size_small">
+
+            <TextView
+                android:id="@+id/tv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_small"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Edit profile"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+            <ToggleButton
+                android:id="@+id/edit_toggle"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/size_small"
+                android:background="@drawable/ic_navigate_next_black_24dp"
+                android:checked="true"
+                android:padding="6dp"
+                android:textOff=""
+                android:textOn="" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/item_divider" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tickets"
+            android:textColor="@color/colorPrimary"
+            android:padding="@dimen/size_small"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/size_small">
+
+            <ImageView
+                android:id="@+id/ivContactItem5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/size_small"
+                android:src="@drawable/ic_save_black_24dp" />
+
+            <TextView
+                android:id="@+id/tvNumber5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_small"
+                android:layout_toEndOf="@id/ivContactItem5"
+                android:layout_toStartOf="@+id/chkState5"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="My tickets"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+            <ToggleButton
+                android:id="@+id/chkState5"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/size_small"
+                android:background="@drawable/ic_navigate_next_black_24dp"
+                android:checked="true"
+                android:padding="6dp"
+                android:textOff=""
+                android:textOn="" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/size_small">
+
+            <ImageView
+                android:id="@+id/ivContactItem6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/size_small"
+                android:src="@drawable/ic_favorite_black_24dp" />
+
+            <TextView
+                android:id="@+id/tvNumber6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_small"
+                android:layout_toEndOf="@id/ivContactItem6"
+                android:layout_toStartOf="@+id/chkState6"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Favorite tickets"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+            <ToggleButton
+                android:id="@+id/chkState6"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/size_small"
+                android:background="@drawable/ic_navigate_next_black_24dp"
+                android:checked="true"
+                android:padding="6dp"
+                android:textOff=""
+                android:textOn="" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/item_divider" />
+
+            <Button
+                android:id="@+id/btn_log_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_small"
+                android:layout_marginTop="@dimen/size_small"
+                android:backgroundTint="@color/colorAccent"
+                android:text="Log out" />
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

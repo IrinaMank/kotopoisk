@@ -1,5 +1,6 @@
 package com.example.zapir.kotopoisk.firestoreApi.ticket
 
+import com.example.zapir.kotopoisk.model.Photo
 import com.example.zapir.kotopoisk.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Single
@@ -21,6 +22,7 @@ interface TicketFirestoreInterface {
     fun makeTicketFavourite(ticket: Ticket): Single<Unit>
     fun makeTicketUnFavourite(ticket: Ticket): Single<Unit>
 
-    fun uploadPhoto(file: File): Single<String>//return URI of upload file
+    fun uploadPhoto(file: File, ticketId: String): Single<Unit>
+    fun getPhoto(ticketId: String): Single<Photo>
 
 }

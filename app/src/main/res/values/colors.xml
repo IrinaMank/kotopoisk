@@ -11,4 +11,6 @@
     <color name="crystalWhite">#ffffff</color>
     <color name="darkWhite">#aaaaaa</color>
 
+    <color name="transparent">#00000000</color>
+
 </resources>
