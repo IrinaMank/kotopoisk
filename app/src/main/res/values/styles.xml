@@ -15,5 +15,11 @@
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="add_image" parent="AppTheme">
+        <item name="android:layout_marginEnd">@dimen/middle_margin</item>
+        <item name="android:layout_marginStart">@dimen/middle_margin</item>
+        <item name="android:layout_marginTop">@dimen/middle_margin</item>
+    </style>
 
 </resources>
