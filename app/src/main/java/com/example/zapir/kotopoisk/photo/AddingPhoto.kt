@@ -38,4 +38,5 @@ class AddingPhoto: Fragment() {
         photo.setImageURI(photoUri)
     }
 
+
 }

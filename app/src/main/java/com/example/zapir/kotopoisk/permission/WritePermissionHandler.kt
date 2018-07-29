@@ -7,9 +7,16 @@ import android.provider.Settings
 import android.support.v7.app.AlertDialog
 import com.example.zapir.kotopoisk.activity.BaseActivity
 import com.example.zapir.kotopoisk.photo.PhotoHandler
+import com.example.zapir.kotopoisk.R
 
 class WritePermissionHandler(private val context: BaseActivity,
-                             private val photoHandler: PhotoHandler) : OnPermissionCallback {
+                             private val photoHandler: PhotoHandler,
+                             private val explanation: String,
+                             private val reallyExplanation: String,
+                             private val title: String) : OnPermissionCallback {
+
+    private lateinit var builder: AlertDialog
+    private val permissionHelper = PermissionHelper(context, this)
 
     override fun onPermissionGranted(permissionName: String) {
         photoHandler.openCamera()
@@ -22,29 +29,40 @@ class WritePermissionHandler(private val context: BaseActivity,
     }
 
     override fun onPermissionReallyDeclined(permissionName: String) {
-        openSettingsScreen()
+        getReallyNeedAlertDialog(permissionName).show()
     }
 
     override fun onNoPermissionNeeded() {
         photoHandler.openCamera()
     }
 
-    private lateinit var builder: AlertDialog
-    private val permissionHelper = PermissionHelper(context, this)
-
     override fun onPermissionNeedExplanation(permissionName: String) {
-        getAlertDialog(permissionName).show()
+        getNeedExceptionAlertDialog(permissionName).show()
     }
 
-    private fun getAlertDialog(permission: String): AlertDialog {
+    private fun getNeedExceptionAlertDialog(permissionName: String): AlertDialog {
         builder = AlertDialog.Builder(context)
-                .setTitle("Permission Needs Explanation")
+                .setTitle(title)
                 .create()
-        builder.setButton(DialogInterface.BUTTON_POSITIVE, "Request",
-                DialogInterface.OnClickListener { dialog, which ->
-                    permissionHelper.requestAfterExplanation(permission)
+        builder.setButton(DialogInterface.BUTTON_POSITIVE,
+                context.getString(R.string.dialog_positive_button),
+                { _, _ ->
+                    permissionHelper.requestAfterExplanation(permissionName)
                 })
-        builder.setMessage("Permission need explanation ($permission)")
+        builder.setMessage(explanation)
+        return builder
+    }
+
+    private fun getReallyNeedAlertDialog(permissionName: String): AlertDialog {
+        builder = AlertDialog.Builder(context)
+                .setTitle(title)
+                .create()
+        builder.setButton(DialogInterface.BUTTON_POSITIVE,
+                context.getString(R.string.dialog_positive_button),
+                { _, _ ->
+                    openSettingsScreen()
+                })
+        builder.setMessage(reallyExplanation)
         return builder
     }
 

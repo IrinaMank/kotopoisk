@@ -13,5 +13,11 @@
     <string name="change">ИЗМЕНИТЬ</string>
     <string name="dialog1">Загрузить фото из галереи</string>
     <string name="dialog2">Сделать снимок</string>
+    <string name="explanation_dialog_message">Это разрешение необходимо для того, чтобы сохранить сделанные вами
+    фото пропавших животных на SD-карту</string>
+    <string name="really_explanation_dialog_message">Это разрешение ДЕЙСТВИТЕЛЬНО НЕОБХОДИМО для того,
+        чтобы сохранить сделанные вами фото пропавших животных на SD-карту</string>
+    <string name="explanation_dialog_title">Доступ к данным</string>
+    <string name="dialog_positive_button">Запросить</string>
 
 </resources>

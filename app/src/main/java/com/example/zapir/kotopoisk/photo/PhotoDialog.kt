@@ -18,7 +18,10 @@ class PhotoDialog : DialogFragment() {
                 ?: throw Exception("PhotoDialog has no mainContext")
     }
     private val photoHandler by lazy { PhotoHandler(mainContext) }
-    private val writePermissionHandler by lazy { WritePermissionHandler(mainContext, photoHandler) }
+    private val writePermissionHandler by lazy { WritePermissionHandler(mainContext,
+            photoHandler, getString(R.string.explanation_dialog_message),
+            getString(R.string.really_explanation_dialog_message),
+            getString(R.string.explanation_dialog_title)) }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(mainContext)

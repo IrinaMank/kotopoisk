@@ -12,18 +12,30 @@ class PermissionHelper(private val context: BaseActivity,
 
     private val REQUEST_PERMISSIONS = 1
 
-    fun isPermissionDeclined(permissionsName: String): Boolean {
+    private fun isPermissionDeclined(permissionsName: String): Boolean {
         return ActivityCompat.checkSelfPermission(context, permissionsName) !=
                 PackageManager.PERMISSION_GRANTED
     }
 
-    fun isPermissionGranted(permissionsName: String): Boolean {
+    private fun isPermissionGranted(permissionsName: String): Boolean {
         return ActivityCompat.checkSelfPermission(context, permissionsName) ==
                 PackageManager.PERMISSION_GRANTED
     }
 
-    fun isExplanationNeeded(permissionName: String): Boolean {
+    private fun isPermissionBanned(permissionsName: String): Boolean {
+        return ((ActivityCompat.checkSelfPermission(context, permissionsName) ==
+                PackageManager.PERMISSION_DENIED) && (!isExplanationNeeded(permissionsName)))
+    }
+
+    private fun isExplanationNeeded(permissionName: String): Boolean {
         return ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName)
+    }
+
+    private fun verifyPermissions(result: Int): Boolean {
+        if (result != PackageManager.PERMISSION_GRANTED) {
+            return false
+        }
+        return true
     }
 
     fun requestAfterExplanation(permissionName: String) {
@@ -37,7 +49,7 @@ class PermissionHelper(private val context: BaseActivity,
     /**
      * @return true if permission exists in the manifest, false otherwise.
      */
-    fun permissionExists(permissionName: String): Boolean {
+    private fun permissionExists(permissionName: String): Boolean {
         try {
             val packageInfo = context.packageManager.getPackageInfo(context.packageName,
                     PackageManager.GET_PERMISSIONS)
@@ -56,20 +68,17 @@ class PermissionHelper(private val context: BaseActivity,
     }
 
     private fun handle(permissionName: String) {
-        if (permissionExists(permissionName)) {// android M throws exception when requesting
-            // run time permission that does not exists in AndroidManifest.
-            if (isPermissionDeclined(permissionName)) {
-                showToast(context, "PermissionDeclined")
+        if (permissionExists(permissionName)) {
+            if (isPermissionBanned(permissionName)) {
+                permissionCallback.onPermissionReallyDeclined(permissionName)
+            } else if (isPermissionDeclined(permissionName)) {
                 if (isExplanationNeeded(permissionName)) {
                     permissionCallback.onPermissionNeedExplanation(permissionName)
-                    showToast(context, "PermissionNeedExplanation")
                 } else {
                     ActivityCompat.requestPermissions(context, arrayOf(permissionName), REQUEST_PERMISSIONS)
-                    showToast(context, "PermissionPreGranted")
                 }
             } else {
                 permissionCallback.onPermissionPreGranted(permissionName)
-                showToast(context, "PermissionPreGranted")
             }
         }
     }
@@ -79,9 +88,20 @@ class PermissionHelper(private val context: BaseActivity,
             handle(permissionName)
         } else {
             permissionCallback.onNoPermissionNeeded()
-            showToast(context, "NoPermissionNeeded")
         }
         return this
+    }
+
+    fun onRequestPermissionsResult(requestCode: Int, permissionName: String, result: Int) {
+        if (requestCode == REQUEST_PERMISSIONS) {
+            if (verifyPermissions(result)) {
+                permissionCallback.onPermissionGranted(permissionName)
+            } else {
+                if (!isExplanationNeeded(permissionName)) {
+                    permissionCallback.onPermissionReallyDeclined(permissionName)
+                }
+            }
+        }
     }
 
     private fun showToast(context: Context, text: String) {
