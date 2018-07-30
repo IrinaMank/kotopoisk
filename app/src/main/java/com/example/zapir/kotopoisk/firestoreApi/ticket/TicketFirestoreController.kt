@@ -1,360 +1,167 @@
 package com.example.zapir.kotopoisk.firestoreApi.ticket
 
-import android.net.Uri
-import android.support.v4.content.ContextCompat.getDrawable
-import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.common.exceptions.*
+import com.example.zapir.kotopoisk.firestoreApi.base_ticket.BaseTicketFirestoreController
+import com.example.zapir.kotopoisk.firestoreApi.base_ticket.BaseTicketFirestoreInterface
+import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
+import com.example.zapir.kotopoisk.model.BaseTicket
 import com.example.zapir.kotopoisk.model.Photo
 import com.example.zapir.kotopoisk.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import org.slf4j.LoggerFactory
 import java.io.File
+import java.util.concurrent.TimeUnit
 
-class TicketFirestoreController : TicketFirestoreInterface {
+class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
 
-    override fun getPhoto(ticketId: String): Single<Photo> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("photos")
-                    .whereEqualTo("ticketId", ticketId)
-                    .get()
-                    .addOnSuccessListener {
-                        logger.info("Get ticket is successful")
-                        val photo = it.documents[0].toObject(Photo::class.java)//it's really bad
-                        // but now it works :)
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        if (photo == null) {
-                            emitter.onError(SerializationExceptionApi())
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(photo)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error getting ticket: $it")
-                        emitter.onError(GetTicketException())
-                    }
-        }
-    }
-
-    private val db = FirebaseFirestore.getInstance()
-    private val storageRef = FirebaseStorage.getInstance().reference
-    private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
-    private val auth = FirebaseAuth.getInstance()
+    private val baseController = BaseTicketFirestoreController()
+    private val userController = UserFirestoreController()
 
     override fun getAllTickets(): Single<List<Ticket>> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("tickets")
-                    .whereEqualTo("isPublished", true)
-                    .get()
-                    .addOnSuccessListener {
-                        val tickets = it.map { document -> document.toObject(Ticket::class.java) }
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(tickets)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error getting tickets: $it")
-                        emitter.onError(GetTicketsListExceptionApi())
-                    }
-
-        }
+        return baseController.getAllTickets()
+                .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
+                .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
+                .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
+                .toList()
     }
 
 
     override fun getTicket(tickedId: String): Single<Optional<Ticket>> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("tickets")
-                    .document(tickedId)
-                    .get()
-                    .addOnSuccessListener {
-                        logger.info("Get ticket is successful")
-                        if (!it.exists()) {
-                            emitter.onSuccess(Optional.fromNullable(null))
-                            return@addOnSuccessListener
-                        }
-                        val ticket = it.toObject(Ticket::class.java)
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        if (ticket == null) {
-                            emitter.onError(SerializationExceptionApi())
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(Optional.of(ticket))
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error getting ticket: $it")
-                        emitter.onError(GetTicketException())
-                    }
-        }
-
+        return baseController.getTicket(tickedId)
+                .flatMap { convertToTicket(it.get()) }
+                .flatMap { addPhotoToTicket(it) }
+                .map { Optional.of(it) }
     }
 
     override fun getUserTickets(userId: String): Single<List<Ticket>> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("tickets")
-                    .whereEqualTo("finderId", userId)
-                    .get()
-                    .addOnSuccessListener {
-                        val tickets = it.map { document -> document.toObject(Ticket::class.java) }
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(tickets)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error getting user ticket: $it")
-                        emitter.onError(GetTicketsListExceptionApi())
-                    }
-        }
+        return baseController.getUserTickets(userId)
+                .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
+                .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
+                .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
+                .toList()
     }
 
     override fun getSavedTickets(userId: String): Single<List<Ticket>> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("tickets")
-                    .whereEqualTo("isPublished", false)
-                    .whereEqualTo("finderId", userId)
-                    .get()
-                    .addOnSuccessListener {
-                        val tickets = it.map { document -> document.toObject(Ticket::class.java) }
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(tickets)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error getting saved ticket: $it")
-                        emitter.onError(GetTicketsListExceptionApi())
-                    }
-        }
+        return baseController.getSavedTickets(userId)
+                .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
+                .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
+                .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
+                .toList()
     }
 
     override fun getFavouriteTickets(userId: String): Single<List<Ticket>> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("favouriteTickets")
-                    .get()
-                    .addOnSuccessListener {
-                        val tickets = it.map { document -> document.toObject(Ticket::class.java) }
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(tickets)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error getting ticket favourite: $it")
-                        emitter.onError(GetTicketsListExceptionApi())
-                    }
-        }
+        return baseController.getFavouriteTickets(userId)
+                .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
+                .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
+                .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
+                .toList()
     }
 
     override fun uploadTicket(ticket: Ticket): Single<Unit> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("tickets")
-                    .document(ticket.id)
-                    .set(ticket)
-                    .addOnSuccessListener {
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(Unit)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error uploading ticket: $it")
-                        emitter.onError(UpdateTicketExceptionApi())
-                    }
-        }
+        return baseController.uploadTicket(toBaseTicket(ticket))
     }
 
     override fun publishTicket(ticket: Ticket): Single<Unit> {
-        ticket.isPublished = true
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("tickets"
-            ).document(ticket.id)
-                    .set(ticket)
-                    .addOnSuccessListener {
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(Unit)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error publishing ticket: $it")
-                        emitter.onError(UploadTicketExceptionApi())
-                    }
-        }
+        return baseController.publishTicket(toBaseTicket(ticket))
     }
 
     override fun updateTicket(newTicket: Ticket): Single<Unit> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("tickets")
-                    .document(newTicket.id)
-                    .set(newTicket)
-                    .addOnSuccessListener {
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(Unit)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error updating ticket: $it")
-                        emitter.onError(UpdateTicketExceptionApi())
-                    }
-        }
+        return baseController.updateTicket(toBaseTicket(newTicket))
     }
 
     override fun deleteTicket(ticket: Ticket): Single<Unit> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("tickets")
-                    .document(ticket.id)
-                    .delete()
-                    .addOnSuccessListener {
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(Unit)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error deleting ticket: $it")
-                        emitter.onError(DeleteTicketExceptionApi())
-                    }
-        }
+        return baseController.deleteTicket(toBaseTicket(ticket))
     }
 
     override fun makeTicketFavourite(ticket: Ticket): Single<Unit> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("favouriteTickets")
-                    .document(ticket.id)
-                    .set(ticket)
-                    .addOnSuccessListener {
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(Unit)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error publishing ticket: $it")
-                        emitter.onError(ApiBaseException())
-                    }
-        }
+        return baseController.makeTicketFavourite(toBaseTicket(ticket))
     }
 
     override fun makeTicketUnFavourite(ticket: Ticket): Single<Unit> {
+        return baseController.makeTicketUnFavourite(toBaseTicket(ticket))
+    }
+
+    override fun uploadPhoto(file: File): Single<String> {
+        return baseController.uploadPhoto(file)
+    }
+
+    override fun getPhoto(ticketId: String): Single<Photo> {
+        return baseController.getPhoto(ticketId)
+    }
+
+
+    private fun convertToTicket(baseTicket: BaseTicket): Single<Ticket> {
+        val ticket = toTicket(baseTicket)
         return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            db.collection("favouriteTickets")
-                    .document(ticket.id)
-                    .delete()
-                    .addOnSuccessListener {
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(Unit)
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error publishing ticket: $it")
-                        emitter.onError(ApiBaseException())
-                    }
+            userController.getUser(baseTicket.finderId).timeout(5, TimeUnit
+                    .SECONDS)
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe(
+                            {
+                                if (it.isPresent) {
+                                    ticket.user = it.get()
+                                }
+                                emitter.onSuccess(ticket)
+
+                            },
+                            {
+                                throw it
+                            }
+                    )
         }
     }
 
-    private fun uploadFile(file: File): Single<String> {
-        val newFile = Uri.fromFile(file)
+    private fun addPhotoToTicket(ticket: Ticket): Single<Ticket> {
         return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            val photoRef = storageRef.child("images/" + newFile.lastPathSegment)
-            val uploadTask = photoRef.putFile(newFile)
-            val url = uploadTask
-                    .continueWithTask {
-                        if (!it.isSuccessful) {
-                            emitter.onError(it.exception!!)
-                        }
-                        photoRef.downloadUrl
-                    }
-                    .addOnSuccessListener {
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(it.toString())
-                    }
-                    .addOnFailureListener {
-                        logger.error("Error uploading photo: $it")
-                        emitter.onError(ApiBaseException())
-                    }.result
+            baseController.getPhoto(ticket.id).timeout(5, TimeUnit.SECONDS)
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe(
+                            {
+                                ticket.photo = it
+                                emitter.onSuccess(ticket)
+                            },
+                            {
+                                throw it
+                            }
+                    )
         }
     }
-    override fun uploadPhoto(file: File, ticketId: String): Single<Unit> {
-        return Single.create { emitter ->
-            if (emitter.isDisposed) {
-                return@create
-            }
-            uploadFile(file).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    {
-                        val photo = Photo(url = it, userId = auth.uid.toString(), ticketId =
-                        ticketId)
-                        db.collection("photos"
-                        ).document(photo.id)
-                                .set(photo)
-                                .addOnSuccessListener {
-                                    if (emitter.isDisposed) {
-                                        return@addOnSuccessListener
-                                    }
-                                    emitter.onSuccess(Unit)
-                                }
-                                .addOnFailureListener {
-                                    logger.error("Error publishing photo: $it")
-                                    emitter.onError(UploadTicketExceptionApi())//ToDo: not ticket
-                                }
 
-                    },
-                    {
-                        emitter.onError(it)
-                    }
-            )
-        }
+
+    private fun toTicket(baseTicket: BaseTicket) = Ticket(
+            id = baseTicket.id,
+            lat = baseTicket.lat,
+            lng = baseTicket.lng,
+            date = baseTicket.date,
+            overview = baseTicket.overview,
+            type = baseTicket.type,
+            color = baseTicket.color,
+            size = baseTicket.size,
+            hasCollar = baseTicket.hasCollar,
+            breed = baseTicket.breed,
+            furLength = baseTicket.furLength,
+            isFound = baseTicket.isFound,
+            isPublished = baseTicket.isPublished
+    )
+
+    private fun toBaseTicket(ticket: Ticket): BaseTicket {
+        return BaseTicket(
+                id = ticket.id,
+                lat = ticket.lat,
+                lng = ticket.lng,
+                date = ticket.date,
+                overview = ticket.overview,
+                type = ticket.type,
+                color = ticket.color,
+                size = ticket.size,
+                hasCollar = ticket.hasCollar,
+                breed = ticket.breed,
+                furLength = ticket.furLength,
+                isFound = ticket.isFound,
+                isPublished = ticket.isPublished,
+                finderId = ticket.user.id
+        )
     }
 
 

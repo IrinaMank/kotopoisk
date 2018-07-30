@@ -11,5 +11,4 @@ data class User(val id: String = UUID.randomUUID().toString(),
                 var name: String = "",
                 var phone: String = "",
                 var petCount: Int = 0,
-                var foundPetCount: Int = 0): Parcelable {
-}
+                var foundPetCount: Int = 0): Parcelable

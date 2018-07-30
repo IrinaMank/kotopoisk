@@ -29,7 +29,7 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 
-class ProfileFragment: Fragment() {
+class ProfileFragment : BaseFragment() {
 
     companion object {
 
@@ -48,11 +48,17 @@ class ProfileFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
+}
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        profile_text.setOnClickListener {
+            (parentFragment as BaseFragment).replaceFragment(TicketListFragment.newInstance())
+        }
+
         val user: User by lazy {
-            arguments?.getParcelable(ARG_USER) as? User ?: throw
+            arguments?.getParcelable(ProfileFragment.ARG_USER) as? User ?: throw
             RuntimeException("No user in arguments")
         }
 
@@ -67,7 +73,7 @@ class ProfileFragment: Fragment() {
         }
 
         btn_log_out.setOnClickListener {
-            userController.logOut()
+            ProfileFragment.userController.logOut()
             val myIntent = Intent(context, LoginActivity::class.java)
             activity?.startActivity(myIntent)
             activity?.finish()
@@ -84,4 +90,6 @@ class ProfileFragment: Fragment() {
                         {}
                 )
     }
+    }
+
 }

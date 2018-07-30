@@ -4,16 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import com.example.zapir.kotopoisk.MainActivity
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
+import com.example.zapir.kotopoisk.model.BaseTicket
 import com.example.zapir.kotopoisk.model.User
+import com.example.zapir.kotopoisk.ui.BaseActivity
+import com.example.zapir.kotopoisk.ui.MainActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
-class LoginActivity : AppCompatActivity(), ErrorDialogDisplayer {
+class LoginActivity : BaseActivity(), ErrorDialogDisplayer {
 
     companion object {
         const val PREFS_ID = "User prefs"

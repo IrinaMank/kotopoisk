@@ -1,6 +1,5 @@
 package com.example.zapir.kotopoisk.ui.login
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Build
@@ -10,11 +9,12 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.animation.AnimationUtils
-import com.example.zapir.kotopoisk.MainActivity
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.common.PreferencesManager
 import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
+import com.example.zapir.kotopoisk.ui.MainActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.util.concurrent.TimeUnit
@@ -23,10 +23,12 @@ import java.util.concurrent.TimeUnit
 class SplashActivity : AppCompatActivity(), ErrorDialogDisplayer {
 
     private val userController = UserFirestoreController()
+    private val preferencesManager = PreferencesManager(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
+        preferencesManager.init()
         scheduleSplashScreen()
     }
 
@@ -41,12 +43,10 @@ class SplashActivity : AppCompatActivity(), ErrorDialogDisplayer {
     }
 
     private fun getSplashScreenDuration(): Long {
-        val sp = getPreferences(Context.MODE_PRIVATE)
         val prefKeyFirstLaunch = "pref_first_launch"
-
-        return when (sp.getBoolean(prefKeyFirstLaunch, true)) {
+        return when (preferencesManager.getBoolean(prefKeyFirstLaunch)) {
             true -> {
-                sp.edit().putBoolean(prefKeyFirstLaunch, false).apply()
+                preferencesManager.putBoolean(prefKeyFirstLaunch, false)
                 val animation = paws_image_view.background as AnimationDrawable
                 animation.isOneShot = true
                 animation.start()

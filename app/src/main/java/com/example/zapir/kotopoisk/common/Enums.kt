@@ -1,18 +1,18 @@
 package com.example.zapir.kotopoisk.common
 
-import com.example.zapir.kotopoisk.R
-
 enum class Color(val value: Int) {
     WHITE(0),
     BLACK(1),
     RED(2),
-    GREY(3)
+    GREY(3),
+    ORANGE(4),
+    PINK(5)
 
 }
 
 enum class PetType(val value: Int) {
     CAT(0),
-    DOG(1);
+    DOG(1),
 
 }
 
@@ -35,3 +35,10 @@ enum class FurLength(val value: Int) {
 //    FAVOURITE(false),
 //
 //}
+
+enum class SelectedPage(val value: Int) {
+    SEARCH(0),
+    MAP(1),
+    PROFILE(2)
+
+}
