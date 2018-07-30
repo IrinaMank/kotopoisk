@@ -1,6 +1,9 @@
 package com.example.zapir.kotopoisk.firestoreApi.user
 
-import com.example.zapir.kotopoisk.common.exceptions.*
+import com.example.zapir.kotopoisk.common.exceptions.GetUserException
+import com.example.zapir.kotopoisk.common.exceptions.NonAuthorizedExceptionApi
+import com.example.zapir.kotopoisk.common.exceptions.SerializationExceptionApi
+import com.example.zapir.kotopoisk.common.exceptions.UpdateUserExceptionApi
 import com.example.zapir.kotopoisk.model.User
 import com.fernandocejas.arrow.optional.Optional
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -9,7 +12,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Single
 import org.slf4j.LoggerFactory
-import java.util.*
 
 class UserFirestoreController : UserFirestoreInterface {
 

@@ -3,8 +3,6 @@ package com.example.zapir.kotopoisk.common
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.R.id.edit
-
 
 
 class PreferencesManager {
@@ -77,9 +75,9 @@ class PreferencesManager {
 
     fun putBoolean(key: String, value: Boolean) {
         mSharedPreferences?.let {
-        val editor = it.edit()
-        editor.putBoolean(key, value)
-        editor.apply()
+            val editor = it.edit()
+            editor.putBoolean(key, value)
+            editor.apply()
         }
     }
 

@@ -1,6 +1,5 @@
 package com.example.zapir.kotopoisk.ui.login
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Build

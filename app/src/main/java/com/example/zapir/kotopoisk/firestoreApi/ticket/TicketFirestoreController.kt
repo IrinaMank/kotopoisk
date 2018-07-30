@@ -24,11 +24,11 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
                 .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
                 .toList()
-                }
+    }
 
 
     override fun getTicket(tickedId: String): Single<Optional<Ticket>> {
-        return  baseController.getTicket(tickedId)
+        return baseController.getTicket(tickedId)
                 .flatMap { convertToTicket(it.get()) }
                 .flatMap { addPhotoToTicket(it) }
                 .map { Optional.of(it) }
@@ -47,14 +47,16 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
                 .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
                 .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .toList()    }
+                .toList()
+    }
 
     override fun getFavouriteTickets(userId: String): Single<List<Ticket>> {
         return baseController.getFavouriteTickets(userId)
                 .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
                 .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .toList()    }
+                .toList()
+    }
 
     override fun uploadTicket(ticket: Ticket): Single<Unit> {
         return baseController.uploadTicket(toBaseTicket(ticket))
@@ -65,16 +67,20 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
     }
 
     override fun updateTicket(newTicket: Ticket): Single<Unit> {
-        return baseController.updateTicket(toBaseTicket(newTicket))    }
+        return baseController.updateTicket(toBaseTicket(newTicket))
+    }
 
     override fun deleteTicket(ticket: Ticket): Single<Unit> {
-        return baseController.deleteTicket(toBaseTicket(ticket))    }
+        return baseController.deleteTicket(toBaseTicket(ticket))
+    }
 
     override fun makeTicketFavourite(ticket: Ticket): Single<Unit> {
-        return baseController.makeTicketFavourite(toBaseTicket(ticket))    }
+        return baseController.makeTicketFavourite(toBaseTicket(ticket))
+    }
 
     override fun makeTicketUnFavourite(ticket: Ticket): Single<Unit> {
-        return baseController.makeTicketUnFavourite(toBaseTicket(ticket))    }
+        return baseController.makeTicketUnFavourite(toBaseTicket(ticket))
+    }
 
     override fun uploadPhoto(file: File): Single<String> {
         return baseController.uploadPhoto(file)
@@ -83,7 +89,6 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
     override fun getPhoto(ticketId: String): Single<Photo> {
         return baseController.getPhoto(ticketId)
     }
-
 
 
     private fun convertToTicket(baseTicket: BaseTicket): Single<Ticket> {
@@ -105,21 +110,21 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
                             }
                     )
         }
-        }
+    }
 
-    private fun addPhotoToTicket(ticket: Ticket): Single<Ticket>{
+    private fun addPhotoToTicket(ticket: Ticket): Single<Ticket> {
         return Single.create { emitter ->
             baseController.getPhoto(ticket.id).timeout(5, TimeUnit.SECONDS)
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe(
-                        {
-                            ticket.photo = it
-                            emitter.onSuccess(ticket)
-                        },
-                        {
-                            throw it
-                        }
-                )
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe(
+                            {
+                                ticket.photo = it
+                                emitter.onSuccess(ticket)
+                            },
+                            {
+                                throw it
+                            }
+                    )
         }
     }
 
