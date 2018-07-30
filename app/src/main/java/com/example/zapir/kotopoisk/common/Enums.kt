@@ -4,7 +4,9 @@ enum class Color(val value: Int) {
     WHITE(0),
     BLACK(1),
     RED(2),
-    GREY(3)
+    GREY(3),
+    ORANGE(4),
+    PINK(5)
 
 }
 
@@ -31,5 +33,12 @@ enum class FurLength(val value: Int) {
 enum class TicketType(val value: Boolean) {
     SAVED(true),
     FAVOURITE(false),
+
+}
+
+enum class SelectedPage(val value: Int) {
+    SEARCH(0),
+    MAP(1),
+    PROFILE(2)
 
 }

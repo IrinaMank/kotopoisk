@@ -6,11 +6,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.zapir.kotopoisk.MainActivity
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.model.User
+import com.example.zapir.kotopoisk.ui.MainActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_register.*
 import java.util.concurrent.TimeUnit

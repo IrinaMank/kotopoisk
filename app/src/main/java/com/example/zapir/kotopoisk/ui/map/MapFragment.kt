@@ -1,31 +1,31 @@
-package com.example.zapir.kotopoisk
+package com.example.zapir.kotopoisk.ui.map
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.CameraUpdateFactory
+import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.TransactionUtils
+import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_map.*
+import java.io.Serializable
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
 
-    private var gmap: GoogleMap? = null
+    private var mapController: MapController? = null
 
     companion object {
 
-        fun newInstance(): MapFragment = MapFragment()
         private const val MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey"
+        fun newInstance(): MapFragment = MapFragment()
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        map_view.onCreate(savedInstanceState)
-        map_view.getMapAsync(this)
+        mapController = MapController(context)
     }
 
     override fun onCreateView(
@@ -36,13 +36,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        map_view.onCreate(savedInstanceState)
+        map_view.getMapAsync(this)
+        map_fab.setOnClickListener { handlerFloatActionBar() }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        var mapViewBundle = outState.getBundle(MapFragment.MAP_VIEW_BUNDLE_KEY)
+        var mapViewBundle = outState.getBundle(MAP_VIEW_BUNDLE_KEY)
 
         if (mapViewBundle == null) {
             mapViewBundle = Bundle()
-            outState.putBundle(MapFragment.MAP_VIEW_BUNDLE_KEY, mapViewBundle)
+            outState.putBundle(MAP_VIEW_BUNDLE_KEY, mapViewBundle)
         }
 
         map_view.onSaveInstanceState(mapViewBundle)
@@ -69,21 +76,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onDestroy() {
-        map_view.onDestroy()
+        map_view?.onDestroy()
         super.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        map_view.onLowMemory()
+        map_view?.onLowMemory()
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
-        //TODO(Убрать фокус с New-York'а)
-        gmap = googleMap
-        gmap!!.setMinZoomPreference(12f)
-        val ny = LatLng(40.7143528, -74.0059731)
-        gmap!!.moveCamera(CameraUpdateFactory.newLatLng(ny))
+    override fun onMapReady(googleMap: GoogleMap) {
+        mapController?.onAttachMap(googleMap)
+    }
+
+    private fun handlerFloatActionBar() {
+        logger.info("Click on float action bar")
+        // TODO("Сделать переход в окно добавления объявления")
     }
 
 }
