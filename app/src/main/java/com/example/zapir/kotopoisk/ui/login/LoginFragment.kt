@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.common.PreferencesManager
 import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -36,6 +37,7 @@ class LoginFragment : Fragment() {
 
     private var googleSignInClient: GoogleSignInClient? = null
     private val listener by lazy { activity as? LoginActivity }
+    private val preferencesManager = PreferencesManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +45,7 @@ class LoginFragment : Fragment() {
                 .requestIdToken(AUTH_ID)
                 .build()
         googleSignInClient = GoogleSignIn.getClient(context!!, gso)
+        preferencesManager.init()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -70,9 +73,7 @@ class LoginFragment : Fragment() {
                     ?.observeOn(AndroidSchedulers.mainThread())
                     ?.subscribe(
                             {
-                                val sharedPrefs: SharedPreferences? = activity?.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-                                sharedPrefs?.edit()?.putString(LoginActivity.PREFS_ID, it
-                                        .id)?.apply()
+                               preferencesManager.putString(LoginActivity.PREFS_ID, it.id)
                                 listener?.onLogin(it)
                             },
                             {

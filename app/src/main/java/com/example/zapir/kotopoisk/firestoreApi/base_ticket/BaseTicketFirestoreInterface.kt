@@ -1,7 +1,6 @@
-package com.example.zapir.kotopoisk.firestoreApi.ticket
+package com.example.zapir.kotopoisk.firestoreApi.base_ticket
 
 import com.example.zapir.kotopoisk.model.Photo
-import com.example.zapir.kotopoisk.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Single
 import java.io.File

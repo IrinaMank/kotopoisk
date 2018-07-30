@@ -2,10 +2,8 @@ package com.example.zapir.kotopoisk.firestoreApi.base_ticket
 
 import android.net.Uri
 import com.example.zapir.kotopoisk.common.exceptions.*
-import com.example.zapir.kotopoisk.firestoreApi.ticket.BaseTicketFirestoreInterface
 import com.example.zapir.kotopoisk.model.BaseTicket
 import com.example.zapir.kotopoisk.model.Photo
-import com.example.zapir.kotopoisk.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage

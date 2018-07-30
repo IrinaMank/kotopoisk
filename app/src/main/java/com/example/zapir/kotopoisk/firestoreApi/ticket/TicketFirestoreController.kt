@@ -1,18 +1,15 @@
 package com.example.zapir.kotopoisk.firestoreApi.ticket
 
 import com.example.zapir.kotopoisk.firestoreApi.base_ticket.BaseTicketFirestoreController
+import com.example.zapir.kotopoisk.firestoreApi.base_ticket.BaseTicketFirestoreInterface
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.model.BaseTicket
 import com.example.zapir.kotopoisk.model.Photo
 import com.example.zapir.kotopoisk.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
