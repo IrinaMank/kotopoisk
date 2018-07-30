@@ -65,7 +65,7 @@ class LoginFragment : Fragment() {
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
-            listener?.userController?.logInWithGoogle(account)
+            listener?.disposables?.add(listener?.userController?.logInWithGoogle(account)
                     ?.timeout(5, TimeUnit.SECONDS)
                     ?.observeOn(AndroidSchedulers.mainThread())
                     ?.subscribe(
@@ -78,7 +78,8 @@ class LoginFragment : Fragment() {
                             {
                                 ExceptionHandler.defaultHandler(listener as ErrorDialogDisplayer).handleException(it, context!!)
                             }
-                    )
+                    ) ?: throw RuntimeException("Error while creating observable")
+            )
         }
     }
 

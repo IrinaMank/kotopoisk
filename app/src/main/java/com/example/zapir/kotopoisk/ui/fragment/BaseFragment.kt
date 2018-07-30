@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.ui.BaseActivity
+import io.reactivex.disposables.CompositeDisposable
 import org.slf4j.LoggerFactory
 
 open class BaseFragment : Fragment() {
 
     val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
+    lateinit var disposables: CompositeDisposable
 
     open fun replaceFragment(fragment: BaseFragment) {
         UnsupportedOperationException()
@@ -24,6 +26,7 @@ open class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logger.info("onCreate")
+        disposables = CompositeDisposable()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,6 +72,7 @@ open class BaseFragment : Fragment() {
     override fun onDestroy() {
         logger.info("onDestroy")
         super.onDestroy()
+        disposables.dispose()
     }
 
 }

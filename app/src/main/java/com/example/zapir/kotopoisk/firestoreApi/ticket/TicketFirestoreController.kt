@@ -1,6 +1,5 @@
 package com.example.zapir.kotopoisk.firestoreApi.ticket
 
-import com.example.zapir.kotopoisk.common.exceptions.GetTicketsListExceptionApi
 import com.example.zapir.kotopoisk.firestoreApi.base_ticket.BaseTicketFirestoreController
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.model.BaseTicket
@@ -18,17 +17,9 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
-    override fun getPhoto(ticketId: String): Single<Photo> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
-    private val db = FirebaseFirestore.getInstance()
-    private val storageRef = FirebaseStorage.getInstance().reference
-    private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
-    private val auth = FirebaseAuth.getInstance()
     private val baseController = BaseTicketFirestoreController()
     private val userController = UserFirestoreController()
-
 
     override fun getAllTickets(): Single<List<Ticket>> {
         return baseController.getAllTickets()
@@ -92,9 +83,14 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
         return baseController.uploadPhoto(file)
     }
 
+    override fun getPhoto(ticketId: String): Single<Photo> {
+        return baseController.getPhoto(ticketId)
+    }
+
+
 
     private fun convertToTicket(baseTicket: BaseTicket): Single<Ticket> {
-        val ticket = copyTicket(baseTicket)
+        val ticket = toTicket(baseTicket)
         return Single.create { emitter ->
             userController.getUser(baseTicket.finderId).timeout(5, TimeUnit
                     .SECONDS)
@@ -131,7 +127,7 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
     }
 
 
-    private fun copyTicket(baseTicket: BaseTicket) = Ticket(
+    private fun toTicket(baseTicket: BaseTicket) = Ticket(
             id = baseTicket.id,
             lat = baseTicket.lat,
             lng = baseTicket.lng,

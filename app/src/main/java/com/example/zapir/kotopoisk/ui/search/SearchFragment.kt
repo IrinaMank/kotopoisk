@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.TransactionUtils
 import com.example.zapir.kotopoisk.firestoreApi.ticket.TicketFirestoreController
+import com.example.zapir.kotopoisk.model.Ticket
 import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
 import com.example.zapir.kotopoisk.ui.ticket.TicketDetailFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -31,14 +32,6 @@ class SearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         search_text.setOnClickListener { handlerClickSearchText() }
-        TicketFirestoreController().getAllTickets().observeOn(AndroidSchedulers.mainThread()).subscribe(
-                {
-                    print(it.toString())
-                },
-                {
-
-                }
-        )
 
     }
 
