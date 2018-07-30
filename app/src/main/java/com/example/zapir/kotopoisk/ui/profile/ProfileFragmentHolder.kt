@@ -1,13 +1,13 @@
 package com.example.zapir.kotopoisk.ui.profile
 
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.TransactionUtils
 import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class ProfileFragmentHolder : BaseFragment() {
 
@@ -32,7 +32,19 @@ class ProfileFragmentHolder : BaseFragment() {
     override fun onStart() {
         super.onStart()
         if (TransactionUtils.isEmpty(childFragmentManager)) {
-            replaceFragment(ProfileFragment.newInstance())
+            disposables.add(
+                    userController.getCurrentUser()
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    {
+                                        replaceFragment(ProfileFragment.newInstance(it))
+                                    },
+                                    {
+                                        errorHandler.handleException(it, context!!)
+                                    }
+                            )
+            )
+
         }
     }
 }

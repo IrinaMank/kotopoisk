@@ -90,6 +90,15 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
         return baseController.getPhoto(ticketId)
     }
 
+    override fun searchTicket(ticket: Ticket): Single<List<Ticket>> {
+        return baseController.searchTicket(toBaseTicket(ticket))
+                .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
+                .flatMapSingle { foundTicket: BaseTicket -> convertToTicket(foundTicket) }
+                .flatMapSingle { foundTicket: Ticket -> addPhotoToTicket(foundTicket) }
+                .toList()
+    }
+
+
 
     private fun convertToTicket(baseTicket: BaseTicket): Single<Ticket> {
         val ticket = toTicket(baseTicket)

@@ -12,7 +12,7 @@ interface BaseTicketFirestoreInterface<T> {
     fun getUserTickets(userId: String): Single<List<T>>
     fun getSavedTickets(userId: String): Single<List<T>>
     fun getFavouriteTickets(userId: String): Single<List<T>>
-    //    fun searchTicket(ticket: Ticket, radius: Double, completion: (List<Ticket>) -> Unit)
+    fun searchTicket(ticket: T): Single<List<T>>
     fun uploadTicket(ticket: T): Single<Unit>//save unpublished ticket
 
     fun publishTicket(ticket: T): Single<Unit>//make saved ticket published or publish new

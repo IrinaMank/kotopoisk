@@ -12,6 +12,7 @@ import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.common.PreferencesManager
 import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
+import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_auth.*
 import java.util.concurrent.TimeUnit
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     companion object {
 
@@ -37,7 +38,6 @@ class LoginFragment : Fragment() {
 
     private var googleSignInClient: GoogleSignInClient? = null
     private val listener by lazy { activity as? LoginActivity }
-    private val preferencesManager by lazy { PreferencesManager(context!!)  }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

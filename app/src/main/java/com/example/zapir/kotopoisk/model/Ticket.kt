@@ -1,11 +1,14 @@
 package com.example.zapir.kotopoisk.model
 
+import android.os.Parcelable
 import com.example.zapir.kotopoisk.common.Color
 import com.example.zapir.kotopoisk.common.FurLength
 import com.example.zapir.kotopoisk.common.PetType
 import com.example.zapir.kotopoisk.common.Size
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+@Parcelize
 data class Ticket(val id: String = UUID.randomUUID().toString(),
                   val lat: Double = -1.0,
                   val lng: Double = -1.0,
@@ -21,5 +24,5 @@ data class Ticket(val id: String = UUID.randomUUID().toString(),
                   var furLength: Int = FurLength.MEDIUM.value,
                   var isFound: Boolean = false,
                   var isPublished: Boolean = false
-)
+): Parcelable
 

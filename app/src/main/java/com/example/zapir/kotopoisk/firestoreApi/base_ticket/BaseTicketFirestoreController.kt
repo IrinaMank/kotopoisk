@@ -304,20 +304,54 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get ticket is successful")
-                        val photo = it.documents[0].toObject(Photo::class.java)//it's really bad
-                        // but now it works :)
-                        if (emitter.isDisposed) {
-                            return@addOnSuccessListener
+                        if (!it.isEmpty) {
+                            val photo = it.documents[0].toObject(Photo::class.java)//it's really bad
+                            // but now it works :)
+                            if (emitter.isDisposed) {
+                                return@addOnSuccessListener
+                            }
+                            if (photo == null) {
+                                emitter.onError(SerializationExceptionApi())
+                                return@addOnSuccessListener
+                            }
+                            emitter.onSuccess(photo)
+                        } else {
+                            emitter.onError(GetTicketException())
                         }
-                        if (photo == null) {
-                            emitter.onError(SerializationExceptionApi())
-                            return@addOnSuccessListener
-                        }
-                        emitter.onSuccess(photo)
                     }
                     .addOnFailureListener {
                         logger.error("Error getting ticket: $it")
                         emitter.onError(GetTicketException())
+                    }
+        }
+    }
+
+    override fun searchTicket(ticket: BaseTicket): Single<List<BaseTicket>> {
+        return Single.create { emitter ->
+            if (emitter.isDisposed) {
+                return@create
+            }
+            db.collection("tickets")
+                    .whereEqualTo("type", ticket.type)
+                    .whereEqualTo("color", ticket.color)
+                    .whereEqualTo("size", ticket.size)
+                    .whereEqualTo("hasCollar", ticket.hasCollar)
+                    .whereEqualTo("furLength", ticket.furLength)
+                    .whereEqualTo("found", false)
+                    .whereEqualTo("published",true)
+                    .whereGreaterThan("date", ticket.date)
+                    .get()
+                    .addOnSuccessListener {
+                        logger.info("Get tickets is successful")
+                        val tickets = it.map { document -> document.toObject(BaseTicket::class.java) }
+                        if (emitter.isDisposed) {
+                            return@addOnSuccessListener
+                        }
+                        emitter.onSuccess(tickets)
+
+                    }
+                    .addOnFailureListener {
+                        emitter.onError(GetTicketsListExceptionApi())
                     }
         }
     }

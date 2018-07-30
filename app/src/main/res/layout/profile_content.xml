@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +12,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:padding="@dimen/size_small">
 
             <ImageView
@@ -31,11 +29,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/profile_icon"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="Ira"
+                style="@style/ProfileHeaderTextView"
+                tools:text="Default Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="#212121" />
+                 />
 
             <TextView
                 android:id="@+id/tv_photo_pets"
@@ -44,11 +41,10 @@
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/profile_icon"
                 android:layout_below="@id/tv_nickname"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="0 pets discovered"
+                style="@style/ProfileHeaderTextView"
+                tools:text="0 pets discovered"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="#212121" />
+                 />
 
             <TextView
                 android:id="@+id/tv_found_pets"
@@ -57,18 +53,17 @@
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/profile_icon"
                 android:layout_below="@id/tv_photo_pets"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="0 pets found their masters"
+                style="@style/ProfileHeaderTextView"
+                tools:text="0 pets found their masters"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="#212121" />
+                 />
 
         </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Info"
+            android:text="@string/info"
             android:textColor="@color/colorPrimary"
             android:padding="@dimen/size_small"/>
 
@@ -92,11 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/iv_nickname"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="Irina Mank"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                style="@style/ProfileMainTextView"
+                tools:text="Irina Mank"
+                 />
 
         </RelativeLayout>
 
@@ -120,9 +113,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/ivContactItem1"
-                android:text="(123) 456-7890"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                tools:text="(123) 456-7890"
+                style="@style/ProfileMainTextView" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -145,11 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/ivContactItem3"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="chintan@letsnurture.com"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                tools:text="chintan@letsnurture.com"
+                style="@style/ProfileMainTextView" />
 
         </RelativeLayout>
 
@@ -168,11 +157,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_small"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="Edit profile"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:text="@string/edit_profile"
+                style="@style/ProfileMainTextView" />
 
             <ToggleButton
                 android:id="@+id/edit_toggle"
@@ -194,15 +180,17 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tickets"
+            android:text="@string/tickets"
             android:textColor="@color/colorPrimary"
             android:padding="@dimen/size_small"/>
 
         <RelativeLayout
+            android:id="@+id/my_tickets_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
+            android:focusable="true"
             android:padding="@dimen/size_small">
 
             <ImageView
@@ -220,11 +208,8 @@
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/ivContactItem5"
                 android:layout_toStartOf="@+id/chkState5"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="My tickets"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:text="@string/my_tickets"
+                style="@style/ProfileMainTextView" />
 
             <ToggleButton
                 android:id="@+id/chkState5"
@@ -246,6 +231,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
+            android:focusable="true"
             android:padding="@dimen/size_small">
 
             <ImageView
@@ -263,11 +249,8 @@
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/ivContactItem6"
                 android:layout_toStartOf="@+id/chkState6"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="Favorite tickets"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:text="@string/favorite_tickets"
+                style="@style/ProfileMainTextView" />
 
             <ToggleButton
                 android:id="@+id/chkState6"
@@ -290,10 +273,9 @@
                 android:id="@+id/btn_log_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/size_small"
-                android:layout_marginTop="@dimen/size_small"
+                android:layout_margin="@dimen/size_small"
                 android:backgroundTint="@color/colorAccent"
-                android:text="Log out" />
+                android:text="@string/log_out" />
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

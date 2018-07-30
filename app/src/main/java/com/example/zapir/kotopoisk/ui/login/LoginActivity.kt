@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 class LoginActivity : BaseActivity(), ErrorDialogDisplayer {
 
     companion object {
-        const val PREFS_ID = "User prefs"
+        const val PREFS_ID = "PREFS_ID"
     }
 
     val userController = UserFirestoreController()
@@ -52,6 +52,11 @@ class LoginActivity : BaseActivity(), ErrorDialogDisplayer {
                 )
 
 
+    }
+
+    fun onRegister() {
+        startActivity(Intent(this, MainActivity::class.java))
+        this.finish()
     }
 
     override fun showOkErrorDialog(msg: Int) {

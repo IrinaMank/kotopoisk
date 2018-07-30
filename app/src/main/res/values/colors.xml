@@ -10,6 +10,9 @@
     <color name="bottomNavigationBarColor">#4a0072</color>
     <color name="black">#000000</color>
 
+    <color name="transparent">#00000000</color>
+    <color name="red">#FF0000</color>
+
     <!--<color name="colorPrimary">#840606</color>
     <color name="colorPrimaryDark">#520000</color>
     <color name="colorAccent">#bb412f</color>

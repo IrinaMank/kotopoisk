@@ -46,8 +46,8 @@
             app:layout_constraintTop_toBottomOf="@id/tv_element_type" />
 
         <TextView
-            android:id="@+id/tv_element_is_found"
-            style="@style/MultiLineTextView"
+            android:id="@+id/tv_element_user"
+            style="@style/SingleLineTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/size_small"
@@ -57,12 +57,39 @@
             app:layout_constraintStart_toStartOf="@id/tv_element_type"
             app:layout_constraintTop_toBottomOf="@id/tv_element_date" />
 
+        <TextView
+            android:id="@+id/tv_element_is_found"
+            style="@style/SingleLineTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/size_small"
+            android:paddingStart="@dimen/size_small"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_element_user"
+            app:layout_constraintTop_toBottomOf="@id/tv_element_user" />
+
+        <TextView
+            android:id="@+id/tv_element_is_published"
+            style="@style/SingleLineTextView"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:text="@string/not_published"
+            android:textColor="@color/red"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/size_small"
+            android:paddingStart="@dimen/size_small"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_element_type"
+            app:layout_constraintTop_toBottomOf="@id/tv_element_is_found" />
+
         <CheckBox
             android:id="@+id/favor_checkbox"
             android:layout_width="@dimen/cardview_icons_size"
             android:layout_height="@dimen/cardview_icons_size"
             android:background="@color/transparent"
-            android:button="@drawable/ic_favorite_black_24dp"
+            android:button="@drawable/favorite_selector"
             android:checked="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

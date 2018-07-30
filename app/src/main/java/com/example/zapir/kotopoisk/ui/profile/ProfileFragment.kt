@@ -1,32 +1,16 @@
 package com.example.zapir.kotopoisk.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.model.User
-import com.example.zapir.kotopoisk.ui.login.LoginFragment
-import kotlinx.android.synthetic.main.profile_content.*
-import android.support.v4.content.ContextCompat.startActivity
-import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.os.Environment
-import android.support.v4.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.example.zapir.kotopoisk.firestoreApi.ticket.TicketFirestoreController
+import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
-import java.io.File
-import com.google.common.io.Flushables.flush
-import android.graphics.Bitmap
-import android.R.attr.bitmap
-import android.net.Uri
-import java.io.FileOutputStream
-import java.io.OutputStream
+import kotlinx.android.synthetic.main.profile_content.*
 
 
 class ProfileFragment : BaseFragment() {
@@ -45,31 +29,31 @@ class ProfileFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        return inflater.inflate(R.layout.profile_content, container, false)
     }
 
-}
+    val user: User by lazy {
+        arguments?.getParcelable(ProfileFragment.ARG_USER) as? User ?: throw
+        RuntimeException("No user in arguments")
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        profile_text.setOnClickListener {
-            (parentFragment as BaseFragment).replaceFragment(TicketListFragment.newInstance())
-        }
-
-        val user: User by lazy {
-            arguments?.getParcelable(ProfileFragment.ARG_USER) as? User ?: throw
-            RuntimeException("No user in arguments")
-        }
 
         tv_nickname.text = user.nickname
         tv_full_name.text = user.name
         tv_phone.text = user.phone
         tv_email.text = user.email
+        tv_photo_pets.text = getString(R.string.pets_discovered, user.petCount)
+        tv_found_pets.text = getString(R.string.found_masters, user.foundPetCount)
 
 
         edit_profile_btn.setOnClickListener {
-            //ToDo: call edit fragment
+            (parentFragment as BaseFragment).replaceFragment(EditProfileFragment.newInstance(user))
+        }
+
+        my_tickets_btn.setOnClickListener {
+            (parentFragment as BaseFragment).replaceFragment(MyTicketListFragment.newInstance(user))
         }
 
         btn_log_out.setOnClickListener {
@@ -80,16 +64,7 @@ class ProfileFragment : BaseFragment() {
 
         }
 
-        TicketFirestoreController().getPhoto("111").observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            Glide.with(this)
-                                    .load(it.url)
-                                    .into(this.profile_icon)
-                        },
-                        {}
-                )
     }
-    }
+
 
 }

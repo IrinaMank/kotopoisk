@@ -6,16 +6,33 @@ import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.TransactionUtils
+import com.example.zapir.kotopoisk.common.PreferencesManager
+import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
+import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
+import com.example.zapir.kotopoisk.firestoreApi.ticket.TicketFirestoreController
+import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.ui.BaseActivity
+import com.example.zapir.kotopoisk.ui.login.LoginFragment
 import io.reactivex.disposables.CompositeDisposable
 import org.slf4j.LoggerFactory
 
-open class BaseFragment : Fragment() {
+open class BaseFragment : Fragment(), ErrorDialogDisplayer {
 
     val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
     lateinit var disposables: CompositeDisposable
+    val ticketController = TicketFirestoreController()
+    val userController = UserFirestoreController()
+    lateinit var preferencesManager: PreferencesManager
+    val errorHandler = ExceptionHandler.defaultHandler(this) //ToDo: warning
 
     open fun replaceFragment(fragment: BaseFragment) {
+        UnsupportedOperationException()
+    }
+
+    open fun addFragment(fragment: BaseFragment) {
         UnsupportedOperationException()
     }
 
@@ -27,6 +44,8 @@ open class BaseFragment : Fragment() {
         super.onCreate(savedInstanceState)
         logger.info("onCreate")
         disposables = CompositeDisposable()
+        preferencesManager = PreferencesManager(context!!)
+        preferencesManager.init()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -73,6 +92,22 @@ open class BaseFragment : Fragment() {
         logger.info("onDestroy")
         super.onDestroy()
         disposables.dispose()
+    }
+
+    override fun showOkErrorDialog(msg: Int) {
+        Toast.makeText(activity, "Sorry, some problems with authentification. Please, try again",
+                Toast.LENGTH_LONG).show()
+        returnToLoginFragment()
+    }
+
+    override fun showConnectivityErrorDialog() {
+        Toast.makeText(activity, R.string.no_connection_error, Toast.LENGTH_LONG).show()
+        returnToLoginFragment()
+    }
+
+    private fun returnToLoginFragment() {
+        val loginFragment = LoginFragment.newInstance()
+        TransactionUtils.replaceFragment(childFragmentManager, R.id.container, loginFragment)
     }
 
 }
