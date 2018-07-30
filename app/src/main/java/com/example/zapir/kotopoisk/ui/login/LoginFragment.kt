@@ -37,7 +37,7 @@ class LoginFragment : Fragment() {
 
     private var googleSignInClient: GoogleSignInClient? = null
     private val listener by lazy { activity as? LoginActivity }
-    private val preferencesManager = PreferencesManager()
+    private val preferencesManager by lazy { PreferencesManager(context!!)  }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -5,18 +5,12 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 
 
-class PreferencesManager {
+class PreferencesManager(val mContext: Context) {
 
     private var mSharedPreferences: SharedPreferences? = null
     private val INVALID_VALUE = -1
 
-    private lateinit var mContext: Context
     private var mName: String = ""
-
-
-    fun PreferencesManager(context: Context) {
-        mContext = context
-    }
 
     fun setName(name: String): PreferencesManager {
         mName = name

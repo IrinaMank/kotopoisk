@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 class SplashActivity : AppCompatActivity(), ErrorDialogDisplayer {
 
     private val userController = UserFirestoreController()
-    private val preferencesManager = PreferencesManager()
+    private val preferencesManager = PreferencesManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
