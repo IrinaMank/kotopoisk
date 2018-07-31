@@ -3,6 +3,7 @@ package com.example.zapir.kotopoisk.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBar
 import android.util.Log
@@ -55,20 +56,21 @@ class MainActivity : BaseActivity(), AddPhotoListener {
         selectBottomBarTab(SelectedPage.MAP.value)
     }
 
-    /*override fun onBackPressed() {
-        super.onBackPressed()
-        val currentHostFragment = TransactionUtils.getCurrentFragment(supportFragmentManager)
+    override fun onBackPressed() {
+        val currentHostFragment: Fragment? = supportFragmentManager.findFragmentByTag(
+                "android:switcher:" + R.id.pager + ":" + pager.currentItem)
 
         if (currentHostFragment != null) {
             val childManager = currentHostFragment.childFragmentManager
+
             if (childManager.backStackEntryCount > 1) {
                 childManager.popBackStack()
                 return
             }
         }
 
-        finish()
-    }*/
+        super.onBackPressed()
+    }
 
     private fun handlerNavigationListener(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -94,7 +96,7 @@ class MainActivity : BaseActivity(), AddPhotoListener {
 
     }
 
-    override fun addPhotoToAdvert(photoUri: Uri){
+    override fun addPhotoToAdvert(photoUri: Uri) {
         startActivity(TicketActivity.newIntent(this, photoUri))
 
     }

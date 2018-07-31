@@ -8,6 +8,6 @@ interface MapInterface {
     fun addMarker(ticket: Ticket)
     fun removeMarker(id: String)
     fun moveTo(newPoint: LatLng)
-    fun updateVisibleMarkers(markers: Collection<Ticket>)
+    fun updateVisibleMarkers(newTickets: Collection<Ticket>)
 
 }

@@ -60,14 +60,14 @@ class MapController : MapInterface {
         map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
-    override fun updateVisibleMarkers(tickets: Collection<Ticket>) {
-        logger.info("Update ${markers.size} markers")
+    override fun updateVisibleMarkers(newTickets: Collection<Ticket>) {
+        logger.info("Update ${newTickets.size} markers")
 
         this.tickets.clear()
         this.markers.clear()
         map.clear()
 
-        tickets.forEach {
+        newTickets.forEach {
             addMarker(it)
         }
     }
