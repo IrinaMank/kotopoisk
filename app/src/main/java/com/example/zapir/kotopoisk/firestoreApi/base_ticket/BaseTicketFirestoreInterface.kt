@@ -22,6 +22,7 @@ interface BaseTicketFirestoreInterface<T> {
     fun deleteTicket(ticket: T): Single<Unit>
     fun makeTicketFavourite(ticket: T): Single<Unit>
     fun makeTicketUnFavourite(ticket: T): Single<Unit>
+    fun ticketIsFound(ticket: T): Single<Unit>
 
     fun uploadPhoto(file: File): Single<String>//return URI of upload file
     fun getPhoto(ticketId: String): Single<Photo>

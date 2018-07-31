@@ -33,11 +33,11 @@ class ProfileFragmentHolder : BaseFragment() {
         super.onStart()
         if (TransactionUtils.isEmpty(childFragmentManager)) {
             disposables.add(
-                    userController.getUser("uxm4WbYgpQFOYcYbuZFF")
+                    userController.getCurrentUser()
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     {
-                                        replaceFragment(ProfileFragment.newInstance(it.get()))
+                                        replaceFragment(ProfileFragment.newInstance(it))
                                     },
                                     {
                                         errorHandler.handleException(it, context!!)

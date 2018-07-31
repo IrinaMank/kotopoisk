@@ -162,6 +162,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
 
     override fun publishTicket(ticket: BaseTicket): Single<Unit> {
         ticket.isPublished = true
+
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -338,7 +339,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                     .whereEqualTo("hasCollar", ticket.hasCollar)
                     .whereEqualTo("furLength", ticket.furLength)
                     .whereEqualTo("found", false)
-                    .whereEqualTo("published",true)
+                    .whereEqualTo("published", true)
                     .whereGreaterThan("date", ticket.date)
                     .get()
                     .addOnSuccessListener {
@@ -352,6 +353,28 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                     }
                     .addOnFailureListener {
                         emitter.onError(GetTicketsListExceptionApi())
+                    }
+        }
+    }
+
+    override fun ticketIsFound(ticket: BaseTicket): Single<Unit> {
+        ticket.isFound = true
+        return Single.create { emitter ->
+            if (emitter.isDisposed) {
+                return@create
+            }
+            db.collection("tickets")
+                    .document(ticket.id)
+                    .set(ticket)
+                    .addOnSuccessListener {
+                        if (emitter.isDisposed) {
+                            return@addOnSuccessListener
+                        }
+                        emitter.onSuccess(Unit)
+                    }
+                    .addOnFailureListener {
+                        logger.error("Error updating ticket: $it")
+                        emitter.onError(UpdateTicketExceptionApi())
                     }
         }
     }

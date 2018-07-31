@@ -144,7 +144,7 @@ class UserFirestoreController : UserFirestoreInterface {
         }
     }
 
-    override fun logOut(){
+    override fun logOut() {
         auth.signOut()
     }
 

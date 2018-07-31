@@ -63,7 +63,9 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
     }
 
     override fun publishTicket(ticket: Ticket): Single<Unit> {
-        return baseController.publishTicket(toBaseTicket(ticket))
+        ticket.user.petCount += 1
+        return baseController.publishTicket(toBaseTicket(ticket)).concatWith(userController
+                .registerOrUpdateUser(ticket.user)).lastOrError()
     }
 
     override fun updateTicket(newTicket: Ticket): Single<Unit> {
@@ -71,7 +73,9 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
     }
 
     override fun deleteTicket(ticket: Ticket): Single<Unit> {
-        return baseController.deleteTicket(toBaseTicket(ticket))
+        ticket.user.petCount -= 1
+        return baseController.deleteTicket(toBaseTicket(ticket)).concatWith(userController
+                .registerOrUpdateUser(ticket.user)).firstOrError()
     }
 
     override fun makeTicketFavourite(ticket: Ticket): Single<Unit> {
@@ -99,7 +103,6 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
     }
 
 
-
     private fun convertToTicket(baseTicket: BaseTicket): Single<Ticket> {
         val ticket = toTicket(baseTicket)
         return Single.create { emitter ->
@@ -120,6 +123,13 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
                     )
         }
     }
+
+    override fun ticketIsFound(ticket: Ticket): Single<Unit> {
+        ticket.user.foundPetCount += 1
+        return baseController.ticketIsFound(toBaseTicket(ticket)).concatWith(userController
+                .registerOrUpdateUser(ticket.user)).firstOrError()
+    }
+
 
     private fun addPhotoToTicket(ticket: Ticket): Single<Ticket> {
         return Single.create { emitter ->

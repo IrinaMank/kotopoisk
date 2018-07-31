@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.firestoreApi.ticket.TicketFirestoreController
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
+import com.example.zapir.kotopoisk.model.Ticket
 import com.example.zapir.kotopoisk.model.User
 import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.profile_content.*
 
 
@@ -44,6 +47,7 @@ class ProfileFragment : BaseFragment() {
         tv_full_name.text = user.name
         tv_phone.text = user.phone
         tv_email.text = user.email
+
         tv_photo_pets.text = getString(R.string.pets_discovered, user.petCount)
         tv_found_pets.text = getString(R.string.found_masters, user.foundPetCount)
 
