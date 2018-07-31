@@ -51,6 +51,7 @@ class ProfileFragment : BaseFragment() {
             edit_profile_btn.visibility = View.GONE
             favorite_tickets_btn.visibility = View.GONE
             btn_log_out.visibility = View.GONE
+            tv_my_tickets.text = getString(R.string.users_tickets, user.nickname)
         }
 
 

@@ -195,7 +195,7 @@
             android:padding="@dimen/size_small">
 
             <ImageView
-                android:id="@+id/ivContactItem5"
+                android:id="@+id/iv_my_tickets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -203,17 +203,17 @@
                 android:src="@drawable/ic_save_black_24dp" />
 
             <TextView
-                android:id="@+id/tvNumber5"
+                android:id="@+id/tv_my_tickets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_small"
-                android:layout_toEndOf="@id/ivContactItem5"
-                android:layout_toStartOf="@+id/chkState5"
+                android:layout_toEndOf="@id/iv_my_tickets"
+                android:layout_toStartOf="@+id/chkState_my_tickets"
                 android:text="@string/my_tickets"
                 style="@style/ProfileMainTextView" />
 
             <ToggleButton
-                android:id="@+id/chkState5"
+                android:id="@+id/chkState_my_tickets"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
