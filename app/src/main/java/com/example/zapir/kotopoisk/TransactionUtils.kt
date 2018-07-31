@@ -1,19 +1,11 @@
 package com.example.zapir.kotopoisk
 
-import android.support.annotation.BoolRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
-import org.slf4j.LoggerFactory
 
 class TransactionUtils {
     companion object {
-
-        /*fun getCurrentFragment(fragmentManager: FragmentManager): Fragment? {
-            val topFragmentPosition = fragmentManager.backStackEntryCount - 1
-            val entry = fragmentManager.getBackStackEntryAt(topFragmentPosition)
-            return fragmentManager.findFragmentByTag(entry.name)
-        }*/
 
         fun getCurrentFragment(fragmentManager: FragmentManager): Fragment? {
             val topFragmentPosition = fragmentManager.backStackEntryCount - 1
