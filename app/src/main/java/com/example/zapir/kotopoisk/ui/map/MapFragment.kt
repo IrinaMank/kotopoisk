@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.TransactionUtils
+import com.example.zapir.kotopoisk.photo.PhotoDialog
 import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -91,7 +92,12 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
 
     private fun handlerFloatActionBar() {
         logger.info("Click on float action bar")
-        // TODO("Сделать переход в окно добавления объявления")
+        callDialog()
+    }
+
+    private fun callDialog(){
+        val dialog = PhotoDialog()
+        dialog.show(activity?.supportFragmentManager, "PhotoDialog")
     }
 
 }

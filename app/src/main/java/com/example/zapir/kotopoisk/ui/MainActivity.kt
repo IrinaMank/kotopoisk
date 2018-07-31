@@ -1,14 +1,23 @@
 package com.example.zapir.kotopoisk.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBar
+import android.util.Log
 import android.view.MenuItem
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.common.SelectedPage
+import com.example.zapir.kotopoisk.photo.AddPhotoListener
+import com.example.zapir.kotopoisk.photo.PhotoHandler
+import com.example.zapir.kotopoisk.photo.TicketActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), AddPhotoListener {
+
+    lateinit var currentPhotoPath: String
+    lateinit var photoURI: Uri
 
     private var toolbar: ActionBar? = null
     private var prevMenuItem: MenuItem? = null
@@ -83,6 +92,21 @@ class MainActivity : BaseActivity() {
             selectBottomBarTab(position)
         }
 
+    }
+
+    override fun addPhotoToAdvert(photoUri: Uri){
+        startActivity(TicketActivity.newIntent(this, photoUri))
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PhotoHandler.CAMERA_CAPTURE && resultCode == RESULT_OK) {
+            addPhotoToAdvert(photoURI)
+        } else if (requestCode == PhotoHandler.OPEN_GALLERY && resultCode == RESULT_OK) {
+            val imageUri = data?.data ?: throw Exception("empty data in OPEN_GALLERY")
+            addPhotoToAdvert(imageUri)
+        }
     }
 
 }
