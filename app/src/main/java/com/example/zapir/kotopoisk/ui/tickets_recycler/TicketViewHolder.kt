@@ -12,8 +12,9 @@ import kotlinx.android.synthetic.main.ticket_element.view.*
 
 class TicketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(ticket: Ticket) {
+    //val favorCheckbox = view.favor_checkbox
 
+    fun bind(ticket: Ticket) {
 
         itemView.apply {
 

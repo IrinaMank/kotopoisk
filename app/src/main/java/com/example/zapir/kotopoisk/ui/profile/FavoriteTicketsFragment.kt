@@ -6,6 +6,7 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.model.User
 import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
@@ -14,25 +15,57 @@ import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_my_ticket_list.*
 
-class FavotiteTicketsFragment : BaseFragment() {
+class FavoriteTicketsFragment : BaseFragment() {
 
     companion object {
 
         private const val ARG_USER = "Arg_user"
         private const val SAVED_LIST = "Favorite_tickets_saved_list"
 
-        fun newInstance(user: User): FavotiteTicketsFragment = FavotiteTicketsFragment().apply {
+        fun newInstance(user: User): FavoriteTicketsFragment = FavoriteTicketsFragment().apply {
             val arguments = Bundle()
-            arguments.putParcelable(FavotiteTicketsFragment.ARG_USER, user)
+            arguments.putParcelable(FavoriteTicketsFragment.ARG_USER, user)
             this.arguments = arguments
         }
 
     }
 
+    private val onItemClicked = { position: Int ->
+        //ToDo: open fragment
+    }
 
-    private val adapter = TicketAdapter()
+    private val onFavorClick: (view: CheckBox, position: Int) -> Unit = { view: CheckBox,
+                                                                          position: Int ->
+        view.isChecked = !view.isChecked
+        if (view.isChecked) {
+            ticketController.makeTicketUnFavourite(adapter.items[position])
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+
+                            },
+                            {
+                                errorHandler.handleException(it, context!!)
+                            }
+                    )
+        } else {
+            ticketController.makeTicketFavourite(adapter.items[position])
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+
+                            },
+                            {
+                                errorHandler.handleException(it, context!!)
+                            }
+                    )
+        }
+    }
+
+
+    private val adapter = TicketAdapter(onItemClicked, onFavorClick)
     val user: User by lazy {
-        arguments?.getParcelable(FavotiteTicketsFragment.ARG_USER) as? User ?: throw
+        arguments?.getParcelable(FavoriteTicketsFragment.ARG_USER) as? User ?: throw
         RuntimeException("No user in arguments")
     }
 

@@ -4,6 +4,7 @@ import com.example.zapir.kotopoisk.firestoreApi.base_ticket.BaseTicketFirestoreC
 import com.example.zapir.kotopoisk.firestoreApi.base_ticket.BaseTicketFirestoreInterface
 import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.model.BaseTicket
+import com.example.zapir.kotopoisk.model.FavoriteTicket
 import com.example.zapir.kotopoisk.model.Photo
 import com.example.zapir.kotopoisk.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
@@ -13,7 +14,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
+class TicketFirestoreController : TicketFirestoreInterface {
+    override fun isTicketFavorite(ticket: Ticket, userId: String): Single<Boolean> {
+        return baseController.isTicketFavorite(ticket.id, userId)
+    }
 
     private val baseController = BaseTicketFirestoreController()
     private val userController = UserFirestoreController()
@@ -52,8 +56,9 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
 
     override fun getFavouriteTickets(userId: String): Single<List<Ticket>> {
         return baseController.getFavouriteTickets(userId)
-                .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
-                .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
+                .flatMapObservable { list: List<FavoriteTicket> -> Observable.fromIterable(list) }
+                .flatMapSingle { ticket: FavoriteTicket -> baseController.getTicket(ticket.ticketId) }
+                .flatMapSingle { ticket: Optional<BaseTicket> -> convertToTicket(ticket.get()) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
                 .toList()
     }
@@ -132,6 +137,22 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
 
 
     private fun addPhotoToTicket(ticket: Ticket): Single<Ticket> {
+        return Single.create { emitter ->
+            baseController.getPhoto(ticket.id).timeout(5, TimeUnit.SECONDS)
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe(
+                            {
+                                ticket.photo = it
+                                emitter.onSuccess(ticket)
+                            },
+                            {
+                                throw it
+                            }
+                    )
+        }
+    }
+
+    private fun isFavorite(ticket: Ticket): Single<Ticket> {
         return Single.create { emitter ->
             baseController.getPhoto(ticket.id).timeout(5, TimeUnit.SECONDS)
                     ?.observeOn(AndroidSchedulers.mainThread())

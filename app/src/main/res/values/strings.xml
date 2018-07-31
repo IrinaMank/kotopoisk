@@ -55,5 +55,108 @@
     <string name="no_tickets">No tickets</string>
     <string name="pets_discovered">%d pets discovered</string>
     <string name="found_masters">%d pets found their masters</string>
-    <string name="users_tickets">%s\'s tickets</string>
+
+    <string name="dialog_title">Создать новое объявление</string>
+    <string name="photo">Photo</string>
+    <string name="save_bold">СОХРАНИТЬ</string>
+    <string name="confirm">ПОДТВЕРДИТЬ</string>
+    <string name="change">ИЗМЕНИТЬ</string>
+    <string name="search">ПОИСК</string>
+    <string name="show">ПОКАЗАТЬ</string>
+    <string name="dialog1">Загрузить фото из галереи</string>
+    <string name="dialog2">Сделать снимок</string>
+    <string name="explanation_dialog_message">Это разрешение необходимо для того, чтобы сохранить сделанные вами
+    фото пропавших животных на SD-карту</string>
+    <string name="really_explanation_dialog_message">Это разрешение ДЕЙСТВИТЕЛЬНО НЕОБХОДИМО для того,
+        чтобы сохранить сделанные вами фото пропавших животных на SD-карту</string>
+    <string name="explanation_dialog_title">Доступ к данным</string>
+    <string name="dialog_positive_button">Запросить</string>
+
+    <string name="cat_radio">Кошка</string>
+    <string name="dog_radio">Собака</string>
+    <string name="animal_type">Тип животного</string>
+    <string name="breed">Порода</string>
+    <string name="location">Место обнаружения</string>
+    <string name="color">Окрас</string>
+    <string name="size">Размер</string>
+    <string name="fur_length">Длина шерсти</string>
+    <string name="has_collar">Наличие ошейника</string>
+    <string name="description">Описание</string>
+
+    <string name="new_ticket">Новое объявление</string>
+
+    <string-array name="cat_breed_array">
+        <item>Не определена</item>
+        <item>Британская</item>
+        <item>Персидская</item>
+        <item>Сиамская</item>
+        <item>Мейн-кун</item>
+        <item>Бобтейл</item>
+        <item>Манчкин</item>
+        <item>Русская голубая</item>
+        <item>Гималайская</item>
+        <item>Ангорская</item>
+        <item>Ориентальная</item>
+        <item>Сфинкс</item>
+    </string-array>
+
+    <string-array name="dog_breed_array">
+        <item>Не определена</item>
+        <item>Немецкая овчарка</item>
+        <item>Лабрадор-ретривер</item>
+        <item>Золотистый ретривер</item>
+        <item>Бульдог</item>
+        <item>Пудель</item>
+        <item>Бигль</item>
+        <item>Чихуахуа</item>
+        <item>Мопс</item>
+        <item>Йоркширский терьер</item>
+        <item>Ротвейлер</item>
+        <item>Сибирский хаски</item>
+        <item>Мастиф</item>
+        <item>Дог</item>
+        <item>Такса</item>
+        <item>Доберман</item>
+        <item>Болонка</item>
+        <item>Чау-чау</item>
+        <item>Вельш-корги</item>
+        <item>Далматин</item>
+        <item>Сенбернар</item>
+        <item>Сиба-ину</item>
+        <item>Басет-хаунд</item>
+        <item>Колли</item>
+        <item>Шпиц</item>
+    </string-array>
+
+    <string-array name="color_array">
+        <item>Чёрный</item>
+        <item>Коричневый</item>
+        <item>Палевый(Осветлённый коричневый)</item>
+        <item>Рыжий</item>
+        <item>Песочный</item>
+        <item>Серый</item>
+        <item>Белый</item>
+        <item>Подпалый(Рыжие пятна на тёмном фоне)</item>
+        <item>Шоколадный</item>
+        <item>Красный(тёмно-рыжий)</item>
+        <item>Кремовый</item>
+    </string-array>
+
+    <string-array name="cat_size">
+        <item>Котёнок</item>
+        <item>Взрослый</item>
+    </string-array>
+
+    <string-array name="dog_size">
+        <item>Щенок</item>
+        <item>Взрослый</item>
+    </string-array>
+
+    <string-array name="fur_length_array">
+        <item>Нет</item>
+        <item>Короткая</item>
+        <item>Средняя</item>
+        <item>Длинная</item>
+    </string-array>
+
 </resources>

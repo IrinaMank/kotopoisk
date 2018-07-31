@@ -88,7 +88,6 @@
             android:id="@+id/favor_checkbox"
             android:layout_width="@dimen/cardview_icons_size"
             android:layout_height="@dimen/cardview_icons_size"
-            android:background="@color/transparent"
             android:button="@drawable/favorite_selector"
             android:checked="false"
             app:layout_constraintBottom_toBottomOf="parent"

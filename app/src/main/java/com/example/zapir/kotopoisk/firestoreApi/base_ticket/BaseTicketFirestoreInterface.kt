@@ -1,5 +1,6 @@
 package com.example.zapir.kotopoisk.firestoreApi.base_ticket
 
+import com.example.zapir.kotopoisk.model.FavoriteTicket
 import com.example.zapir.kotopoisk.model.Photo
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Single
@@ -11,7 +12,7 @@ interface BaseTicketFirestoreInterface<T> {
     fun getTicket(tickedId: String): Single<Optional<T>>
     fun getUserTickets(userId: String): Single<List<T>>
     fun getSavedTickets(userId: String): Single<List<T>>
-    fun getFavouriteTickets(userId: String): Single<List<T>>
+    fun getFavouriteTickets(userId: String): Single<List<FavoriteTicket>>
     fun searchTicket(ticket: T): Single<List<T>>
     fun uploadTicket(ticket: T): Single<Unit>//save unpublished ticket
 
@@ -22,6 +23,7 @@ interface BaseTicketFirestoreInterface<T> {
     fun deleteTicket(ticket: T): Single<Unit>
     fun makeTicketFavourite(ticket: T): Single<Unit>
     fun makeTicketUnFavourite(ticket: T): Single<Unit>
+    fun isTicketFavorite(ticketId: String, userId: String): Single<Boolean>
     fun ticketIsFound(ticket: T): Single<Unit>
 
     fun uploadPhoto(file: File): Single<String>//return URI of upload file

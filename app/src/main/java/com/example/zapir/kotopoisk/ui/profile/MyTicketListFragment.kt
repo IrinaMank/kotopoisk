@@ -6,7 +6,10 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
+import com.example.zapir.kotopoisk.model.Ticket
 import com.example.zapir.kotopoisk.model.User
 import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
 import com.example.zapir.kotopoisk.ui.tickets_recycler.SwipeCallback
@@ -29,8 +32,51 @@ class MyTicketListFragment : BaseFragment() {
 
     }
 
+    private val onItemClicked = { position: Int ->
+        //ToDo: open fragment
+    }
 
-    private val adapter = TicketAdapter()
+    private val onFavorClick: (view: CheckBox, position: Int) -> Unit = { view: CheckBox,
+                                                                           position: Int ->
+            if (view.isChecked) {
+                ticketController.makeTicketFavourite(adapter.items[position])
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                {
+
+                                },
+                                {
+                                    errorHandler.handleException(it, context!!)
+                                }
+                        )
+            } else {
+                ticketController.makeTicketUnFavourite(adapter.items[position])
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                {
+
+                                },
+                                {
+                                    errorHandler.handleException(it, context!!)
+                                }
+                        )
+            }
+    }
+
+    private val onSwipe = { position: Int ->
+        ticketController.deleteTicket(adapter.items[position])
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+
+                        },
+                        {
+                            errorHandler.handleException(it, context!!)
+                        }
+                )
+    }
+
+    private val adapter = TicketAdapter(onItemClicked, onFavorClick)
     val user: User by lazy {
         arguments?.getParcelable(MyTicketListFragment.ARG_USER) as? User ?: throw
         RuntimeException("No user in arguments")
@@ -49,6 +95,18 @@ class MyTicketListFragment : BaseFragment() {
 
         setRecycler(savedInstanceState)
         setHasOptionsMenu(true)
+        val ticket = Ticket(user = user)
+        ticketController.publishTicket(ticket)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+
+                        },
+                        {
+                            errorHandler.handleException(it, context!!)
+                        }
+                )
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -81,7 +139,9 @@ class MyTicketListFragment : BaseFragment() {
         my_tickets_recycler.layoutManager = LinearLayoutManager(activity)
         my_tickets_recycler.adapter = adapter
 
-        val helper = ItemTouchHelper(SwipeCallback({ adapter.removeAt(it) }))
+        val helper = ItemTouchHelper(SwipeCallback({ onSwipe(it); adapter.removeAt(it)  }))
         helper.attachToRecyclerView(my_tickets_recycler)
     }
+
+
 }

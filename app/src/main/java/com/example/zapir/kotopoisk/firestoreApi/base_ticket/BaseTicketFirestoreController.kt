@@ -3,6 +3,7 @@ package com.example.zapir.kotopoisk.firestoreApi.base_ticket
 import android.net.Uri
 import com.example.zapir.kotopoisk.common.exceptions.*
 import com.example.zapir.kotopoisk.model.BaseTicket
+import com.example.zapir.kotopoisk.model.FavoriteTicket
 import com.example.zapir.kotopoisk.model.Photo
 import com.fernandocejas.arrow.optional.Optional
 import com.google.firebase.firestore.FirebaseFirestore
@@ -12,6 +13,31 @@ import org.slf4j.LoggerFactory
 import java.io.File
 
 class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
+    override fun isTicketFavorite(ticketId: String, userId: String): Single<Boolean> {
+        return Single.create { emitter ->
+            if (emitter.isDisposed) {
+                return@create
+            }
+            db.collection("favoriteTickets")
+                    .whereEqualTo("userId", userId)
+                    .whereEqualTo("ticketId", ticketId)
+                    .get()
+                    .addOnSuccessListener {
+                        if (emitter.isDisposed) {
+                            return@addOnSuccessListener
+                        }
+                        if (!it.isEmpty) {
+                            emitter.onSuccess(true)
+                        } else {
+                            emitter.onSuccess(false)
+                        }
+                    }
+                    .addOnFailureListener {
+                        logger.error("Error uploading ticket: $it")
+                        emitter.onError(UpdateTicketExceptionApi())
+                    }
+        }
+    }
 
     private val db = FirebaseFirestore.getInstance()
     private val storageRef = FirebaseStorage.getInstance().reference
@@ -118,7 +144,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
         }
     }
 
-    override fun getFavouriteTickets(userId: String): Single<List<BaseTicket>> {
+    override fun getFavouriteTickets(userId: String): Single<List<FavoriteTicket>> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
@@ -126,7 +152,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
             db.collection("favouriteTickets")
                     .get()
                     .addOnSuccessListener {
-                        val tickets = it.map { document -> document.toObject(BaseTicket::class.java) }
+                        val tickets = it.map { document -> document.toObject(FavoriteTicket::class.java) }
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
@@ -230,9 +256,9 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
             if (emitter.isDisposed) {
                 return@create
             }
+            val ticketFavor = FavoriteTicket(userId = ticket.finderId, ticketId = ticket.id)
             db.collection("favouriteTickets")
-                    .document(ticket.id)
-                    .set(ticket)
+                    .add(ticketFavor)
                     .addOnSuccessListener {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
@@ -252,11 +278,14 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                 return@create
             }
             db.collection("favouriteTickets")
-                    .document(ticket.id)
-                    .delete()
+                    .whereEqualTo("ticketId", ticket.id)
+                    .get()
                     .addOnSuccessListener {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
+                        }
+                        if (!it.isEmpty) {
+                            it.forEach { it.reference.delete() }
                         }
                         emitter.onSuccess(Unit)
                     }

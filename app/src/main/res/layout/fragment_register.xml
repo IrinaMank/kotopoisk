@@ -68,7 +68,7 @@
         android:layout_marginTop="@dimen/size_medium"
         android:backgroundTint="@color/colorAccent"
         android:textColor="@color/crystalWhite"
-        android:text="@string/save" />
+        android:text="@string/save_bold" />
 
 
 </LinearLayout>
