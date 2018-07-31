@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
-import com.example.zapir.kotopoisk.model.User
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
+import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.profile_content.*
 
@@ -33,7 +33,8 @@ class ProfileFragment : BaseFragment() {
     }
 
     val user: User by lazy {
-        arguments?.getParcelable(ProfileFragment.ARG_USER) as? User ?: throw
+        arguments?.getParcelable(ProfileFragment.ARG_USER) as? User
+                ?: throw
         RuntimeException("No user in arguments")
     }
 

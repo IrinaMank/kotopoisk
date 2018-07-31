@@ -1,6 +1,6 @@
 package com.example.zapir.kotopoisk.ui.map
 
-import com.example.zapir.kotopoisk.model.Ticket
+import com.example.zapir.kotopoisk.data.model.Ticket
 import com.google.android.gms.maps.model.LatLng
 
 interface MapInterface {

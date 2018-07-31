@@ -1,13 +1,12 @@
 package com.example.zapir.kotopoisk.ui.search
 
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.TransactionUtils
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 
 class SearchFragmentHolder : BaseFragment() {
 

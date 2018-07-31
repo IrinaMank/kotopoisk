@@ -49,11 +49,11 @@
     <string name="tickets">Объявления</string>
     <string name="my_tickets">Мои объявления</string>
     <string name="favorite_tickets">Любимые объявления</string>
-    <string name="log_out">Разлогиниться</string>
+    <string name="log_out">Выйти</string>
     <string name="not_published">Не опубликовано</string>
     <string name="no_tickets">Нет объявлений</string>
     <string name="pets_discovered">%d питомцев обнаружено</string>
-    <string name="found_masters">%d питомцев найдено хозяевами</string>
+    <string name="found_masters">%d питомцев нашли свой дом</string>
 
     <string name="dialog_title">Создать новое объявление</string>
     <string name="photo">Photo</string>

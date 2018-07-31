@@ -5,17 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.model.Ticket
-import com.example.zapir.kotopoisk.photo.PhotoDialog
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.domain.photo.PhotoDialog
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import io.reactivex.Observable
-import io.reactivex.Observable.fromIterable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_map.*
 import java.io.Serializable
-import java.util.*
 
 class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
 

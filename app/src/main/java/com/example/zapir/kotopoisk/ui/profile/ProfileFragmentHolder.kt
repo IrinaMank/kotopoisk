@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.TransactionUtils
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 class ProfileFragmentHolder : BaseFragment() {

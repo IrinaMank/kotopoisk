@@ -2,8 +2,8 @@ package com.example.zapir.kotopoisk.ui.map
 
 import android.content.Context
 import com.bumptech.glide.Glide
-import com.example.zapir.kotopoisk.common.PetType
-import com.example.zapir.kotopoisk.model.Ticket
+import com.example.zapir.kotopoisk.domain.common.PetType
+import com.example.zapir.kotopoisk.data.model.Ticket
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*

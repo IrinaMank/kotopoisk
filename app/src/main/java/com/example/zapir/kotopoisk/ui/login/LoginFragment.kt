@@ -1,18 +1,14 @@
 package com.example.zapir.kotopoisk.ui.login
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.common.PreferencesManager
-import com.example.zapir.kotopoisk.common.exceptions.ErrorDialogDisplayer
-import com.example.zapir.kotopoisk.common.exceptions.ExceptionHandler
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.data.exceptions.ErrorDialogDisplayer
+import com.example.zapir.kotopoisk.data.exceptions.ExceptionHandler
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
