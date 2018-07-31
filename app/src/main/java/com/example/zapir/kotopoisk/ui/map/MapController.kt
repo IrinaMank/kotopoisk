@@ -1,30 +1,35 @@
 package com.example.zapir.kotopoisk.ui.map
 
 import android.content.Context
+import com.bumptech.glide.Glide
 import com.example.zapir.kotopoisk.common.PetType
 import com.example.zapir.kotopoisk.model.Ticket
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import org.slf4j.LoggerFactory
+import android.graphics.Bitmap
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 
-class MapController(private val context: Context?) : MapInterface {
+
+class MapController : MapInterface {
 
     private lateinit var map: GoogleMap
-    private var visibleMarkers: MutableSet<Marker>? = null
+    private val markers: MutableMap<String, Marker> = mutableMapOf()
+    private val tickets: MutableMap<String, Ticket> = mutableMapOf()
     private val logger = LoggerFactory.getLogger(javaClass.simpleName)
+    private lateinit var infoWindowAdapter: InfoWindowAdapter
 
-    fun onAttachMap(googleMap: GoogleMap) {
+    fun onAttachMap(context: Context?, googleMap: GoogleMap) {
         map = googleMap
-        map.setInfoWindowAdapter(InfoWindowAdapter(context))
+        infoWindowAdapter = InfoWindowAdapter(context)
+        map.setInfoWindowAdapter(infoWindowAdapter)
         map.setOnInfoWindowClickListener { handlerOnInfoWindowClickListener() }
         map.uiSettings.isMapToolbarEnabled = false
+        map.setOnMarkerClickListener { handlerOnMarkerClickListener(it) }
 
         setDefaultPosition()
-
-        // TODO( delete test code )******
-        val ticket = Ticket(lat = 55.0481662, lng = 82.91109, type = PetType.CAT.value)
-        addMarker(ticket)
     }
 
     override fun addMarker(ticket: Ticket) {
@@ -39,29 +44,15 @@ class MapController(private val context: Context?) : MapInterface {
         }
 
         val marker = map.addMarker(markerOptions)
-
-        if (visibleMarkers == null) {
-            visibleMarkers = mutableSetOf(marker)
-        } else {
-            visibleMarkers?.add(marker)
-        }
+        markers[ticket.id] = marker
+        tickets[ticket.id] = ticket
     }
+
 
     override fun removeMarker(id: String) {
         logger.info("removeMarker: id=$id")
-
-        val iterator = visibleMarkers?.iterator() ?: throw UnknownPetId()
-
-        while (iterator.hasNext()) {
-            val marker = iterator.next()
-            if (marker.title == id) {
-                marker.remove()
-                iterator.remove()
-                return
-            }
-        }
-
-        throw PetNotFound("Pet with id: $id not found")
+        markers.remove(id)?.remove()
+        tickets.remove(id)
     }
 
     override fun moveTo(newPoint: LatLng) {
@@ -69,13 +60,14 @@ class MapController(private val context: Context?) : MapInterface {
         map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
-    override fun updateVisibleMarkers(markers: Collection<Ticket>) {
+    override fun updateVisibleMarkers(tickets: Collection<Ticket>) {
         logger.info("Update ${markers.size} markers")
 
-        visibleMarkers?.clear()
+        this.tickets.clear()
+        this.markers.clear()
         map.clear()
 
-        markers.forEach {
+        tickets.forEach {
             addMarker(it)
         }
     }
@@ -83,6 +75,24 @@ class MapController(private val context: Context?) : MapInterface {
     private fun handlerOnInfoWindowClickListener() {
         logger.info("Click on info window")
         // TODO("Сделать переход в полное объявление")
+    }
+
+    private fun handlerOnMarkerClickListener(marker: Marker): Boolean {
+        val ticket: Ticket? = tickets[marker.title]
+
+        Glide.with(infoWindowAdapter.getContext()!!)
+                .asBitmap()
+                .load(ticket?.photo?.url)
+                /*.listener(TODO(!!!!!!))*/
+                .into(object : SimpleTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        infoWindowAdapter.ticket = ticket
+                        infoWindowAdapter.photo = resource
+                        marker.showInfoWindow()
+                    }
+                })
+
+        return true
     }
 
     private fun setDefaultPosition() {

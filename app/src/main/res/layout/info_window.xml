@@ -36,6 +36,7 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/info_overview"
         android:layout_width="@dimen/info_window_text_width_without_margin"
         android:layout_height="wrap_content"
         android:layout_above="@id/info_date"

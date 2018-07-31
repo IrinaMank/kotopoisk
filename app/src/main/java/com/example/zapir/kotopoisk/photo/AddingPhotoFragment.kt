@@ -10,11 +10,12 @@ import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.model.Photo
 import com.example.zapir.kotopoisk.model.Ticket
+import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
 import com.example.zapir.kotopoisk.ui.ticket.NewTicketFragment
 import com.example.zapir.kotopoisk.ui.ticket.NewTicketFragmentListener
 import kotlinx.android.synthetic.main.fragment_ensuring.*
 
-class AddingPhotoFragment: Fragment() {
+class AddingPhotoFragment: BaseFragment() {
 
     companion object {
         const val TAG = "adding photo to an advert"

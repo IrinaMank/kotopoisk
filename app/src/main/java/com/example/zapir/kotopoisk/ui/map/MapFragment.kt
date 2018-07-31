@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.TransactionUtils
+import com.example.zapir.kotopoisk.model.Ticket
 import com.example.zapir.kotopoisk.photo.PhotoDialog
 import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import io.reactivex.Observable
+import io.reactivex.Observable.fromIterable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_map.*
 import java.io.Serializable
+import java.util.*
 
 class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
 
@@ -26,7 +30,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mapController = MapController(context)
+        mapController = MapController()
     }
 
     override fun onCreateView(
@@ -87,7 +91,18 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mapController?.onAttachMap(googleMap)
+        mapController?.onAttachMap(context, googleMap)
+
+        ticketController.getAllTickets()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+                            mapController?.updateVisibleMarkers(it)
+                        },
+                        {
+
+                        }
+                )
     }
 
     private fun handlerFloatActionBar() {
@@ -95,7 +110,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
         callDialog()
     }
 
-    private fun callDialog(){
+    private fun callDialog() {
         val dialog = PhotoDialog()
         dialog.show(activity?.supportFragmentManager, "PhotoDialog")
     }
