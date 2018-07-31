@@ -15,7 +15,7 @@
 
     <string name="default_error_message">Уупс, что-то пошло не так</string>
     <string name="auth_error_message">Проблема авторизации. Пожалуйста, авторизуйтесь</string>
-    <string name="user_not_found">Юзер не найден</string>
+    <string name="user_not_found">Пользователь не найден</string>
     <string name="update_profile_error">Профиль не обновлён</string>
     <string name="ticket_not_found">Объявление не найдено</string>
     <string name="tickets_error">Проблема отображения объявления</string>

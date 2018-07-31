@@ -16,4 +16,10 @@
         android:layout_margin="@dimen/fragment_map_fab_margin"
         android:src="@drawable/ic_plus" />
 
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@drawable/load_anim" />
+
 </FrameLayout>

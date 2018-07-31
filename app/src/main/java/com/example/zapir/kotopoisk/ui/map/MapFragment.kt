@@ -1,19 +1,23 @@
 package com.example.zapir.kotopoisk.ui.map
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.domain.photo.PhotoDialog
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.abc_activity_chooser_view.view.*
+import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import java.io.Serializable
 
-class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
+class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
 
     private var mapController: MapController? = null
 
@@ -88,6 +92,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mapController?.onAttachMap(context, googleMap)
+        mapController?.loadListeners?.add(this)
 
         ticketController.getAllTickets()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -109,6 +114,16 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
     private fun callDialog() {
         val dialog = PhotoDialog()
         dialog.show(activity?.supportFragmentManager, "PhotoDialog")
+    }
+
+    override fun setLoadStart() {
+        progress_bar.visibility = View.VISIBLE
+        val animation = progress_bar.background as AnimationDrawable
+        animation.start()
+    }
+
+    override fun setLoadGone() {
+        progress_bar.visibility = View.GONE
     }
 
 }
