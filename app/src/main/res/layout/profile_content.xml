@@ -11,7 +11,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:background="@color/colorPrimaryDark"
             android:padding="@dimen/size_small">
 
@@ -27,6 +27,7 @@
                 android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_medium"
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/profile_icon"
                 style="@style/ProfileHeaderTextView"
@@ -227,6 +228,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/favorite_tickets_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"

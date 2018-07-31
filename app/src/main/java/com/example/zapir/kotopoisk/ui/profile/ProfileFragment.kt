@@ -47,6 +47,12 @@ class ProfileFragment : BaseFragment() {
         tv_photo_pets.text = getString(R.string.pets_discovered, user.petCount)
         tv_found_pets.text = getString(R.string.found_masters, user.foundPetCount)
 
+        if (user.id != preferencesManager.getString(LoginActivity.PREFS_ID)) {
+            edit_profile_btn.visibility = View.GONE
+            favorite_tickets_btn.visibility = View.GONE
+            btn_log_out.visibility = View.GONE
+        }
+
 
         edit_profile_btn.setOnClickListener {
             (parentFragment as BaseFragment).replaceFragment(EditProfileFragment.newInstance(user))
@@ -54,6 +60,10 @@ class ProfileFragment : BaseFragment() {
 
         my_tickets_btn.setOnClickListener {
             (parentFragment as BaseFragment).replaceFragment(MyTicketListFragment.newInstance(user))
+        }
+
+        favorite_tickets_btn.setOnClickListener {
+            (parentFragment as BaseFragment).replaceFragment(FavotiteTicketsFragment.newInstance(user))
         }
 
         btn_log_out.setOnClickListener {

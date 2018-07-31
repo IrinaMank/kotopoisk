@@ -14,16 +14,16 @@ import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_my_ticket_list.*
 
-class MyTicketListFragment : BaseFragment() {
+class FavotiteTicketsFragment : BaseFragment() {
 
     companion object {
 
         private const val ARG_USER = "Arg_user"
-        private const val SAVED_LIST = "My_tickets_saved_list"
+        private const val SAVED_LIST = "Favorite_tickets_saved_list"
 
-        fun newInstance(user: User): MyTicketListFragment = MyTicketListFragment().apply {
+        fun newInstance(user: User): FavotiteTicketsFragment = FavotiteTicketsFragment().apply {
             val arguments = Bundle()
-            arguments.putParcelable(MyTicketListFragment.ARG_USER, user)
+            arguments.putParcelable(FavotiteTicketsFragment.ARG_USER, user)
             this.arguments = arguments
         }
 
@@ -32,7 +32,7 @@ class MyTicketListFragment : BaseFragment() {
 
     private val adapter = TicketAdapter()
     val user: User by lazy {
-        arguments?.getParcelable(MyTicketListFragment.ARG_USER) as? User ?: throw
+        arguments?.getParcelable(FavotiteTicketsFragment.ARG_USER) as? User ?: throw
         RuntimeException("No user in arguments")
     }
 
@@ -62,7 +62,7 @@ class MyTicketListFragment : BaseFragment() {
             adapter.items = savedInstanceState.getParcelableArrayList(SAVED_LIST)
         } else {
             disposables.add(
-                    ticketController.getUserTickets(user.id)
+                    ticketController.getFavouriteTickets(user.id)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     {
@@ -77,7 +77,6 @@ class MyTicketListFragment : BaseFragment() {
                             )
             )
         }
-
         my_tickets_recycler.layoutManager = LinearLayoutManager(activity)
         my_tickets_recycler.adapter = adapter
 

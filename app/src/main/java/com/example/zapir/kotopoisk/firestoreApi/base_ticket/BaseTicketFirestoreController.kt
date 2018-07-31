@@ -304,7 +304,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                     .get()
                     .addOnSuccessListener {
                         logger.info("Get ticket is successful")
-                        if (!it.isEmpty) {
+                        if (!it.documents.isEmpty()) {
                             val photo = it.documents[0].toObject(Photo::class.java)//it's really bad
                             // but now it works :)
                             if (emitter.isDisposed) {
@@ -316,7 +316,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                             }
                             emitter.onSuccess(photo)
                         } else {
-                            emitter.onError(GetTicketException())
+                            emitter.onSuccess(Photo())//add empty photo
                         }
                     }
                     .addOnFailureListener {
