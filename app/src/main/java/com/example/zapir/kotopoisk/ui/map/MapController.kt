@@ -39,8 +39,6 @@ class MapController : MapInterface {
     override fun addMarker(ticket: Ticket) {
         logger.info("addMarker: ${ticket.lat}, ${ticket.lng}")
 
-        moveTo(LatLng(ticket.lat, ticket.lng))
-
         val markerOptions = MarkerOptions().apply {
             this.icon(IconFactory.getBitmapDescriptionPetIcon(ticket.type))
             this.position(LatLng(ticket.lat, ticket.lng))

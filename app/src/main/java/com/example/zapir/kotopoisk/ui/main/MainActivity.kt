@@ -1,5 +1,6 @@
 package com.example.zapir.kotopoisk.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -24,10 +25,38 @@ class MainActivity : BaseActivity(), AddPhotoListener {
     private var toolbar: ActionBar? = null
     private var prevMenuItem: MenuItem? = null
 
+    private var startPage: SelectedPage = SelectedPage.MAP
+
+    companion object {
+
+        private const val START_PAGE = "flag key for intent"
+        fun newIntent(context: Context, selectedPage: SelectedPage): Intent {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra(START_PAGE, selectedPage)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            return intent
+        }
+
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        handleIntent(intent!!)
+        selectBottomBarTab(startPage.value)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        if (intent != null && intent.hasExtra(START_PAGE)) {
+            startPage = intent.getSerializableExtra(START_PAGE) as SelectedPage
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        handleIntent(intent)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initBottomNavigationViewHelper()
+        selectBottomBarTab(startPage.value)
     }
 
     override fun selectBottomBarTab(position: Int) {
@@ -50,11 +79,7 @@ class MainActivity : BaseActivity(), AddPhotoListener {
 
         // Set listener change item
         pager.addOnPageChangeListener(handlerPageChangeListener)
-
         pager.offscreenPageLimit = SelectedPage.values().size
-
-        // Set view on center fragment
-        selectBottomBarTab(SelectedPage.MAP.value)
     }
 
     override fun onBackPressed() {
