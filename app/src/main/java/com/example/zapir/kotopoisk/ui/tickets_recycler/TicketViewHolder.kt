@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.common.TypesConverter
-import com.example.zapir.kotopoisk.model.Ticket
+import com.example.zapir.kotopoisk.domain.common.TypesConverter
+import com.example.zapir.kotopoisk.data.model.Ticket
 import kotlinx.android.synthetic.main.ticket_element.view.*
 
 

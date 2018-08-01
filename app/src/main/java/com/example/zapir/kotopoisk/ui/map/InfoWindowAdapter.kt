@@ -3,16 +3,11 @@ package com.example.zapir.kotopoisk.ui.map
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
 import android.view.View
-import com.bumptech.glide.Glide
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.model.Ticket
-import com.example.zapir.kotopoisk.ui.BaseActivity
+import com.example.zapir.kotopoisk.data.model.Ticket
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
-import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_ensuring.view.*
 import kotlinx.android.synthetic.main.info_window.view.*
 
 class InfoWindowAdapter(private val context: Context?) : GoogleMap.InfoWindowAdapter {

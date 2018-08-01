@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.model.User
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.tickets_recycler.SwipeCallback
 import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,7 +32,8 @@ class MyTicketListFragment : BaseFragment() {
 
     private val adapter = TicketAdapter()
     val user: User by lazy {
-        arguments?.getParcelable(MyTicketListFragment.ARG_USER) as? User ?: throw
+        arguments?.getParcelable(MyTicketListFragment.ARG_USER) as? User
+                ?: throw
         RuntimeException("No user in arguments")
     }
 

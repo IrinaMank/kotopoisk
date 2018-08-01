@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.model.Ticket
+import com.example.zapir.kotopoisk.data.model.Ticket
 import kotlin.properties.Delegates
 
 class TicketAdapter : RecyclerView.Adapter<TicketViewHolder>() {

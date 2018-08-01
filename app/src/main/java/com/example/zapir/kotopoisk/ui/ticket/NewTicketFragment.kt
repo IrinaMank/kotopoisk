@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.model.Ticket
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.data.model.Ticket
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_new_ticket.*
 import android.widget.ArrayAdapter
 

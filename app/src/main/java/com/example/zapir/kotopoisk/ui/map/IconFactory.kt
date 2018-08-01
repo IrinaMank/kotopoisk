@@ -1,7 +1,8 @@
 package com.example.zapir.kotopoisk.ui.map
 
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.common.PetType
+import com.example.zapir.kotopoisk.domain.common.PetType
+import com.example.zapir.kotopoisk.data.exceptions.UnknownPetType
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
