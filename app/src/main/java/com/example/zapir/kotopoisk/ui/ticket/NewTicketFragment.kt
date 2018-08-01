@@ -77,7 +77,7 @@ class NewTicketFragment : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
-                            newTicket.photo.url = it
+                            ticket.photo.url = it
                         },
                         { errorHandler.handleException(it, getBaseActivity()) }
                 )

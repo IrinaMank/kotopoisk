@@ -56,11 +56,6 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
 
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(SAVED_LIST, adapter.items)
@@ -68,7 +63,6 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
 
 
     private fun setRecycler(savedInstanceState: Bundle?) {
-
         if (savedInstanceState != null) {
             adapter.items = savedInstanceState.getParcelableArrayList(SAVED_LIST)
         } else {
@@ -145,7 +139,6 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
         builder.setTitle(getString(R.string.delete_ticket))
         builder.setMessage(getString(R.string.sure_delete_ticket))
         builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
-            adapter.removeAt(position)
             ticketController.deleteTicket(adapter.items[position])
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -156,6 +149,7 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
                                 errorHandler.handleException(it, context!!)
                             }
                     )
+            adapter.removeAt(position)
         }
 
         builder.setNegativeButton(getString(R.string.cancel)) { _, _ ->

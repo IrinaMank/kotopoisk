@@ -86,9 +86,6 @@ class FavoriteTicketsFragment : BaseFragment(), OnItemClickListener, LoadListene
         }
         my_tickets_recycler.layoutManager = LinearLayoutManager(activity)
         my_tickets_recycler.adapter = adapter
-
-        val helper = ItemTouchHelper(SwipeCallback({ adapter.removeAt(it) }))
-        helper.attachToRecyclerView(my_tickets_recycler)
     }
 
     override fun onItemClick(ticket: Ticket) {

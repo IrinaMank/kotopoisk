@@ -28,6 +28,7 @@ interface BaseTicketFirestoreInterface<T> {
     fun ticketIsFound(ticket: T): Single<Unit>
 
     fun uploadPhoto(file: Uri): Single<String>//return URI of upload file
+    fun uploadPhotoBase(photo: Photo): Single<Unit>
     fun getPhoto(ticketId: String): Single<Photo>
 
 

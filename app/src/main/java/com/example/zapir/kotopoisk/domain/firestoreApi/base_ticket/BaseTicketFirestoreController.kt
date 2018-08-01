@@ -13,6 +13,26 @@ import org.slf4j.LoggerFactory
 
 class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
 
+    override fun uploadPhotoBase(photo: Photo): Single<Unit> {
+        return Single.create { emitter ->
+            if (emitter.isDisposed) {
+                return@create
+            }
+            db.collection("photos")
+                    .document(photo.id)
+                    .set(photo)
+                    .addOnSuccessListener {
+                        if (emitter.isDisposed) {
+                            return@addOnSuccessListener
+                        }
+                        emitter.onSuccess(Unit)
+                    }
+                    .addOnFailureListener {
+                        logger.error("Error uploading photo: $it")
+                        emitter.onError(UpdateTicketExceptionApi())
+                    }
+        }    }
+
     private val db = FirebaseFirestore.getInstance()
     private val storageRef = FirebaseStorage.getInstance().reference
     private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)

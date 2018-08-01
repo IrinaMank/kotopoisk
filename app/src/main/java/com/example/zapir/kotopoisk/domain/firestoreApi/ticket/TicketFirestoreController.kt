@@ -9,6 +9,7 @@ import com.example.zapir.kotopoisk.data.model.FavoriteTicket
 import com.example.zapir.kotopoisk.data.model.Photo
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -69,24 +70,31 @@ class TicketFirestoreController : TicketFirestoreInterface {
 
     override fun uploadTicket(ticket: Ticket): Single<Unit> {
         return baseController.uploadTicket(toBaseTicket(ticket))
-                .mergeWith { uploadPhoto(Uri.parse(ticket.photo.url)) }
-                .lastOrError()
+                .concatWith ( baseController.uploadPhotoBase(ticket.photo) )
+                .firstOrError()
     }
 
-    override fun publishTicket(ticket: Ticket): Single<Unit> {
+    override fun publishTicket(ticket: Ticket): Flowable<Unit> {
         ticket.user.petCount += 1
-        return baseController.publishTicket(toBaseTicket(ticket)).concatWith(userController
-                .registerOrUpdateUser(ticket.user)).lastOrError()
+        return baseController.publishTicket(toBaseTicket(ticket))
+                .concatWith ( baseController.uploadPhotoBase(ticket.photo) )
+                .concatWith(userController.registerOrUpdateUser(ticket.user))
+
+
     }
 
     override fun updateTicket(newTicket: Ticket): Single<Unit> {
         return baseController.updateTicket(toBaseTicket(newTicket))
     }
 
-    override fun deleteTicket(ticket: Ticket): Single<Unit> {
+    override fun deleteTicket(ticket: Ticket): Flowable<Unit> {
         ticket.user.petCount -= 1
-        return baseController.deleteTicket(toBaseTicket(ticket)).concatWith(userController
-                .registerOrUpdateUser(ticket.user)).firstOrError()
+        var query =  baseController.deleteTicket(toBaseTicket(ticket))
+                .concatWith(userController.registerOrUpdateUser(ticket.user))
+        if (ticket.isFavorite) {
+            query = query.concatWith(baseController.makeTicketUnFavourite(ticket = toBaseTicket(ticket)))
+        }
+        return query
     }
 
     override fun makeTicketFavourite(ticket: Ticket): Single<Unit> {
@@ -173,7 +181,6 @@ class TicketFirestoreController : TicketFirestoreInterface {
                     )
         }
     }
-
 
     private fun toTicket(baseTicket: BaseTicket) = Ticket(
             id = baseTicket.id,
