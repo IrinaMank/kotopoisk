@@ -1,14 +1,18 @@
 package com.example.zapir.kotopoisk.ui.login
 
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.data.exceptions.ExceptionHandler
+import com.example.zapir.kotopoisk.domain.common.MyBounceInterpolator
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
+import com.example.zapir.kotopoisk.ui.map.LoadListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -18,7 +22,16 @@ import kotlinx.android.synthetic.main.fragment_auth.*
 import java.util.concurrent.TimeUnit
 
 
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment(), LoadListener {
+    override fun setLoadStart() {
+        auth_progress_bar.visibility = View.VISIBLE
+        val animation = auth_progress_bar.background as AnimationDrawable
+        animation.start()
+    }
+
+    override fun setLoadGone() {
+        auth_progress_bar.visibility = View.GONE
+    }
 
     companion object {
 
@@ -52,6 +65,10 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sign_in_google_button.setOnClickListener {
+            val myAnim = AnimationUtils.loadAnimation(context, R.anim.bounce)
+            val interpolator = MyBounceInterpolator(0.2, 20.0)
+            myAnim.interpolator = interpolator
+            sign_in_google_button.startAnimation(myAnim)
             sign_in_google_button.isEnabled = false
             val signInIntent = googleSignInClient?.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -60,6 +77,7 @@ class LoginFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
+        setLoadStart()
 
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -69,7 +87,8 @@ class LoginFragment : BaseFragment() {
                     ?.observeOn(AndroidSchedulers.mainThread())
                     ?.subscribe(
                             {
-                               preferencesManager.putString(LoginActivity.PREFS_ID, it.id)
+                                setLoadGone()
+                                preferencesManager.putString(LoginActivity.PREFS_ID, it.id)
                                 listener?.onLogin(it)
                             },
                             {
@@ -78,6 +97,7 @@ class LoginFragment : BaseFragment() {
                     ) ?: throw RuntimeException("Error while creating observable")
             )
         }
+
     }
 
 }

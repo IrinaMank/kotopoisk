@@ -79,4 +79,30 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener {
     override fun onItemClick(ticket: Ticket) {
         (parentFragment as BaseFragment).addFragment(OverviewTicketFragment.newInstance(ticket))
     }
+
+    override fun onFavorClick(ticket: Ticket) {
+        if (ticket.isFavorite) {
+            ticketController.makeTicketUnFavourite(ticket)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+
+                            },
+                            {
+                                errorHandler.handleException(it, context!!)
+                            }
+                    )
+        } else {
+            ticketController.makeTicketFavourite(ticket)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+
+                            },
+                            {
+                                errorHandler.handleException(it, context!!)
+                            }
+                    )
+        }
+    }
 }

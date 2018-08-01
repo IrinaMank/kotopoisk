@@ -1,19 +1,33 @@
 package com.example.zapir.kotopoisk.ui.login
 
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.data.exceptions.ExceptionHandler
-import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.main.MainActivity
+import com.example.zapir.kotopoisk.ui.map.LoadListener
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_auth.*
 import java.util.concurrent.TimeUnit
 
-class LoginActivity : BaseActivity(), ErrorDialogDisplayer {
+class LoginActivity : BaseActivity(), ErrorDialogDisplayer, LoadListener {
+
+    override fun setLoadStart() {
+        auth_progress_bar.visibility = View.VISIBLE
+        val animation = auth_progress_bar.background as AnimationDrawable
+        animation.start()
+    }
+
+    override fun setLoadGone() {
+        auth_progress_bar.visibility = View.GONE
+    }
 
     companion object {
         const val PREFS_ID = "PREFS_ID"
@@ -29,12 +43,14 @@ class LoginActivity : BaseActivity(), ErrorDialogDisplayer {
     }
 
     fun onLogin(user: User) {
+        setLoadStart()
         supportFragmentManager.popBackStack()
         userController.getUser(userId = user.id).observeOn(AndroidSchedulers.mainThread())
                 .timeout(5, TimeUnit.SECONDS)
                 .subscribe(
                         {
                             if (it.isPresent) {
+                                setLoadGone()
                                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 finish()
                             } else {

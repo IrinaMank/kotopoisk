@@ -47,7 +47,7 @@
     <style name="ProfileHeaderTextView">
         <item name="android:ellipsize">marquee</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/crystalWhite</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="ProfileMainTextView">

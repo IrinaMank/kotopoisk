@@ -10,11 +10,11 @@ import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.profile_content.*
 
 
 class ProfileFragment : BaseFragment() {
+
 
     companion object {
 
@@ -53,7 +53,7 @@ class ProfileFragment : BaseFragment() {
             edit_profile_btn.visibility = View.GONE
             favorite_tickets_btn.visibility = View.GONE
             btn_log_out.visibility = View.GONE
-            //tv_my_tickets.text = getString(R.string.users_tickets, user.nickname)
+            tv_my_tickets.text = getString(R.string.his_tickets)
         }
 
 
@@ -66,7 +66,8 @@ class ProfileFragment : BaseFragment() {
         }
 
         favorite_tickets_btn.setOnClickListener {
-            (parentFragment as BaseFragment).replaceFragment(FavotiteTicketsFragment.newInstance(user))
+            (parentFragment as BaseFragment).replaceFragment(FavoriteTicketsFragment.newInstance
+            (user))
         }
 
         btn_log_out.setOnClickListener {

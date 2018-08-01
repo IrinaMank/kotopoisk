@@ -23,6 +23,7 @@ data class Ticket(val id: String = UUID.randomUUID().toString(),
                   var breed: Int? = null,
                   var furLength: Int = FurLength.MEDIUM.value,
                   var isFound: Boolean = false,
-                  var isPublished: Boolean = false
-) : Parcelable
+                  var isPublished: Boolean = false,
+                  var isFavorite: Boolean = false
+): Parcelable
 

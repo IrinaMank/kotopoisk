@@ -14,4 +14,12 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <View
+        android:id="@+id/my_tickets_progress_bar"
+        android:visibility="gone"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:background="@drawable/load_cat" />
+
 </FrameLayout>
