@@ -9,7 +9,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/new_ticket_photo"
+            android:id="@+id/overview_ticket_photo"
             android:layout_width="0dp"
             android:layout_height="0dp"
 
@@ -96,7 +96,7 @@
             app:layout_constraintTop_toBottomOf="@id/title_breed" />
 
         <TextView
-            android:id="@+id/color"
+            android:id="@+id/title_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -108,7 +108,7 @@
             app:layout_constraintTop_toBottomOf="@id/breed" />
 
         <TextView
-            android:id="@+id/spinner_color"
+            android:id="@+id/color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -118,7 +118,7 @@
             android:textColor="@color/black"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/color" />
+            app:layout_constraintTop_toBottomOf="@id/title_color" />
 
         <TextView
             android:id="@+id/title_size"
@@ -130,7 +130,7 @@
             android:text="@string/size"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spinner_color" />
+            app:layout_constraintTop_toBottomOf="@id/color" />
 
         <TextView
             android:id="@+id/size"
@@ -206,13 +206,14 @@
             app:layout_constraintTop_toBottomOf="@id/collar_switch_compat" />
 
         <Button
+            android:id="@+id/overview_go_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="@string/show"
+            android:text="@string/go"
             android:backgroundTint="@color/colorAccent"
             android:textColor="@color/crystalWhite"
 

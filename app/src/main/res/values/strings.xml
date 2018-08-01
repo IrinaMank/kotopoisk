@@ -57,11 +57,12 @@
 
     <string name="dialog_title">Создать новое объявление</string>
     <string name="photo">Photo</string>
+    <string name="publish">ОПУБЛИКОВАТЬ</string>
     <string name="save_bold">СОХРАНИТЬ</string>
     <string name="confirm">ПОДТВЕРДИТЬ</string>
     <string name="change">ИЗМЕНИТЬ</string>
     <string name="search">ПОИСК</string>
-    <string name="show">ПОКАЗАТЬ</string>
+    <string name="go">ПЕРЕЙТИ</string>
     <string name="dialog1">Загрузить фото из галереи</string>
     <string name="dialog2">Сделать снимок</string>
     <string name="explanation_dialog_message">Это разрешение необходимо для того, чтобы сохранить сделанные вами

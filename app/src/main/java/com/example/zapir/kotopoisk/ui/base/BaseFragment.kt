@@ -1,5 +1,6 @@
 package com.example.zapir.kotopoisk.ui.base
 
+import android.content.Context
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -95,17 +96,25 @@ open class BaseFragment : Fragment(), ErrorDialogDisplayer {
     override fun showOkErrorDialog(msg: Int) {
         Toast.makeText(activity, "Sorry, some problems with authentification. Please, try again",
                 Toast.LENGTH_LONG).show()
-        returnToLoginFragment()
+        //FIXME CR IM: don't do navigation here, only show toast
+        // this message can be shown from different screen
+        // this navigation crushes
+        // returnToLoginFragment()
     }
 
     override fun showConnectivityErrorDialog() {
         Toast.makeText(activity, R.string.no_connection_error, Toast.LENGTH_LONG).show()
-        returnToLoginFragment()
+        //FIXME CR IM: don't do navigation here, only show toast
+        //returnToLoginFragment()
     }
 
     private fun returnToLoginFragment() {
         val loginFragment = LoginFragment.newInstance()
         TransactionUtils.replaceFragment(childFragmentManager, R.id.container, loginFragment)
+    }
+
+    fun showToast(context: Context, text: String) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 
 }

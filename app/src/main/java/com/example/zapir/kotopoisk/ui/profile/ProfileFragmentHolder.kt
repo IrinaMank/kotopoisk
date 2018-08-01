@@ -21,6 +21,10 @@ class ProfileFragmentHolder : BaseFragment() {
         TransactionUtils.replaceFragment(childFragmentManager, R.id.container, fragment)
     }
 
+    override fun addFragment(fragment: BaseFragment) {
+        TransactionUtils.addFragment(childFragmentManager, R.id.container, fragment)
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,

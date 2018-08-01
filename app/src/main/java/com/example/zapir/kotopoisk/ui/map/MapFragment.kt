@@ -12,7 +12,6 @@ import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.abc_activity_chooser_view.view.*
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import java.io.Serializable

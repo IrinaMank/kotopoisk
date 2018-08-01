@@ -7,14 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
+import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
+import com.example.zapir.kotopoisk.ui.tickets_recycler.OnItemClickListener
 import com.example.zapir.kotopoisk.ui.tickets_recycler.SwipeCallback
 import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_my_ticket_list.*
 
-class MyTicketListFragment : BaseFragment() {
+class MyTicketListFragment : BaseFragment(), OnItemClickListener {
 
     companion object {
 
@@ -30,7 +33,7 @@ class MyTicketListFragment : BaseFragment() {
     }
 
 
-    private val adapter = TicketAdapter()
+    private val adapter = TicketAdapter(this)
     val user: User by lazy {
         arguments?.getParcelable(MyTicketListFragment.ARG_USER) as? User
                 ?: throw
@@ -79,4 +82,9 @@ class MyTicketListFragment : BaseFragment() {
         val helper = ItemTouchHelper(SwipeCallback({ adapter.removeAt(it) }))
         helper.attachToRecyclerView(my_tickets_recycler)
     }
+
+    override fun onItemClick(ticket: Ticket) {
+        (parentFragment as BaseFragment).addFragment(OverviewTicketFragment.newInstance(ticket))
+    }
+
 }
