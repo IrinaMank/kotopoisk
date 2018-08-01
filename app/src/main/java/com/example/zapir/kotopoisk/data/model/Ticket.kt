@@ -10,8 +10,8 @@ import java.util.*
 
 @Parcelize
 data class Ticket(val id: String = UUID.randomUUID().toString(),
-                  val lat: Double = -1.0,
-                  val lng: Double = -1.0,
+                  var lat: Double = -1.0,
+                  var lng: Double = -1.0,
                   val date: String = "",
                   var user: User = User(),
                   var photo: Photo = Photo(),
@@ -24,5 +24,5 @@ data class Ticket(val id: String = UUID.randomUUID().toString(),
                   var furLength: Int = FurLength.MEDIUM.value,
                   var isFound: Boolean = false,
                   var isPublished: Boolean = false
-): Parcelable
+) : Parcelable
 

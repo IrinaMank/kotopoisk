@@ -1,5 +1,8 @@
 package com.example.zapir.kotopoisk.ui.ticket
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -13,10 +16,14 @@ import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_new_ticket.*
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
+import com.example.zapir.kotopoisk.ui.main.MainActivity
+import com.example.zapir.kotopoisk.ui.map.LocationActivity
+import com.google.android.gms.maps.model.LatLng
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +34,8 @@ class NewTicketFragment : BaseFragment() {
     companion object {
         const val TAG = "creating new ticket"
         private const val INSTANCE_MESSAGE_KEY = "arguments for NewTicketFragment"
+        private const val GET_LOCATION_CODE = 1
+        const val GET_LOCATION_KEY = "Please, activity, get position for this pretty pet"
 
         fun newInstance(ticket: Ticket): NewTicketFragment {
             return NewTicketFragment().apply {
@@ -43,7 +52,7 @@ class NewTicketFragment : BaseFragment() {
             date = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.US).format(Date())
     )
 
-    private val watcher = object: TextWatcher {
+    private val watcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -111,11 +120,11 @@ class NewTicketFragment : BaseFragment() {
         }
 
         new_ticket_save_button.setOnClickListener { updateTicket() }
-
         new_ticket_publish_button.setOnClickListener { publishTicket() }
+        location.setOnClickListener { handlerClickerListener() }
     }
 
-    private fun changeSpinnersForCat(){
+    private fun changeSpinnersForCat() {
         val breedAdapter = ArrayAdapter.createFromResource(activity,
                 R.array.cat_breed_array, android.R.layout.simple_spinner_item)
         breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -127,7 +136,7 @@ class NewTicketFragment : BaseFragment() {
         spinner_size.adapter = sizeAdapter
     }
 
-    private fun changeSpinnersForDog(){
+    private fun changeSpinnersForDog() {
         val breedAdapter = ArrayAdapter.createFromResource(activity,
                 R.array.dog_breed_array, android.R.layout.simple_spinner_item)
         breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -139,13 +148,13 @@ class NewTicketFragment : BaseFragment() {
         spinner_size.adapter = sizeAdapter
     }
 
-    private fun initTicket(){
+    private fun initTicket() {
         val userId = preferencesManager.getString(LoginActivity.PREFS_ID)
         ticket.user.id = userId
         ticket.photo.userId = userId
         ticket.photo.ticketId = ticket.id
         ticket.type =
-                when(radio_type.checkedRadioButtonId){
+                when (radio_type.checkedRadioButtonId) {
                     R.id.cat_radio -> TypesConverter.getTypeFromString(getString(R.string.cat), getBaseActivity())
                     else -> TypesConverter.getTypeFromString(getString(R.string.dog), getBaseActivity())
                 }
@@ -157,8 +166,14 @@ class NewTicketFragment : BaseFragment() {
         ticket.overview = description.text.toString()
     }
 
-    private fun publishTicket(){
+    private fun publishTicket() {
         initTicket()
+
+        if (location.text != getString(R.string.location_map)) {
+            showToast(getBaseActivity(), getString(R.string.error_location))
+            return
+        }
+
         ticket.isPublished = true
         ticketController.publishTicket(ticket)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -168,16 +183,42 @@ class NewTicketFragment : BaseFragment() {
                 )
     }
 
-    private fun updateTicket(){
+    private fun updateTicket() {
         initTicket()
         ticketController.updateTicket(ticket)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
-                            getBaseActivity().selectBottomBarTab(SelectedPage.MAP.value)
+                            // TODO("Не понял, зачем здесь эта строка. Меняем кошку на собачку, например, зачем на карту то переходить?")
+                            //getBaseActivity().selectBottomBarTab(SelectedPage.MAP.value)
                         },
                         { errorHandler.handleException(it, getBaseActivity()) }
                 )
+    }
+
+    private fun handlerClickerListener() {
+
+        val position = if (location.text == getString(R.string.location_map)) {
+            LatLng(ticket.lat, ticket.lng)
+        } else {
+            null
+        }
+
+        startActivityForResult(LocationActivity.newIntent(context!!, ticket.type, position), GET_LOCATION_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == GET_LOCATION_CODE &&
+                resultCode == Activity.RESULT_OK &&
+                data != null) {
+
+            val position = data.getParcelableExtra<LatLng>(Intent.EXTRA_TEXT + GET_LOCATION_KEY)
+            location.text = getString(R.string.location_map)
+            ticket.lat = position.latitude
+            ticket.lng = position.longitude
+        }
     }
 
 }

@@ -13,6 +13,7 @@ enum class Color(val value: Int) {
 enum class PetType(val value: Int) {
     CAT(0),
     DOG(1),
+    DEFAULT(2)
 
 }
 
