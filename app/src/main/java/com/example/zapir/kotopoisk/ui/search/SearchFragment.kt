@@ -29,7 +29,6 @@ class SearchFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //search_text.setOnClickListener { handlerClickSearchText() }
 
         val type = radio_type.checkedRadioButtonId
 

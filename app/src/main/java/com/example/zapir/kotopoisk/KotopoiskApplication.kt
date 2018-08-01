@@ -7,10 +7,11 @@ import com.example.zapir.kotopoisk.domain.RxBus
 @SuppressLint("Registered")
 class KotopoiskApplication : Application() {
 
+
     companion object {
 
         private val rxBus = RxBus()
-        fun getRxBus(): RxBus = rxBus
+        fun rxBus(): RxBus = rxBus
 
     }
 

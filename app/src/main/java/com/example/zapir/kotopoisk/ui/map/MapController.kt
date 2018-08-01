@@ -15,6 +15,13 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
+import com.example.zapir.kotopoisk.ui.base.BaseActivity
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
+import com.example.zapir.kotopoisk.ui.profile.MyTicketListFragment
+import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
+import kotlinx.android.synthetic.main.fragment_holder.view.*
 
 class MapController : MapInterface {
 
@@ -29,7 +36,7 @@ class MapController : MapInterface {
         map = googleMap
         infoWindowAdapter = InfoWindowAdapter(context)
         map.setInfoWindowAdapter(infoWindowAdapter)
-        map.setOnInfoWindowClickListener { handlerOnInfoWindowClickListener() }
+        map.setOnInfoWindowClickListener { handlerOnInfoWindowClickListener(context) }
         map.uiSettings.isMapToolbarEnabled = false
         map.setOnMarkerClickListener { handlerOnMarkerClickListener(it) }
 
@@ -74,9 +81,15 @@ class MapController : MapInterface {
         }
     }
 
-    private fun handlerOnInfoWindowClickListener() {
+    private fun handlerOnInfoWindowClickListener(context: Context?) {
         logger.info("Click on info window")
-        // TODO("Сделать переход в полное объявление")
+        val manager = (context as BaseActivity).supportFragmentManager
+        val ticket = infoWindowAdapter.ticket
+
+        // TODO(Скорее всего это не работает, но никак не проверить, потому что падает база)
+        if (ticket != null) {
+            TransactionUtils.replaceFragment(manager, R.id.container, OverviewTicketFragment.newInstance(ticket))
+        }
     }
 
     private fun handlerOnMarkerClickListener(marker: Marker): Boolean {

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.domain.photo.PhotoDialog
@@ -14,10 +13,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.abc_activity_chooser_view.view.*
-import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.android.synthetic.main.fragment_map.*
-import java.io.Serializable
 
 class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
 
@@ -110,7 +106,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
     }
 
     private fun listenToNewTickets() {
-        KotopoiskApplication.getRxBus()
+        KotopoiskApplication.rxBus()
                 .listenForNewTickets()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
