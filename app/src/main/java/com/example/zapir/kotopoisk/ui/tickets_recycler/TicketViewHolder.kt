@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.domain.common.TypesConverter
 import com.example.zapir.kotopoisk.data.model.Ticket
+import com.example.zapir.kotopoisk.domain.common.TypesConverter
 import kotlinx.android.synthetic.main.ticket_element.view.*
 
 
@@ -35,9 +35,14 @@ class TicketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             if (!ticket.isPublished) {
                 tv_element_is_published.visibility = View.VISIBLE
             }
+            if (ticket.isFavorite) {
+                favor_checkbox.isChecked = true
+            }
         }
 
         itemView.setOnClickListener { listener.onItemClick(ticket) }
+        itemView.favor_checkbox.setOnClickListener { listener.onFavorClick(ticket) }
 
     }
 }
+

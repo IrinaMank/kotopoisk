@@ -1,17 +1,17 @@
 package com.example.zapir.kotopoisk.ui.base
 
 import android.content.Context
-import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
-import com.example.zapir.kotopoisk.domain.common.PreferencesManager
 import com.example.zapir.kotopoisk.data.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.data.exceptions.ExceptionHandler
+import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
+import com.example.zapir.kotopoisk.domain.common.PreferencesManager
 import com.example.zapir.kotopoisk.domain.firestoreApi.ticket.TicketFirestoreController
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.ui.login.LoginFragment
@@ -96,16 +96,11 @@ open class BaseFragment : Fragment(), ErrorDialogDisplayer {
     override fun showOkErrorDialog(msg: Int) {
         Toast.makeText(activity, "Sorry, some problems with authentification. Please, try again",
                 Toast.LENGTH_LONG).show()
-        //FIXME CR IM: don't do navigation here, only show toast
-        // this message can be shown from different screen
-        // this navigation crushes
-        // returnToLoginFragment()
+
     }
 
     override fun showConnectivityErrorDialog() {
         Toast.makeText(activity, R.string.no_connection_error, Toast.LENGTH_LONG).show()
-        //FIXME CR IM: don't do navigation here, only show toast
-        //returnToLoginFragment()
     }
 
     private fun returnToLoginFragment() {

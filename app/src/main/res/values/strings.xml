@@ -48,6 +48,7 @@
     <string name="edit_profile">Изменить профиль</string>
     <string name="tickets">Объявления</string>
     <string name="my_tickets">Мои объявления</string>
+    <string name="his_tickets">Созданные объявления</string>
     <string name="favorite_tickets">Любимые объявления</string>
     <string name="log_out">Выйти</string>
     <string name="not_published">Не опубликовано</string>
@@ -85,6 +86,11 @@
 
     <string name="new_ticket">Новое объявление</string>
     <string name="map_fragment_hint_float_action_bar">Нажмите сюда, чтобы добавить своё объявление</string>
+    <string name="enter">Войти с Google Account</string>
+    <string name="delete_ticket">Удаление объявления</string>
+    <string name="sure_delete_ticket">Вы действительно хотите удалить объявление?</string>
+    <string name="yes">Да</string>
+    <string name="cancel">Отмена</string>
 
     <string-array name="cat_breed_array">
         <item>Не определена</item>

@@ -9,10 +9,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@color/colorPrimaryDark"
             android:padding="@dimen/size_small">
 
             <ImageView
@@ -21,15 +22,16 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/size_small"
-                android:src="@drawable/profile_icon" />
+                android:src="@drawable/cat_face" />
 
             <TextView
                 android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_medium"
+                android:layout_marginTop="24dp"
                 android:layout_marginStart="@dimen/size_small"
                 android:layout_toEndOf="@id/profile_icon"
+                android:textColor="@color/colorPrimary"
                 style="@style/ProfileHeaderTextView"
                 tools:text="Default Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
@@ -60,6 +62,8 @@
                  />
 
         </RelativeLayout>
+
+        <include layout="@layout/profile_divider" />
 
         <TextView
             android:layout_width="match_parent"
@@ -279,5 +283,7 @@
                 android:backgroundTint="@color/colorAccent"
                 android:text="@string/log_out" />
     </LinearLayout>
+
+
 
 </android.support.v4.widget.NestedScrollView>

@@ -4,4 +4,5 @@ import com.example.zapir.kotopoisk.data.model.Ticket
 
 interface OnItemClickListener {
     fun onItemClick(ticket: Ticket)
+    fun onFavorClick(ticket: Ticket)
 }
