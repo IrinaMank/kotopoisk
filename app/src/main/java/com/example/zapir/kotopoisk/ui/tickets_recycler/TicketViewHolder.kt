@@ -5,14 +5,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.common.TypesConverter
-import com.example.zapir.kotopoisk.model.Ticket
+import com.example.zapir.kotopoisk.domain.common.TypesConverter
+import com.example.zapir.kotopoisk.data.model.Ticket
 import kotlinx.android.synthetic.main.ticket_element.view.*
 
 
 class TicketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(ticket: Ticket) {
+    fun bind(ticket: Ticket, listener: OnItemClickListener) {
 
 
         itemView.apply {
@@ -21,7 +21,7 @@ class TicketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                     .load(ticket.photo.url)
                     .into(this.iv_element)
 
-            tv_element_type.text = TypesConverter.getTypeString(ticket.type, itemView.context)
+            tv_element_type.text = TypesConverter.getStringFromType(ticket.type, itemView.context)
             tv_element_date.text = ticket.date
             tv_element_user.text = ticket.user.nickname
             tv_element_user.paintFlags = tv_element_user.paintFlags or Paint
@@ -36,6 +36,8 @@ class TicketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 tv_element_is_published.visibility = View.VISIBLE
             }
         }
+
+        itemView.setOnClickListener { listener.onItemClick(ticket) }
 
     }
 }

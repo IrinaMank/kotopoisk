@@ -4,21 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.TransactionUtils
-import com.example.zapir.kotopoisk.firestoreApi.ticket.TicketFirestoreController
-import com.example.zapir.kotopoisk.model.Ticket
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
-import com.example.zapir.kotopoisk.ui.ticket.TicketDetailFragment
-import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_search.*
+import com.example.zapir.kotopoisk.data.model.Ticket
+import com.example.zapir.kotopoisk.domain.common.TypesConverter
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_ticket_search.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SearchFragment : BaseFragment() {
 
     companion object {
-
         fun newInstance(): SearchFragment = SearchFragment()
-
     }
 
     override fun onCreateView(
@@ -26,17 +24,81 @@ class SearchFragment : BaseFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        return inflater.inflate(R.layout.fragment_ticket_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        search_text.setOnClickListener { handlerClickSearchText() }
+
+        val type = radio_type.checkedRadioButtonId
+
+        val breedAdapter =
+                when (type) {
+                    R.id.cat_radio -> ArrayAdapter.createFromResource(activity, R.array.cat_breed_array, android.R.layout.simple_spinner_item)
+                    else -> ArrayAdapter.createFromResource(activity, R.array.dog_breed_array, android.R.layout.simple_spinner_item)
+                }
+        breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_breed.adapter = breedAdapter
+
+        val sizeAdapter =
+                when (type) {
+                    R.id.cat_radio -> ArrayAdapter.createFromResource(activity, R.array.cat_size, android.R.layout.simple_spinner_item)
+                    else -> ArrayAdapter.createFromResource(activity, R.array.dog_size, android.R.layout.simple_spinner_item)
+                }
+        sizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_size.adapter = sizeAdapter
+
+        cat_radio.setOnClickListener { changeSpinnersForCat() }
+        dog_radio.setOnClickListener { changeSpinnersForDog() }
+        search_button.setOnClickListener{ startSearch() }
+    }
+
+    private fun changeSpinnersForCat(){
+        val breedAdapter = ArrayAdapter.createFromResource(activity,
+                R.array.cat_breed_array, android.R.layout.simple_spinner_item)
+        breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_breed.adapter = breedAdapter
+
+        val sizeAdapter = ArrayAdapter.createFromResource(activity,
+                R.array.cat_size, android.R.layout.simple_spinner_item)
+        sizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_size.adapter = sizeAdapter
+    }
+
+    private fun changeSpinnersForDog(){
+        val breedAdapter = ArrayAdapter.createFromResource(activity,
+                R.array.dog_breed_array, android.R.layout.simple_spinner_item)
+        breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_breed.adapter = breedAdapter
+
+        val sizeAdapter = ArrayAdapter.createFromResource(activity,
+                R.array.dog_size, android.R.layout.simple_spinner_item)
+        sizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_size.adapter = sizeAdapter
+    }
+
+    private fun startSearch(){
+        val ticket = Ticket(
+                date = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.US).format(Date())
+        )
+
+        ticket.type =
+                when(radio_type.checkedRadioButtonId){
+                    R.id.cat_radio -> TypesConverter.getTypeFromString(getString(R.string.cat), getBaseActivity())
+                    else -> TypesConverter.getTypeFromString(getString(R.string.dog), getBaseActivity())
+                }
+        ticket.breed = TypesConverter.getBreedFromString(spinner_breed.selectedItem.toString(),
+                ticket.type, getBaseActivity())
+        ticket.color = TypesConverter.getColorFromString(spinner_color.selectedItem.toString(), getBaseActivity())
+        ticket.furLength = TypesConverter.getFurLengthFromString(spinner_furLength.selectedItem.toString(), getBaseActivity())
+        ticket.hasCollar = collar_switch_compat.isChecked
+
+        handlerClickSearch(ticket)
 
     }
 
-    private fun handlerClickSearchText() {
-        (parentFragment as BaseFragment).replaceFragment(TicketDetailFragment.newInstance())
+    private fun handlerClickSearch(ticket: Ticket) {
+        (parentFragment as BaseFragment).replaceFragment(SearchTicketsList.newInstance(ticket))
     }
 
 }

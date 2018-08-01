@@ -4,17 +4,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.model.Ticket
+import com.example.zapir.kotopoisk.data.model.Ticket
 import kotlin.properties.Delegates
 
-class TicketAdapter : RecyclerView.Adapter<TicketViewHolder>() {
+class TicketAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<TicketViewHolder>() {
 
     var items: ArrayList<Ticket> by Delegates.observable(arrayListOf()) { _, _, _ ->
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], listener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TicketViewHolder {

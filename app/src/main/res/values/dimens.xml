@@ -19,4 +19,8 @@
     <dimen name="info_window_text_size">14sp</dimen>
     <dimen name="info_window_text_margin">4dp</dimen>
     <dimen name="info_window_text_width_without_margin">156dp</dimen>
+    <dimen name="map_fragment_9patch_margin_end">34dp</dimen>
+    <dimen name="map_fragment_9patch_margin_bottom">72dp</dimen>
+    <dimen name="map_fragment_load_anim_height">54dp</dimen>
+    <dimen name="map_fragment_hint_width">200dp</dimen>
 </resources>

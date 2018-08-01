@@ -1,18 +1,23 @@
 package com.example.zapir.kotopoisk.ui.map
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.TransactionUtils
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.data.model.Photo
+import com.example.zapir.kotopoisk.data.model.Ticket
+import com.example.zapir.kotopoisk.domain.photo.PhotoDialog
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_map.*
-import java.io.Serializable
 
-class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
+class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
 
     private var mapController: MapController? = null
 
@@ -25,7 +30,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mapController = MapController(context)
+        mapController = MapController()
     }
 
     override fun onCreateView(
@@ -86,12 +91,53 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, Serializable {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mapController?.onAttachMap(googleMap)
+        mapController?.onAttachMainMap(context, googleMap)
+        mapController?.loadListeners?.add(this)
+
+        val ticket = Ticket(lat = 54.8433961, lng = 83.090477, date = "01.08.2018")
+        mapController?.addMarker(ticket)
+
+        // TODO(Раскомментируй это, когда заработает)
+        /*ticketController.getAllTickets()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+                            mapController?.updateVisibleMarkers(it)
+                            listenToNewTickets()
+                        },
+                        {
+
+                        }
+                )*/
+    }
+
+    private fun listenToNewTickets() {
+        KotopoiskApplication.rxBus()
+                .listenForNewTickets()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    mapController?.moveTo(LatLng(it.lat, it.lng))
+                }
     }
 
     private fun handlerFloatActionBar() {
         logger.info("Click on float action bar")
-        // TODO("Сделать переход в окно добавления объявления")
+        callDialog()
+    }
+
+    private fun callDialog() {
+        val dialog = PhotoDialog()
+        dialog.show(activity?.supportFragmentManager, "PhotoDialog")
+    }
+
+    override fun setLoadStart() {
+        progress_bar.visibility = View.VISIBLE
+        val animation = progress_bar.background as AnimationDrawable
+        animation.start()
+    }
+
+    override fun setLoadGone() {
+        progress_bar.visibility = View.GONE
     }
 
 }
