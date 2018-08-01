@@ -83,6 +83,7 @@
     <string name="description">Описание</string>
 
     <string name="new_ticket">Новое объявление</string>
+    <string name="map_fragment_hint_float_action_bar">Нажмите сюда, чтобы добавить своё объявление</string>
 
     <string-array name="cat_breed_array">
         <item>Не определена</item>
