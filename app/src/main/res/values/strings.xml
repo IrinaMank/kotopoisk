@@ -76,7 +76,12 @@
     <string name="dog_radio">Собака</string>
     <string name="animal_type">Тип животного</string>
     <string name="breed">Порода</string>
+
     <string name="location">Место обнаружения</string>
+    <string name="location_scream"><u>Задать место</u></string>
+    <string name="location_map"><u>Выбрано место на карте</u></string>
+    <string name="error_location">Не выбрано место на карте!</string>
+
     <string name="color">Окрас</string>
     <string name="size">Размер</string>
     <string name="fur_length">Длина шерсти</string>

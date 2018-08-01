@@ -7,7 +7,8 @@ interface MapInterface {
 
     fun addMarker(ticket: Ticket)
     fun removeMarker(id: String)
-    fun moveTo(newPoint: LatLng)
+    fun moveTo(newPoint: LatLng, zoom: Float = 12f)
     fun updateVisibleMarkers(newTickets: Collection<Ticket>)
+    fun getAllTickets(): List<Ticket>
 
 }

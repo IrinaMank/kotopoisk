@@ -12,6 +12,7 @@ class IconFactory {
         fun getBitmapDescriptionPetIcon(petType: Int): BitmapDescriptor {
             return BitmapDescriptorFactory.fromResource(
                     when (petType) {
+                        PetType.DEFAULT.value -> R.drawable.ic_marker
                         PetType.CAT.value -> R.drawable.ic_cat
                         PetType.DOG.value -> R.drawable.ic_dog
                         else -> throw UnknownPetType()

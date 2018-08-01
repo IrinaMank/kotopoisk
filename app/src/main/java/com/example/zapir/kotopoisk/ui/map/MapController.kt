@@ -1,7 +1,6 @@
 package com.example.zapir.kotopoisk.ui.map
 
 import android.content.Context
-import android.content.res.Resources
 import com.bumptech.glide.Glide
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -9,8 +8,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import org.slf4j.LoggerFactory
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.view.View
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.target.SimpleTarget
@@ -18,34 +15,54 @@ import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.R.drawable.cat_example
 import com.example.zapir.kotopoisk.data.exceptions.PetNotFound
 import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
+import com.example.zapir.kotopoisk.domain.common.PetType
 import com.example.zapir.kotopoisk.ui.base.BaseActivity
-import com.example.zapir.kotopoisk.ui.base.BaseFragment
-import com.example.zapir.kotopoisk.ui.profile.MyTicketListFragment
 import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
-import kotlinx.android.synthetic.main.fragment_holder.view.*
 
 class MapController : MapInterface {
 
+    val loadListeners: MutableList<LoadListener> = mutableListOf()
     private lateinit var map: GoogleMap
     private val markers: MutableMap<String, Marker> = mutableMapOf()
     private val tickets: MutableMap<String, Ticket> = mutableMapOf()
     private val logger = LoggerFactory.getLogger(javaClass.simpleName)
     private lateinit var infoWindowAdapter: InfoWindowAdapter
-    val loadListeners: MutableList<LoadListener> = mutableListOf()
+    private var petType: Int = PetType.DEFAULT.value
+
+    private fun onAttachMap(googleMap: GoogleMap) {
+        map = googleMap
+        map.uiSettings.isMapToolbarEnabled = false
+    }
 
     fun onAttachMainMap(context: Context?, googleMap: GoogleMap) {
-        map = googleMap
+        // Map settings
+        onAttachMap(googleMap)
+
+        // Info window
         infoWindowAdapter = InfoWindowAdapter(context)
         map.setInfoWindowAdapter(infoWindowAdapter)
         map.setOnInfoWindowClickListener { handlerOnInfoWindowClickListener(context) }
-        map.uiSettings.isMapToolbarEnabled = false
-        map.setOnMarkerClickListener { handlerOnMarkerClickListener(it) }
 
+        // Marker settings
+        map.setOnMarkerClickListener { handlerOnMarkerClickListener(it) }
         setDefaultPosition()
     }
+
+    fun onAttachLocationMap(googleMap: GoogleMap, petType: Int) {
+        // Map settings
+        onAttachMap(googleMap)
+        map.setOnMapClickListener { mapClickListener(it) }
+        setDefaultPosition()
+
+        // Marker settings
+        this.petType = petType
+        map.setOnMarkerClickListener {
+            return@setOnMarkerClickListener true
+        }
+    }
+
 
     override fun addMarker(ticket: Ticket) {
         logger.info("addMarker: ${ticket.lat}, ${ticket.lng}")
@@ -61,15 +78,14 @@ class MapController : MapInterface {
         tickets[ticket.id] = ticket
     }
 
-
     override fun removeMarker(id: String) {
         logger.info("removeMarker: id=$id")
         markers.remove(id)?.remove()
         tickets.remove(id)
     }
 
-    override fun moveTo(newPoint: LatLng) {
-        val cameraPosition = CameraPosition.Builder().target(newPoint).zoom(12f).build()
+    override fun moveTo(newPoint: LatLng, zoom: Float) {
+        val cameraPosition = CameraPosition.Builder().target(newPoint).zoom(zoom).build()
         map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
@@ -83,6 +99,10 @@ class MapController : MapInterface {
         newTickets.forEach {
             addMarker(it)
         }
+    }
+
+    override fun getAllTickets(): List<Ticket> {
+        return tickets.values.toList()
     }
 
     private fun handlerOnInfoWindowClickListener(context: Context?) {
@@ -154,6 +174,25 @@ class MapController : MapInterface {
             }
 
             return false
+        }
+    }
+
+    private fun mapClickListener(position: LatLng) {
+        // Не очень красивый код, но другого у меня нет :(
+        if (tickets.size == 1) {
+            return
+        }
+
+        val ticket = Ticket(
+                type = petType,
+                lat = position.latitude,
+                lng = position.longitude
+        )
+
+        addMarker(ticket)
+
+        loadListeners.forEach {
+            it.setLoadStart()
         }
     }
 
