@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,12 +15,25 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fragment_map_fab_margin"
-        android:src="@drawable/ic_plus" />
+        android:src="@drawable/ic_plus"
+        app:fabSize="normal" />
 
-    <android.support.v7.widget.AppCompatImageView
+    <TextView
+        android:layout_width="@dimen/map_fragment_hint_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/map_fragment_9patch_margin_bottom"
+        android:layout_marginEnd="@dimen/map_fragment_9patch_margin_end"
+        android:background="@drawable/image_9patch"
+        android:gravity="center"
+        android:text="@string/map_fragment_hint_float_action_bar"
+        android:textColor="@color/black"
+        android:visibility="invisible" />
+
+    <View
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="@dimen/map_fragment_load_anim_height"
         android:background="@drawable/load_anim" />
 
 </FrameLayout>
