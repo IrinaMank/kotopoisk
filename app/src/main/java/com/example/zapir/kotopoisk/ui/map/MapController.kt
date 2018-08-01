@@ -1,6 +1,7 @@
 package com.example.zapir.kotopoisk.ui.map
 
 import android.content.Context
+import android.content.res.Resources
 import com.bumptech.glide.Glide
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -8,6 +9,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import org.slf4j.LoggerFactory
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.View
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -16,6 +18,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.R.drawable.cat_example
+import com.example.zapir.kotopoisk.data.exceptions.PetNotFound
 import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
 import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
@@ -32,7 +36,7 @@ class MapController : MapInterface {
     private lateinit var infoWindowAdapter: InfoWindowAdapter
     val loadListeners: MutableList<LoadListener> = mutableListOf()
 
-    fun onAttachMap(context: Context?, googleMap: GoogleMap) {
+    fun onAttachMainMap(context: Context?, googleMap: GoogleMap) {
         map = googleMap
         infoWindowAdapter = InfoWindowAdapter(context)
         map.setInfoWindowAdapter(infoWindowAdapter)
@@ -86,7 +90,6 @@ class MapController : MapInterface {
         val manager = (context as BaseActivity).supportFragmentManager
         val ticket = infoWindowAdapter.ticket
 
-        // TODO(Скорее всего это не работает, но никак не проверить, потому что падает база)
         if (ticket != null) {
             TransactionUtils.replaceFragment(manager, R.id.container, OverviewTicketFragment.newInstance(ticket))
         }
@@ -95,13 +98,21 @@ class MapController : MapInterface {
     private fun handlerOnMarkerClickListener(marker: Marker): Boolean {
         val ticket: Ticket? = tickets[marker.title]
 
+        if (ticket == null) {
+            throw PetNotFound("Ticket with id ${marker.title} not found")
+        } else if (ticket.photo.url.isEmpty()) {
+            infoWindowAdapter.ticket = ticket
+            infoWindowAdapter.photo = null
+            return false
+        }
+
         loadListeners.forEach {
             it.setLoadStart()
         }
 
         Glide.with(infoWindowAdapter.getContext()!!)
                 .asBitmap()
-                .load(ticket?.photo?.url)
+                .load(ticket.photo.url)
                 .listener(photoLoadListener)
                 .into(object : SimpleTarget<Bitmap>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {

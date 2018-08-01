@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.data.model.Photo
+import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.domain.photo.PhotoDialog
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.google.android.gms.maps.GoogleMap
@@ -89,10 +91,14 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mapController?.onAttachMap(context, googleMap)
+        mapController?.onAttachMainMap(context, googleMap)
         mapController?.loadListeners?.add(this)
 
-        ticketController.getAllTickets()
+        val ticket = Ticket(lat = 54.8433961, lng = 83.090477, date = "01.08.2018")
+        mapController?.addMarker(ticket)
+
+        // TODO(Раскомментируй это, когда заработает)
+        /*ticketController.getAllTickets()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
@@ -102,7 +108,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
                         {
 
                         }
-                )
+                )*/
     }
 
     private fun listenToNewTickets() {
