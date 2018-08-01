@@ -5,7 +5,6 @@ import com.example.zapir.kotopoisk.data.model.FavoriteTicket
 import com.example.zapir.kotopoisk.data.model.Photo
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Single
-import java.io.File
 
 interface BaseTicketFirestoreInterface<T> {
 

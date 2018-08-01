@@ -1,5 +1,6 @@
 package com.example.zapir.kotopoisk.ui.search
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -9,13 +10,14 @@ import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
+import com.example.zapir.kotopoisk.ui.map.LoadListener
 import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
 import com.example.zapir.kotopoisk.ui.tickets_recycler.OnItemClickListener
 import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_my_ticket_list.*
 
-class SearchTicketsList : BaseFragment(), OnItemClickListener {
+class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
 
     companion object {
         private const val INSTANCE_MESSAGE_KEY = "arguments for SearchTicketsList"
@@ -48,10 +50,12 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener {
         if (savedInstanceState != null) {
             adapter.items = savedInstanceState.getParcelableArrayList(SAVED_LIST)
         } else {
+            setLoadStart()
             ticketController.searchTicket(ticket)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
+                                setLoadGone()
                                 adapter.items = ArrayList(it)
                                 if (it.isEmpty()) {
                                     my_tickets_placeholder.visibility = View.VISIBLE
@@ -105,4 +109,15 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener {
                     )
         }
     }
+
+    override fun setLoadStart() {
+        my_tickets_progress_bar.visibility = View.VISIBLE
+        val animation = my_tickets_progress_bar.background as AnimationDrawable
+        animation.start()
+    }
+
+    override fun setLoadGone() {
+        my_tickets_progress_bar.visibility = View.GONE
+    }
+
 }

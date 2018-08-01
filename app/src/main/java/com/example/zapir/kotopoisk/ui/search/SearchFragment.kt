@@ -50,10 +50,10 @@ class SearchFragment : BaseFragment() {
 
         cat_radio.setOnClickListener { changeSpinnersForCat() }
         dog_radio.setOnClickListener { changeSpinnersForDog() }
-        search_button.setOnClickListener{ startSearch() }
+        search_button.setOnClickListener { startSearch() }
     }
 
-    private fun changeSpinnersForCat(){
+    private fun changeSpinnersForCat() {
         val breedAdapter = ArrayAdapter.createFromResource(activity,
                 R.array.cat_breed_array, android.R.layout.simple_spinner_item)
         breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -65,7 +65,7 @@ class SearchFragment : BaseFragment() {
         spinner_size.adapter = sizeAdapter
     }
 
-    private fun changeSpinnersForDog(){
+    private fun changeSpinnersForDog() {
         val breedAdapter = ArrayAdapter.createFromResource(activity,
                 R.array.dog_breed_array, android.R.layout.simple_spinner_item)
         breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -77,13 +77,13 @@ class SearchFragment : BaseFragment() {
         spinner_size.adapter = sizeAdapter
     }
 
-    private fun startSearch(){
+    private fun startSearch() {
         val ticket = Ticket(
                 date = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.US).format(Date())
         )
 
         ticket.type =
-                when(radio_type.checkedRadioButtonId){
+                when (radio_type.checkedRadioButtonId) {
                     R.id.cat_radio -> TypesConverter.getTypeFromString(getString(R.string.cat), getBaseActivity())
                     else -> TypesConverter.getTypeFromString(getString(R.string.dog), getBaseActivity())
                 }

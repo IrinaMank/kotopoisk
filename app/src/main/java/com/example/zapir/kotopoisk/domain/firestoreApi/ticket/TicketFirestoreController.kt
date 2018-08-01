@@ -1,19 +1,17 @@
 package com.example.zapir.kotopoisk.domain.firestoreApi.ticket
 
 import android.net.Uri
-import com.example.zapir.kotopoisk.domain.firestoreApi.base_ticket.BaseTicketFirestoreController
-import com.example.zapir.kotopoisk.domain.firestoreApi.base_ticket.BaseTicketFirestoreInterface
-import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.data.model.BaseTicket
 import com.example.zapir.kotopoisk.data.model.FavoriteTicket
 import com.example.zapir.kotopoisk.data.model.Photo
 import com.example.zapir.kotopoisk.data.model.Ticket
+import com.example.zapir.kotopoisk.domain.firestoreApi.base_ticket.BaseTicketFirestoreController
+import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import java.io.File
 import java.util.concurrent.TimeUnit
 
 class TicketFirestoreController : TicketFirestoreInterface {
@@ -26,7 +24,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                 .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
                 .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .flatMapSingle { t: Ticket ->  isFavorite(t, t.user.id)}
+                .flatMapSingle { t: Ticket -> isFavorite(t, t.user.id) }
                 .toList()
     }
 
@@ -44,7 +42,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                 .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
                 .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .flatMapSingle { t: Ticket ->  isFavorite(t, t.user.id)}
+                .flatMapSingle { t: Ticket -> isFavorite(t, t.user.id) }
                 .toList()
     }
 
@@ -53,7 +51,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                 .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
                 .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .flatMapSingle { t: Ticket ->  isFavorite(t, t.user.id)}
+                .flatMapSingle { t: Ticket -> isFavorite(t, t.user.id) }
                 .toList()
     }
 
@@ -63,21 +61,21 @@ class TicketFirestoreController : TicketFirestoreInterface {
                 .flatMapSingle { ticket: FavoriteTicket -> baseController.getTicket(ticket.ticketId) }
                 .flatMapSingle { ticket: Optional<BaseTicket> -> convertToTicket(ticket.get()) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .flatMapSingle { t: Ticket ->  isFavorite(t, t.user.id)}
+                .flatMapSingle { t: Ticket -> isFavorite(t, t.user.id) }
                 .toList()
     }
 
 
     override fun uploadTicket(ticket: Ticket): Single<Unit> {
         return baseController.uploadTicket(toBaseTicket(ticket))
-                .concatWith ( baseController.uploadPhotoBase(ticket.photo) )
+                .concatWith(baseController.uploadPhotoBase(ticket.photo))
                 .firstOrError()
     }
 
     override fun publishTicket(ticket: Ticket): Flowable<Unit> {
         ticket.user.petCount += 1
         return baseController.publishTicket(toBaseTicket(ticket))
-                .concatWith ( baseController.uploadPhotoBase(ticket.photo) )
+                .concatWith(baseController.uploadPhotoBase(ticket.photo))
                 .concatWith(userController.registerOrUpdateUser(ticket.user))
 
 
@@ -89,7 +87,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
 
     override fun deleteTicket(ticket: Ticket): Flowable<Unit> {
         ticket.user.petCount -= 1
-        var query =  baseController.deleteTicket(toBaseTicket(ticket))
+        var query = baseController.deleteTicket(toBaseTicket(ticket))
                 .concatWith(userController.registerOrUpdateUser(ticket.user))
         if (ticket.isFavorite) {
             query = query.concatWith(baseController.makeTicketUnFavourite(ticket = toBaseTicket(ticket)))

@@ -1,6 +1,5 @@
 package com.example.zapir.kotopoisk.ui.ticket
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -11,20 +10,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
-import com.example.zapir.kotopoisk.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_new_ticket.*
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.example.zapir.kotopoisk.data.model.User
-import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
-import com.example.zapir.kotopoisk.ui.main.MainActivity
 import com.example.zapir.kotopoisk.ui.map.LocationActivity
+import com.fernandocejas.arrow.optional.Optional
 import com.google.android.gms.maps.model.LatLng
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_new_ticket.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -148,7 +146,7 @@ class NewTicketFragment : BaseFragment() {
         spinner_size.adapter = sizeAdapter
     }
 
-    private fun initTicket() {
+    private fun initTicket(): Single<Optional<User>> {
         val userId = preferencesManager.getString(LoginActivity.PREFS_ID)
         ticket.user.id = userId
         ticket.photo.userId = userId
@@ -164,10 +162,25 @@ class NewTicketFragment : BaseFragment() {
         ticket.furLength = TypesConverter.getFurLengthFromString(spinner_furLength.selectedItem.toString(), getBaseActivity())
         ticket.hasCollar = collar_switch_compat.isChecked
         ticket.overview = description.text.toString()
+        return userController.getUser(userId)
     }
 
     private fun publishTicket() {
-        initTicket()
+        initTicket().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+                            ticket.user = it.get()
+                            ticketController.publishTicket(ticket)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(
+                                            { showToast(getBaseActivity(), "ticket published") },
+                                            { errorHandler.handleException(it, getBaseActivity()) }
+                                    )
+                        },
+                        {
+                            errorHandler.handleException(it, getBaseActivity())
+                        }
+                )
 
         if (location.text != getString(R.string.location_map)) {
             showToast(getBaseActivity(), getString(R.string.error_location))
@@ -175,12 +188,7 @@ class NewTicketFragment : BaseFragment() {
         }
 
         ticket.isPublished = true
-        ticketController.publishTicket(ticket)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { showToast(getBaseActivity(), "ticket published") },
-                        { errorHandler.handleException(it, getBaseActivity()) }
-                )
+
     }
 
     private fun updateTicket() {

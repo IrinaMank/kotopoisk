@@ -31,7 +31,8 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                         logger.error("Error uploading photo: $it")
                         emitter.onError(UpdateTicketExceptionApi())
                     }
-        }    }
+        }
+    }
 
     private val db = FirebaseFirestore.getInstance()
     private val storageRef = FirebaseStorage.getInstance().reference
@@ -430,7 +431,6 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                     }
         }
     }
-
 
 
 }

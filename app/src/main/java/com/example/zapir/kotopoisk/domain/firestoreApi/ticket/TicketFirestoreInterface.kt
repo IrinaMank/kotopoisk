@@ -6,7 +6,6 @@ import com.example.zapir.kotopoisk.data.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Flowable
 import io.reactivex.Single
-import java.io.File
 
 interface TicketFirestoreInterface {
 

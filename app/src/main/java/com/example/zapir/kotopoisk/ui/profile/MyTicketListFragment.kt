@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.map.LoadListener
 import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
@@ -19,6 +20,7 @@ import com.example.zapir.kotopoisk.ui.tickets_recycler.SwipeCallback
 import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_my_ticket_list.*
+import kotlinx.android.synthetic.main.profile_content.*
 
 class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
 
