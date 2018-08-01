@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/info_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -15,39 +16,44 @@
         android:id="@+id/info_phone_number"
         android:layout_width="@dimen/info_window_text_width"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/info_image"
-        android:layout_toEndOf="@id/info_image"
         android:gravity="center"
         android:text="@string/info_window_default_number"
         android:textColor="@color/black"
         android:textSize="@dimen/info_window_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/info_image"
+        app:layout_constraintTop_toBottomOf="@id/info_date"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
         android:id="@+id/info_date"
         android:layout_width="@dimen/info_window_text_width"
         android:layout_height="wrap_content"
-        android:layout_above="@id/info_phone_number"
-        android:layout_toEndOf="@id/info_image"
         android:gravity="center"
         android:text="@string/info_window_default_date"
         android:textColor="@color/black"
         android:textSize="@dimen/info_window_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/info_phone_number"
+        app:layout_constraintStart_toEndOf="@id/info_image"
+        app:layout_constraintTop_toBottomOf="@id/info_overview"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
         android:id="@+id/info_overview"
         android:layout_width="@dimen/info_window_text_width_without_margin"
         android:layout_height="wrap_content"
-        android:layout_above="@id/info_date"
-        android:layout_alignTop="@id/info_image"
         android:layout_marginStart="@dimen/info_window_text_margin"
-        android:layout_toEndOf="@id/info_image"
         android:ellipsize="end"
         android:maxLines="3"
         android:text="@string/lorem_ipsum"
         android:textColor="@color/black"
-        android:textSize="@dimen/info_window_text_size" />
+        android:textSize="@dimen/info_window_text_size"
+        app:layout_constraintBottom_toTopOf="@id/info_date"
+        app:layout_constraintStart_toEndOf="@id/info_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
 

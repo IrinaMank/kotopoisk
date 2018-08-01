@@ -28,6 +28,11 @@ class InfoWindowAdapter(private val context: Context?) : GoogleMap.InfoWindowAda
 
         view.info_image.setImageBitmap(photo)
         view.info_overview.text = ticket?.overview
+
+        if (view.info_overview.text.isEmpty()) {
+            view.info_overview.visibility = View.GONE
+        }
+
         view.info_date.text = ticket?.date
         view.info_phone_number.text = ticket?.user?.phone
 
