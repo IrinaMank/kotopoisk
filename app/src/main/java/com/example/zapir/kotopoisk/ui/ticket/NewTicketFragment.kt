@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter
 import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
+import com.example.zapir.kotopoisk.ui.login.LoginActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
@@ -63,6 +64,14 @@ class NewTicketFragment : BaseFragment() {
                 ?: throw Exception("no Ticket in NewTicketFragment arguments")
 
         new_ticket_photo.setImageURI(Uri.parse(newTicket.photo.url))
+        ticketController.uploadPhoto(Uri.parse(newTicket.photo.url))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+                            newTicket.photo.url = it
+                        },
+                        { errorHandler.handleException(it, getBaseActivity()) }
+                )
         val type =
                 when (newTicket.type) {
                     0 -> R.id.cat_radio
@@ -131,14 +140,10 @@ class NewTicketFragment : BaseFragment() {
     }
 
     private fun initTicket(){
-        var user = User()
-        userController.getCurrentUser()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { user = it },
-                        { errorHandler.handleException(it, getBaseActivity()) }
-                )
-        ticket.user = user
+        val userId = preferencesManager.getString(LoginActivity.PREFS_ID)
+        ticket.user.id = userId
+        ticket.photo.userId = userId
+        ticket.photo.ticketId = ticket.id
         ticket.type =
                 when(radio_type.checkedRadioButtonId){
                     R.id.cat_radio -> TypesConverter.getTypeFromString(getString(R.string.cat), getBaseActivity())
@@ -149,7 +154,7 @@ class NewTicketFragment : BaseFragment() {
         ticket.color = TypesConverter.getColorFromString(spinner_color.selectedItem.toString(), getBaseActivity())
         ticket.furLength = TypesConverter.getFurLengthFromString(spinner_furLength.selectedItem.toString(), getBaseActivity())
         ticket.hasCollar = collar_switch_compat.isChecked
-        ticket.overview = description.toString()
+        ticket.overview = description.text.toString()
     }
 
     private fun publishTicket(){

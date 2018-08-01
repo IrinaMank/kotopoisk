@@ -1,5 +1,6 @@
 package com.example.zapir.kotopoisk.domain.firestoreApi.base_ticket
 
+import android.net.Uri
 import com.example.zapir.kotopoisk.data.model.Photo
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Single
@@ -24,7 +25,7 @@ interface BaseTicketFirestoreInterface<T> {
     fun makeTicketUnFavourite(ticket: T): Single<Unit>
     fun ticketIsFound(ticket: T): Single<Unit>
 
-    fun uploadPhoto(file: File): Single<String>//return URI of upload file
+    fun uploadPhoto(file: Uri): Single<String>//return URI of upload file
     fun getPhoto(ticketId: String): Single<Photo>
 
 

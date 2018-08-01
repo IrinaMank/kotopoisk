@@ -1,5 +1,6 @@
 package com.example.zapir.kotopoisk.domain.firestoreApi.ticket
 
+import android.net.Uri
 import com.example.zapir.kotopoisk.domain.firestoreApi.base_ticket.BaseTicketFirestoreController
 import com.example.zapir.kotopoisk.domain.firestoreApi.base_ticket.BaseTicketFirestoreInterface
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
@@ -60,6 +61,8 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
 
     override fun uploadTicket(ticket: Ticket): Single<Unit> {
         return baseController.uploadTicket(toBaseTicket(ticket))
+                .mergeWith { uploadPhoto(Uri.parse(ticket.photo.url)) }
+                .lastOrError()
     }
 
     override fun publishTicket(ticket: Ticket): Single<Unit> {
@@ -86,7 +89,7 @@ class TicketFirestoreController : BaseTicketFirestoreInterface<Ticket> {
         return baseController.makeTicketUnFavourite(toBaseTicket(ticket))
     }
 
-    override fun uploadPhoto(file: File): Single<String> {
+    override fun uploadPhoto(file: Uri): Single<String> {
         return baseController.uploadPhoto(file)
     }
 

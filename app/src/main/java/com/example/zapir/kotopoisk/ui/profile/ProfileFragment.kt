@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.firestoreApi.ticket.TicketFirestoreController
-import com.example.zapir.kotopoisk.firestoreApi.user.UserFirestoreController
-import com.example.zapir.kotopoisk.model.Ticket
-import com.example.zapir.kotopoisk.model.User
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.profile_content.*
@@ -55,7 +53,7 @@ class ProfileFragment : BaseFragment() {
             edit_profile_btn.visibility = View.GONE
             favorite_tickets_btn.visibility = View.GONE
             btn_log_out.visibility = View.GONE
-            tv_my_tickets.text = getString(R.string.users_tickets, user.nickname)
+            //tv_my_tickets.text = getString(R.string.users_tickets, user.nickname)
         }
 
 

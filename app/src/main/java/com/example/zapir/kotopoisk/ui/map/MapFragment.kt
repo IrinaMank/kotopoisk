@@ -98,7 +98,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
         mapController?.addMarker(ticket)
 
         // TODO(Раскомментируй это, когда заработает)
-        /*ticketController.getAllTickets()
+        ticketController.getAllTickets()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
@@ -108,7 +108,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
                         {
 
                         }
-                )*/
+                )
     }
 
     private fun listenToNewTickets() {

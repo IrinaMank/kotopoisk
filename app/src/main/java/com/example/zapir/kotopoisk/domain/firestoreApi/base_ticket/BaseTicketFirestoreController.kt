@@ -267,14 +267,13 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
         }
     }
 
-    override fun uploadPhoto(file: File): Single<String> {
-        val newFile = Uri.fromFile(file)
+    override fun uploadPhoto(file: Uri): Single<String> {
         return Single.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
-            val photoRef = storageRef.child("images/" + newFile.lastPathSegment)
-            val uploadTask = photoRef.putFile(newFile)
+            val photoRef = storageRef.child("images/" + file.lastPathSegment)
+            val uploadTask = photoRef.putFile(file)
             uploadTask
                     .continueWithTask {
                         if (!it.isSuccessful) {

@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.model.User
-import com.example.zapir.kotopoisk.ui.fragment.BaseFragment
+import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.tickets_recycler.SwipeCallback
 import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -30,7 +30,7 @@ class FavotiteTicketsFragment : BaseFragment() {
     }
 
 
-    private val adapter = TicketAdapter()
+    //private val adapter = TicketAdapter()
     val user: User by lazy {
         arguments?.getParcelable(FavotiteTicketsFragment.ARG_USER) as? User ?: throw
         RuntimeException("No user in arguments")
@@ -53,20 +53,20 @@ class FavotiteTicketsFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(SAVED_LIST, adapter.items)
+        //outState.putParcelableArrayList(SAVED_LIST, adapter.items)
     }
 
 
     private fun setRecycler(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            adapter.items = savedInstanceState.getParcelableArrayList(SAVED_LIST)
+            //adapter.items = savedInstanceState.getParcelableArrayList(SAVED_LIST)
         } else {
             disposables.add(
                     ticketController.getFavouriteTickets(user.id)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     {
-                                        adapter.items = ArrayList(it)
+                                       // adapter.items = ArrayList(it)
                                         if (it.isEmpty()) {
                                             my_tickets_placeholder.visibility = View.VISIBLE
                                         }
@@ -78,9 +78,9 @@ class FavotiteTicketsFragment : BaseFragment() {
             )
         }
         my_tickets_recycler.layoutManager = LinearLayoutManager(activity)
-        my_tickets_recycler.adapter = adapter
+        //my_tickets_recycler.adapter = adapter
 
-        val helper = ItemTouchHelper(SwipeCallback({ adapter.removeAt(it) }))
-        helper.attachToRecyclerView(my_tickets_recycler)
+        //val helper = ItemTouchHelper(SwipeCallback({ adapter.removeAt(it) }))
+        //helper.attachToRecyclerView(my_tickets_recycler)
     }
 }

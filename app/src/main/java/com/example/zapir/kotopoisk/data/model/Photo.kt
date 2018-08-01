@@ -6,6 +6,6 @@ import java.util.*
 
 @Parcelize
 data class Photo(val id: String = UUID.randomUUID().toString(),
-                 val url: String = "",
-                 val userId: String = "",
-                 val ticketId: String = ""): Parcelable
+                 var url: String = "",
+                 var userId: String = "",
+                 var ticketId: String = ""): Parcelable
