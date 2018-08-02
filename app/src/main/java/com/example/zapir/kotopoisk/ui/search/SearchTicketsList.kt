@@ -17,6 +17,7 @@ import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_my_ticket_list.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.util.concurrent.TimeUnit
 
 class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
 
@@ -58,6 +59,7 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
         } else {
             setLoadStart()
             ticketController.searchTicket(ticket)
+                    .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
@@ -94,6 +96,7 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
     override fun onFavorClick(ticket: Ticket) {
         if (ticket.isFavorite) {
             ticketController.makeTicketUnFavourite(ticket)
+                    .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
@@ -105,6 +108,7 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
                     )
         } else {
             ticketController.makeTicketFavourite(ticket)
+                    .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {

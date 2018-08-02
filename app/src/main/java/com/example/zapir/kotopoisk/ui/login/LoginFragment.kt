@@ -84,7 +84,7 @@ class LoginFragment : BaseFragment(), LoadListener {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
             listener?.disposables?.add(listener?.userController?.logInWithGoogle(account)
-                    ?.timeout(5, TimeUnit.SECONDS)
+                    ?.timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                     ?.observeOn(AndroidSchedulers.mainThread())
                     ?.subscribe(
                             {

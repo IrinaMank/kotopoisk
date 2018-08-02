@@ -46,7 +46,7 @@ class LoginActivity : BaseActivity(), ErrorDialogDisplayer, LoadListener {
         setLoadStart()
         supportFragmentManager.popBackStack()
         userController.getUser(userId = user.id).observeOn(AndroidSchedulers.mainThread())
-                .timeout(5, TimeUnit.SECONDS)
+                .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                 .subscribe(
                         {
                             if (it.isPresent) {

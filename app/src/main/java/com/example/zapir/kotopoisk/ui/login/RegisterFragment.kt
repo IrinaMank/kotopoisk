@@ -52,7 +52,7 @@ class RegisterFragment : BaseFragment() {
             if (validateText()) {
                 fillUser()
                 (activity as? LoginActivity)?.userController?.registerOrUpdateUser(user)
-                        ?.timeout(5, TimeUnit.SECONDS)
+                        ?.timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                         ?.observeOn(AndroidSchedulers.mainThread())
                         ?.subscribe(
                                 {
