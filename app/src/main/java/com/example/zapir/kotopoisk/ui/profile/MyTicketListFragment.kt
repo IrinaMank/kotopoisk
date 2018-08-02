@@ -155,7 +155,7 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
         }
 
         builder.setNegativeButton(getString(R.string.cancel)) { _, _ ->
-
+            adapter.notifyItemChanged(position)
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()

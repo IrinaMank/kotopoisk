@@ -10,7 +10,7 @@ import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.ticket.NewTicketFragment
 import com.example.zapir.kotopoisk.ui.ticket.NewTicketFragmentListener
 
-class TicketActivity: BaseActivity(), NewTicketFragmentListener {
+class TicketActivity : BaseActivity(), NewTicketFragmentListener {
 
     companion object {
         private val NEW_INSTANCE_OF = "Ticket Activity"
@@ -35,10 +35,11 @@ class TicketActivity: BaseActivity(), NewTicketFragmentListener {
                 .commit()
     }
 
-    override fun onCreateNewTicket(ticket: Ticket){
+    override fun onCreateNewTicket(ticket: Ticket) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, NewTicketFragment.newInstance(ticket))
                 .commit()
+
     }
 
 }
