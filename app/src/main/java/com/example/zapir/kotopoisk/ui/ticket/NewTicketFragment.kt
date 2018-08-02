@@ -166,6 +166,12 @@ class NewTicketFragment : BaseFragment() {
     }
 
     private fun publishTicket() {
+        if (location.text != getString(R.string.location_map)) {
+            showToast(getBaseActivity(), getString(R.string.error_location))
+            return
+        }
+
+        ticket.isPublished = true
         initTicket().observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
@@ -181,13 +187,6 @@ class NewTicketFragment : BaseFragment() {
                             errorHandler.handleException(it, getBaseActivity())
                         }
                 )
-
-        if (location.text != getString(R.string.location_map)) {
-            showToast(getBaseActivity(), getString(R.string.error_location))
-            return
-        }
-
-        ticket.isPublished = true
 
     }
 
