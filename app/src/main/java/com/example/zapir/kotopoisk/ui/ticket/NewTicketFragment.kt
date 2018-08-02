@@ -15,6 +15,7 @@ import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
+import com.example.zapir.kotopoisk.domain.photo.FileSystemManager
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
 import com.example.zapir.kotopoisk.ui.main.MainActivity
@@ -30,6 +31,8 @@ import java.util.*
 
 
 class NewTicketFragment : BaseFragment() {
+
+    private val fileSystemManager = FileSystemManager(getBaseActivity())
 
     companion object {
         private const val INSTANCE_MESSAGE_KEY = "arguments for NewTicketFragment"
@@ -67,7 +70,7 @@ class NewTicketFragment : BaseFragment() {
 
         toolbar_title.text = getString(R.string.new_ticket)
 
-        new_ticket_photo.setImageURI(Uri.parse(newTicket.photo.url))
+        new_ticket_photo.setImageBitmap(fileSystemManager.decodeImageFromUri((Uri.parse(newTicket.photo.url))))
         ticketController.uploadPhoto(Uri.parse(newTicket.photo.url))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
