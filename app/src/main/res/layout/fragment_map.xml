@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_height="match_parent">
 
@@ -24,6 +25,7 @@
         app:fabSize="normal" />
 
     <TextView
+        android:id="@+id/map_hint"
         android:layout_width="@dimen/map_fragment_hint_width"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
@@ -39,6 +41,17 @@
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/map_fragment_load_anim_height"
+        android:layout_marginTop="?attr/actionBarSize"
         android:background="@drawable/load_anim" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/invisible_view"
+        android:background="@color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        tools:visibility="visible"/>
 
 </FrameLayout>

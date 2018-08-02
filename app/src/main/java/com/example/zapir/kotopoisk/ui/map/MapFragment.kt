@@ -46,6 +46,16 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
         map_view.getMapAsync(this)
         map_fab.setOnClickListener { handlerFloatActionBar() }
         toolbar_title.text = getString(R.string.toolbar_string_map)
+
+        if (KotopoiskApplication.preferencesManager().isMapHint()) {
+            invisible_view.visibility = View.VISIBLE
+            map_hint.visibility = View.VISIBLE
+        }
+
+        invisible_view.setOnClickListener {
+            map_hint.visibility = View.GONE
+            invisible_view.visibility = View.GONE
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -96,6 +106,12 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
 
         ticketController.getAllTickets()
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    setLoadStart()
+                }
+                .doFinally {
+                    setLoadGone()
+                }
                 .subscribe(
                         {
                             mapController?.updateVisibleMarkers(it)
@@ -111,6 +127,12 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
         KotopoiskApplication.rxBus()
                 .listenForNewTickets()
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    setLoadStart()
+                }
+                .doFinally {
+                    setLoadGone()
+                }
                 .subscribe {
                     mapController?.moveTo(LatLng(it.lat, it.lng))
                 }
