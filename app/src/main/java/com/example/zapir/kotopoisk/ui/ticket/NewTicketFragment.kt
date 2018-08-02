@@ -182,6 +182,12 @@ class NewTicketFragment : BaseFragment() {
 
 
         initTicket().observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    showLoading(true)
+                }
+                .doFinally {
+                    showLoading(false)
+                }
                 .subscribe(
                         {
                             ticket.isPublished = true
@@ -210,6 +216,12 @@ class NewTicketFragment : BaseFragment() {
         initTicket()
         ticketController.updateTicket(ticket)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    showLoading(true)
+                }
+                .doFinally {
+                    showLoading(false)
+                }
                 .subscribe(
                         {
                             if (!finish) {
@@ -252,6 +264,18 @@ class NewTicketFragment : BaseFragment() {
 
             ticket.lat = position.latitude
             ticket.lng = position.longitude
+        }
+    }
+
+    private fun showLoading(show: Boolean){
+        if(show){
+            new_ticket_publish_button.visibility = View.INVISIBLE
+            new_ticket_save_button.visibility = View.INVISIBLE
+            progress_bar.visibility = View.VISIBLE
+        } else {
+            new_ticket_publish_button.visibility = View.VISIBLE
+            new_ticket_save_button.visibility = View.VISIBLE
+            progress_bar.visibility = View.GONE
         }
     }
 

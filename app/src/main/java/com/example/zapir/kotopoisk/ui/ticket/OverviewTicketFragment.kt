@@ -72,7 +72,7 @@ class OverviewTicketFragment : BaseFragment() {
             overview_publish_button.setOnClickListener { publishTicket(ticket) }
         }
 
-        overview_go_button.setOnClickListener { }
+        overview_go_button.setOnClickListener { navigateToMap(ticket) }
     }
 
     private fun publishTicket(ticket: Ticket) {
@@ -84,10 +84,15 @@ class OverviewTicketFragment : BaseFragment() {
                             ticket.user = it.get()
                             ticketController.publishTicket(ticket)
                                     .observeOn(AndroidSchedulers.mainThread())
+                                    .doOnSubscribe {
+                                        showLoading(true)
+                                    }
+                                    .doFinally {
+                                        showLoading(false)
+                                    }
                                     .subscribe(
                                             {
-                                                KotopoiskApplication.rxBus().postNewTicket(ticket)
-                                                navigateToMap()
+                                                navigateToMap(ticket)
                                                 //showToast(getBaseActivity(), "ticket published")
                                             },
                                             {
@@ -121,9 +126,20 @@ class OverviewTicketFragment : BaseFragment() {
         return userController.getUser(userId)
     }
 
-    private fun navigateToMap() {
+    private fun navigateToMap(ticket: Ticket){
+        KotopoiskApplication.rxBus().postNewTicket(ticket)
         startActivity(MainActivity.newIntent(getBaseActivity(), SelectedPage.MAP))
         getBaseActivity().finish()
+    }
+
+    private fun showLoading(show: Boolean){
+        if(show){
+            overview_publish_button.visibility = View.INVISIBLE
+            progress_bar.visibility = View.VISIBLE
+        } else {
+            overview_publish_button.visibility = View.VISIBLE
+            progress_bar.visibility = View.GONE
+        }
     }
 
 }
