@@ -76,6 +76,7 @@ dependencies {
 
     implementation 'com.airbnb.android:lottie:2.5.5'
 
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,59 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/info_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/info_image"
-        android:layout_width="@dimen/info_window_image_size"
-        android:layout_height="@dimen/info_window_image_size"
-        android:scaleType="centerCrop"
-        android:src="@drawable/cat_example" />
-
     <TextView
-        android:id="@+id/info_phone_number"
-        android:layout_width="@dimen/info_window_text_width"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/info_window_default_number"
-        android:textColor="@color/black"
-        android:textSize="@dimen/info_window_text_size"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/info_image"
-        app:layout_constraintTop_toBottomOf="@id/info_date"
-        app:layout_constraintVertical_chainStyle="spread" />
+        android:layout_width="@dimen/info_window_custom_background_width"
+        android:layout_height="match_parent"
+        android:background="@drawable/infowindow" />
 
-    <TextView
-        android:id="@+id/info_date"
-        android:layout_width="@dimen/info_window_text_width"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/info_window_default_date"
-        android:textColor="@color/black"
-        android:textSize="@dimen/info_window_text_size"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/info_phone_number"
-        app:layout_constraintStart_toEndOf="@id/info_image"
-        app:layout_constraintTop_toBottomOf="@id/info_overview"
-        app:layout_constraintVertical_chainStyle="spread" />
+    <android.support.v7.widget.CardView
+        android:id="@+id/info_card_view"
+        android:layout_width="@dimen/info_window_cardview_width"
+        android:layout_height="@dimen/info_window_cardview_height"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/info_window_margin_bottom"
+        android:layout_marginEnd="@dimen/info_window_margin_fix"
+        app:cardCornerRadius="@dimen/info_window_corner_radius"
+        app:cardElevation="@dimen/info_window_card_elevation">
 
-    <TextView
-        android:id="@+id/info_overview"
-        android:layout_width="@dimen/info_window_text_width_without_margin"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/info_window_text_margin"
-        android:ellipsize="end"
-        android:maxLines="3"
-        android:text="@string/lorem_ipsum"
-        android:textColor="@color/black"
-        android:textSize="@dimen/info_window_text_size"
-        app:layout_constraintBottom_toTopOf="@id/info_date"
-        app:layout_constraintStart_toEndOf="@id/info_image"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
 
-</android.support.constraint.ConstraintLayout>
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/info_image"
+                android:layout_width="@dimen/info_window_image_size"
+                android:layout_height="@dimen/info_window_image_size"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cat_example"
+                app:riv_corner_radius_bottom_left="@dimen/info_window_corner_radius"
+                app:riv_corner_radius_top_left="@dimen/info_window_corner_radius" />
 
+            <TextView
+                android:id="@+id/info_phone_number"
+                android:layout_width="@dimen/info_window_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/info_window_text_margin"
+                android:gravity="start"
+                android:text="@string/info_window_default_number"
+                android:textColor="@color/black"
+                android:textSize="@dimen/info_window_text_size"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/info_image"
+                app:layout_constraintTop_toBottomOf="@id/info_date"
+                app:layout_constraintVertical_chainStyle="spread" />
+
+            <TextView
+                android:id="@+id/info_date"
+                android:layout_width="@dimen/info_window_text_width_without_margin"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/info_window_text_margin"
+                android:gravity="start"
+                android:text="@string/info_window_default_date"
+                android:textColor="@color/black"
+                android:textSize="@dimen/info_window_text_size"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/info_phone_number"
+                app:layout_constraintStart_toEndOf="@id/info_image"
+                app:layout_constraintTop_toBottomOf="@id/info_overview"
+                app:layout_constraintVertical_chainStyle="spread" />
+
+            <TextView
+                android:id="@+id/info_overview"
+                android:layout_width="@dimen/info_window_text_width_without_margin"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/info_window_text_margin"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="@string/lorem_ipsum"
+                android:textColor="@color/black"
+                android:textSize="@dimen/info_window_text_size"
+                app:layout_constraintBottom_toTopOf="@id/info_date"
+                app:layout_constraintStart_toEndOf="@id/info_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>
