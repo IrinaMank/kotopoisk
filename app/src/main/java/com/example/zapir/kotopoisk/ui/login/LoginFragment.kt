@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.data.exceptions.ExceptionHandler
@@ -54,7 +55,7 @@ class LoginFragment : BaseFragment(), LoadListener {
                 .requestIdToken(AUTH_ID)
                 .build()
         googleSignInClient = GoogleSignIn.getClient(context!!, gso)
-        preferencesManager.init()
+        KotopoiskApplication.preferencesManager.init(context!!)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -88,7 +89,8 @@ class LoginFragment : BaseFragment(), LoadListener {
                     ?.subscribe(
                             {
                                 setLoadGone()
-                                preferencesManager.putString(LoginActivity.PREFS_ID, it.id)
+                                KotopoiskApplication.preferencesManager.putString(LoginActivity
+                                        .PREFS_ID, it.id)
                                 listener?.onLogin(it)
                             },
                             {

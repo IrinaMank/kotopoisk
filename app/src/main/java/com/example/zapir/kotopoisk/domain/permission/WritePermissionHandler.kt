@@ -5,9 +5,9 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import com.example.zapir.kotopoisk.ui.base.BaseActivity
-import com.example.zapir.kotopoisk.domain.photo.PhotoHandler
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.domain.photo.PhotoHandler
+import com.example.zapir.kotopoisk.ui.base.BaseActivity
 
 class WritePermissionHandler(private val context: BaseActivity,
                              private val photoHandler: PhotoHandler,

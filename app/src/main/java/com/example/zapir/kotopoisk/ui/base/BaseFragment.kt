@@ -11,7 +11,6 @@ import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.data.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
-import com.example.zapir.kotopoisk.domain.common.PreferencesManager
 import com.example.zapir.kotopoisk.domain.firestoreApi.ticket.TicketFirestoreController
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.example.zapir.kotopoisk.ui.login.LoginFragment
@@ -24,7 +23,6 @@ open class BaseFragment : Fragment(), ErrorDialogDisplayer {
     lateinit var disposables: CompositeDisposable
     val ticketController = TicketFirestoreController()
     val userController = UserFirestoreController()
-    lateinit var preferencesManager: PreferencesManager
     val errorHandler = ExceptionHandler.defaultHandler(this) //ToDo: warning
 
     open fun replaceFragment(fragment: BaseFragment) {
@@ -43,8 +41,6 @@ open class BaseFragment : Fragment(), ErrorDialogDisplayer {
         super.onCreate(savedInstanceState)
         logger.info("onCreate")
         disposables = CompositeDisposable()
-        preferencesManager = PreferencesManager(context!!)
-        preferencesManager.init()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

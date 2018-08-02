@@ -5,10 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
+import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
+import com.example.zapir.kotopoisk.ui.login.LoginActivity
+import com.example.zapir.kotopoisk.ui.main.MainActivity
+import com.fernandocejas.arrow.optional.Optional
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_ticket_overview.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -58,7 +66,64 @@ class OverviewTicketFragment : BaseFragment() {
         }
         description.text = ticket.overview
 
+        if (!ticket.isPublished) {
+            overview_publish_button.visibility = View.VISIBLE
+            overview_go_button.visibility = View.GONE
+            overview_publish_button.setOnClickListener { publishTicket(ticket) }
+        }
+
         overview_go_button.setOnClickListener { }
+    }
+
+    private fun publishTicket(ticket: Ticket) {
+
+        initTicket(ticket).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+                            ticket.isPublished = true
+                            ticket.user = it.get()
+                            ticketController.publishTicket(ticket)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(
+                                            {
+                                                KotopoiskApplication.rxBus().postNewTicket(ticket)
+                                                navigateToMap()
+                                                //showToast(getBaseActivity(), "ticket published")
+                                            },
+                                            {
+                                                errorHandler.handleException(it, getBaseActivity())
+                                            }
+                                    )
+                        },
+                        {
+                            errorHandler.handleException(it, getBaseActivity())
+                        }
+                )
+
+    }
+
+    private fun initTicket(ticket: Ticket): Single<Optional<User>> {
+        val userId = KotopoiskApplication.preferencesManager.getString(LoginActivity.PREFS_ID)
+        ticket.user.id = userId
+        ticket.photo.userId = userId
+        ticket.photo.ticketId = ticket.id
+        ticket.type =
+                when (animal_type.text) {
+                    getString(R.string.cat) -> TypesConverter.getTypeFromString(getString(R.string.cat), getBaseActivity())
+                    else -> TypesConverter.getTypeFromString(getString(R.string.dog), getBaseActivity())
+                }
+        ticket.breed = TypesConverter.getBreedFromString(breed.text.toString(),
+                ticket.type, getBaseActivity())
+        ticket.color = TypesConverter.getColorFromString(color.text.toString(), getBaseActivity())
+        ticket.furLength = TypesConverter.getFurLengthFromString(color.text.toString(), getBaseActivity())
+        ticket.hasCollar = collar_switch_compat.isChecked
+        ticket.overview = description.text.toString()
+        return userController.getUser(userId)
+    }
+
+    private fun navigateToMap() {
+        startActivity(MainActivity.newIntent(getBaseActivity(), SelectedPage.MAP))
+        getBaseActivity().finish()
     }
 
 }

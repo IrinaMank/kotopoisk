@@ -9,7 +9,6 @@ import com.example.zapir.kotopoisk.domain.firestoreApi.base_ticket.BaseTicketFir
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -93,7 +92,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
         return query
     }
 
-    override fun makeTicketFavourite(ticket: Ticket):Completable {
+    override fun makeTicketFavourite(ticket: Ticket): Completable {
         return baseController.makeTicketFavourite(toBaseTicket(ticket))
     }
 
@@ -139,7 +138,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
         }
     }
 
-    override fun ticketIsFound(ticket: Ticket):Completable {
+    override fun ticketIsFound(ticket: Ticket): Completable {
         ticket.user.foundPetCount += 1
         return baseController.ticketIsFound(toBaseTicket(ticket)).concatWith(userController
                 .registerOrUpdateUser(ticket.user))

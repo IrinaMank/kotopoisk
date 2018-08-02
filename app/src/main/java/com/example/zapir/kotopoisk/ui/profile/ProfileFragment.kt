@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
@@ -56,7 +57,7 @@ class ProfileFragment : BaseFragment() {
         tv_photo_pets.text = getString(R.string.pets_discovered, user.petCount)
         tv_found_pets.text = getString(R.string.found_masters, user.foundPetCount)
 
-        if (user.id != preferencesManager.getString(LoginActivity.PREFS_ID)) {
+        if (user.id != KotopoiskApplication.preferencesManager.getString(LoginActivity.PREFS_ID)) {
             edit_profile_btn.visibility = View.GONE
             favorite_tickets_btn.visibility = View.GONE
             btn_log_out.visibility = View.GONE

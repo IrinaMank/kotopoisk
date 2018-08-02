@@ -5,7 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 
 
-class PreferencesManager(val mContext: Context) {
+class PreferencesManager {
 
     private var mSharedPreferences: SharedPreferences? = null
     private val INVALID_VALUE = -1
@@ -17,9 +17,9 @@ class PreferencesManager(val mContext: Context) {
         return this
     }
 
-    fun init() {
+    fun init(mContext: Context) {
         if (mName.isEmpty()) {
-            mName = mContext.packageName
+            mName = "SharedPrefs"
         }
 
         mSharedPreferences = mContext.getSharedPreferences(mName, MODE_PRIVATE)

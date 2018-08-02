@@ -1,25 +1,28 @@
 package com.example.zapir.kotopoisk.ui.map
 
 import android.content.Context
-import com.bumptech.glide.Glide
-import com.example.zapir.kotopoisk.data.model.Ticket
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.*
-import org.slf4j.LoggerFactory
 import android.graphics.Bitmap
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.exceptions.PetNotFound
+import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
 import com.example.zapir.kotopoisk.domain.common.PetType
 import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import org.slf4j.LoggerFactory
 
 class MapController : MapInterface {
 

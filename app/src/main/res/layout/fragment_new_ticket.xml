@@ -230,10 +230,9 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:background="@color/button_color"
-            android:backgroundTint="@color/colorAccent"
-            android:text="@string/save_bold"
+            android:background="@drawable/new_ticket_button_selector"
             android:textColor="@color/crystalWhite"
+            android:text="@string/save_bold"
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description" />
@@ -246,7 +245,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:backgroundTint="@color/colorAccent"
+            android:background="@drawable/new_ticket_button_selector"
             android:text="@string/publish"
             android:textColor="@color/crystalWhite"
 

@@ -9,11 +9,11 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBar
 import android.view.MenuItem
 import com.example.zapir.kotopoisk.R
+import com.example.zapir.kotopoisk.domain.bottomBarApi.BottomBarPagerAdapter
 import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.photo.AddPhotoListener
 import com.example.zapir.kotopoisk.domain.photo.PhotoHandler
 import com.example.zapir.kotopoisk.domain.photo.TicketActivity
-import com.example.zapir.kotopoisk.domain.bottomBarApi.BottomBarPagerAdapter
 import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
