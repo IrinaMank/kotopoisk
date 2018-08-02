@@ -8,6 +8,7 @@ import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.domain.firestoreApi.base_ticket.BaseTicketFirestoreController
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.fernandocejas.arrow.optional.Optional
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -66,24 +67,23 @@ class TicketFirestoreController : TicketFirestoreInterface {
     }
 
 
-    override fun uploadTicket(ticket: Ticket): Single<Unit> {
+    override fun uploadTicket(ticket: Ticket): Completable {
         return baseController.uploadTicket(toBaseTicket(ticket))
                 .concatWith(baseController.uploadPhotoBase(ticket.photo))
-                .firstOrError()
     }
 
-    override fun publishTicket(ticket: Ticket): Flowable<Unit> {
+    override fun publishTicket(ticket: Ticket): Completable {
         ticket.user.petCount += 1
         return userController.registerOrUpdateUser(ticket.user)
                 .concatWith(baseController.publishTicket(toBaseTicket(ticket)))
                 .concatWith(baseController.uploadPhotoBase(ticket.photo))
     }
 
-    override fun updateTicket(newTicket: Ticket): Single<Unit> {
+    override fun updateTicket(newTicket: Ticket): Completable {
         return baseController.updateTicket(toBaseTicket(newTicket))
     }
 
-    override fun deleteTicket(ticket: Ticket): Flowable<Unit> {
+    override fun deleteTicket(ticket: Ticket): Completable {
         ticket.user.petCount -= 1
         var query = baseController.deleteTicket(toBaseTicket(ticket))
                 .concatWith(userController.registerOrUpdateUser(ticket.user))
@@ -93,11 +93,11 @@ class TicketFirestoreController : TicketFirestoreInterface {
         return query
     }
 
-    override fun makeTicketFavourite(ticket: Ticket): Single<Unit> {
+    override fun makeTicketFavourite(ticket: Ticket):Completable {
         return baseController.makeTicketFavourite(toBaseTicket(ticket))
     }
 
-    override fun makeTicketUnFavourite(ticket: Ticket): Single<Unit> {
+    override fun makeTicketUnFavourite(ticket: Ticket): Completable {
         return baseController.makeTicketUnFavourite(toBaseTicket(ticket))
     }
 
@@ -139,10 +139,10 @@ class TicketFirestoreController : TicketFirestoreInterface {
         }
     }
 
-    override fun ticketIsFound(ticket: Ticket): Single<Unit> {
+    override fun ticketIsFound(ticket: Ticket):Completable {
         ticket.user.foundPetCount += 1
         return baseController.ticketIsFound(toBaseTicket(ticket)).concatWith(userController
-                .registerOrUpdateUser(ticket.user)).firstOrError()
+                .registerOrUpdateUser(ticket.user))
     }
 
 

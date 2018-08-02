@@ -8,13 +8,14 @@ import com.example.zapir.kotopoisk.data.model.Photo
 import com.fernandocejas.arrow.optional.Optional
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import io.reactivex.Completable
 import io.reactivex.Single
 import org.slf4j.LoggerFactory
 
 class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
 
-    override fun uploadPhotoBase(photo: Photo): Single<Unit> {
-        return Single.create { emitter ->
+    override fun uploadPhotoBase(photo: Photo): Completable {
+        return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
@@ -25,7 +26,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(Unit)
+                        emitter.onComplete()
                     }
                     .addOnFailureListener {
                         logger.error("Error uploading photo: $it")
@@ -33,6 +34,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                     }
         }
     }
+
 
     private val db = FirebaseFirestore.getInstance()
     private val storageRef = FirebaseStorage.getInstance().reference
@@ -161,8 +163,8 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
     }
 
 
-    override fun uploadTicket(ticket: BaseTicket): Single<Unit> {
-        return Single.create { emitter ->
+    override fun uploadTicket(ticket: BaseTicket): Completable {
+        return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
@@ -173,7 +175,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(Unit)
+                        emitter.onComplete()
                     }
                     .addOnFailureListener {
                         logger.error("Error uploading ticket: $it")
@@ -182,10 +184,10 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
         }
     }
 
-    override fun publishTicket(ticket: BaseTicket): Single<Unit> {
+    override fun publishTicket(ticket: BaseTicket): Completable {
         ticket.isPublished = true
 
-        return Single.create { emitter ->
+        return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
@@ -196,7 +198,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(Unit)
+                        emitter.onComplete()
                     }
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
@@ -205,8 +207,8 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
         }
     }
 
-    override fun updateTicket(newTicket: BaseTicket): Single<Unit> {
-        return Single.create { emitter ->
+    override fun updateTicket(newTicket: BaseTicket): Completable {
+        return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
@@ -217,7 +219,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(Unit)
+                        emitter.onComplete()
                     }
                     .addOnFailureListener {
                         logger.error("Error updating ticket: $it")
@@ -226,8 +228,8 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
         }
     }
 
-    override fun deleteTicket(ticket: BaseTicket): Single<Unit> {
-        return Single.create { emitter ->
+    override fun deleteTicket(ticket: BaseTicket): Completable {
+        return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
@@ -238,7 +240,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(Unit)
+                        emitter.onComplete()
                     }
                     .addOnFailureListener {
                         logger.error("Error deleting ticket: $it")
@@ -247,8 +249,8 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
         }
     }
 
-    override fun makeTicketFavourite(ticket: BaseTicket): Single<Unit> {
-        return Single.create { emitter ->
+    override fun makeTicketFavourite(ticket: BaseTicket): Completable {
+        return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
@@ -259,7 +261,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(Unit)
+                        emitter.onComplete()
                     }
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
@@ -269,8 +271,8 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
 
     }
 
-    override fun makeTicketUnFavourite(ticket: BaseTicket): Single<Unit> {
-        return Single.create { emitter ->
+    override fun makeTicketUnFavourite(ticket: BaseTicket): Completable {
+        return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
@@ -284,7 +286,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                         if (!it.isEmpty) {
                             it.forEach { it.reference.delete() }
                         }
-                        emitter.onSuccess(Unit)
+                        emitter.onComplete()
                     }
                     .addOnFailureListener {
                         logger.error("Error publishing ticket: $it")
@@ -384,9 +386,9 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
         }
     }
 
-    override fun ticketIsFound(ticket: BaseTicket): Single<Unit> {
+    override fun ticketIsFound(ticket: BaseTicket): Completable {
         ticket.isFound = true
-        return Single.create { emitter ->
+        return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
@@ -397,7 +399,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(Unit)
+                        emitter.onComplete()
                     }
                     .addOnFailureListener {
                         logger.error("Error updating ticket: $it")

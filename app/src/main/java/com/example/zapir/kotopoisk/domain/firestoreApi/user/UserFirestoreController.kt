@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import io.reactivex.Completable
 import io.reactivex.Single
 import org.slf4j.LoggerFactory
 
@@ -83,8 +84,8 @@ class UserFirestoreController : UserFirestoreInterface {
 
     }
 
-    override fun registerOrUpdateUser(user: User): Single<Unit> {
-        return Single.create { emitter ->
+    override fun registerOrUpdateUser(user: User): Completable {
+        return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
@@ -96,7 +97,7 @@ class UserFirestoreController : UserFirestoreInterface {
                         if (emitter.isDisposed) {
                             return@addOnSuccessListener
                         }
-                        emitter.onSuccess(Unit)
+                        emitter.onComplete()
                     }
                     .addOnFailureListener {
                         logger.error("Error updating user: $it")
