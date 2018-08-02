@@ -27,4 +27,11 @@
     <dimen name="activity_map_location_button_width">128dp</dimen>
     <dimen name="activity_map_location_margin_bottom">8dp</dimen>
     <dimen name="activity_map_location_margin">48dp</dimen>
+    <dimen name="info_window_corner_radius">24dp</dimen>
+    <dimen name="info_window_card_elevation">0dp</dimen>
+    <dimen name="info_window_margin_fix">1dp</dimen>
+    <dimen name="info_window_margin_bottom">10dp</dimen>
+    <dimen name="info_window_custom_background_width">290dp</dimen>
+    <dimen name="info_window_cardview_width">260dp</dimen>
+    <dimen name="info_window_cardview_height">96dp</dimen>
 </resources>

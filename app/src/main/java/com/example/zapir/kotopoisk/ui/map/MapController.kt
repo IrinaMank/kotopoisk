@@ -16,6 +16,7 @@ import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
 import com.example.zapir.kotopoisk.domain.common.PetType
 import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
+import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
@@ -89,7 +90,7 @@ class MapController : MapInterface {
 
     override fun moveTo(newPoint: LatLng, zoom: Float) {
         val cameraPosition = CameraPosition.Builder().target(newPoint).zoom(zoom).build()
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
     override fun updateVisibleMarkers(newTickets: Collection<Ticket>) {
@@ -142,6 +143,8 @@ class MapController : MapInterface {
                         infoWindowAdapter.ticket = ticket
                         infoWindowAdapter.photo = resource
                         marker.showInfoWindow()
+                        val cam = CameraUpdateFactory.newLatLng(marker.position)
+                        map.animateCamera(cam)
                     }
                 })
 
