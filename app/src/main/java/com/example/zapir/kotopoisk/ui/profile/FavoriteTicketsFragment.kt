@@ -77,6 +77,7 @@ class FavoriteTicketsFragment : BaseFragment(), OnItemClickListener, LoadListene
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     {
+                                        adapter.clearItems()
                                         adapter.items = ArrayList(it)
                                         if (it.isEmpty()) {
                                             my_tickets_placeholder.visibility = View.VISIBLE

@@ -61,6 +61,7 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
+                                adapter.clearItems()
                                 setLoadGone()
                                 adapter.items = ArrayList(it)
                                 if (it.isEmpty()) {
@@ -87,7 +88,7 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
     }
 
     override fun onItemClick(ticket: Ticket) {
-        (parentFragment as BaseFragment).addFragment(OverviewTicketFragment.newInstance(ticket))
+        (parentFragment as BaseFragment).replaceFragment(OverviewTicketFragment.newInstance(ticket))
     }
 
     override fun onFavorClick(ticket: Ticket) {
