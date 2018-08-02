@@ -15,7 +15,7 @@ import java.io.IOException
 class FileSystemManager(private var context: BaseActivity) {
 
     private val DEGREES_180 = 180f
-    private val DEGREES_90 = 180f
+    private val DEGREES_90 = 90f
     private val KBlimit = 10240000
 
     fun decodeImageFromUri(uri: Uri): Bitmap? {
@@ -30,7 +30,7 @@ class FileSystemManager(private var context: BaseActivity) {
 
     private fun decodeBitmapFromUri(uri: Uri): Bitmap? {
         try {
-            val imageStream = context.contentResolver.openInputStream(uri)
+            var imageStream = context.contentResolver.openInputStream(uri)
             if (imageStream == null) {
                 return null
             } else {
@@ -39,9 +39,15 @@ class FileSystemManager(private var context: BaseActivity) {
                 BitmapFactory.decodeStream(imageStream, null, options)
                 options.inSampleSize = calculateInSampleSize(options)
                 options.inJustDecodeBounds = false
-                val bitmap = BitmapFactory.decodeStream(imageStream, null, options)
                 imageStream.close()
-                return bitmap
+                imageStream = context.contentResolver.openInputStream(uri)
+                if (imageStream == null) {
+                    return null
+                } else {
+                    val bitmap = BitmapFactory.decodeStream(imageStream, null, options)
+                    imageStream.close()
+                    return bitmap
+                }
             }
         } catch (e: IOException) {
             Log.e("FileSystemManager error", e.message)
