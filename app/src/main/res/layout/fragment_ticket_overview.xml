@@ -269,7 +269,7 @@
 
 
         <View
-            android:id="@+id/progress_bar"
+            android:id="@+id/progress_bar_overview"
             android:layout_width="match_parent"
             android:layout_height="@dimen/map_fragment_load_anim_height"
             android:background="@drawable/load_anim"

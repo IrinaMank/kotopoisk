@@ -23,6 +23,7 @@ import com.example.zapir.kotopoisk.ui.profile.ProfileFragment
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_ticket_overview.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.concurrent.TimeUnit
@@ -86,12 +87,13 @@ class OverviewTicketFragment : BaseFragment() {
 
         overview_go_button.setOnClickListener { }
 
-        owner.paintFlags = owner.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        owner.setOnClickListener {
-            val manager = (context as BaseActivity).supportFragmentManager
-            TransactionUtils.replaceFragment(manager, R.id.container, ProfileFragment.newInstance
-            (ticket.user))
-        }
+//        owner.paintFlags = owner.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+//        owner.setOnClickListener {
+//            val manager = (context as BaseActivity).supportFragmentManager
+//            TransactionUtils.replaceFragment(activity?.supportFragmentManager!!, R.id.container,
+//            ProfileFragment.newInstance
+//            (ticket.user))
+//        }
     }
 
     private fun publishTicket(ticket: Ticket) {

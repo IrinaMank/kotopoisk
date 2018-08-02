@@ -152,6 +152,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                 return@create
             }
             db.collection("favouriteTickets")
+                    .whereEqualTo("userId", userId)
                     .get()
                     .addOnSuccessListener {
                         val tickets = it.map { document -> document.toObject(FavoriteTicket::class.java) }

@@ -53,8 +53,7 @@ class EditProfileFragment : BaseFragment() {
         register_button.setOnClickListener {
             if (validateText()) {
                 fillUser()
-                disposables.add((parentFragment as BaseFragment).userController.registerOrUpdateUser
-                (user)
+                disposables.add((parentFragment as BaseFragment).userController.registerUser(user)
                         .timeout(5, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -62,8 +61,7 @@ class EditProfileFragment : BaseFragment() {
                                     fragmentManager?.popBackStack()
                                 },
                                 {
-                                    ExceptionHandler.defaultHandler(parentFragment as ErrorDialogDisplayer)
-                                            .handleException(it, context!!)
+                                    ExceptionHandler.defaultHandler(parentFragment as ErrorDialogDisplayer).handleException(it, context!!)
                                 }
                         ))
             }

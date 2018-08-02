@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
+import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.map.LoadListener
 import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
@@ -103,7 +105,8 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
     }
 
     override fun onItemClick(ticket: Ticket) {
-        (parentFragment as BaseFragment).replaceFragment(OverviewTicketFragment.newInstance(ticket))
+        val manager = (context as BaseActivity).supportFragmentManager
+        TransactionUtils.replaceFragment(manager, R.id.container, OverviewTicketFragment.newInstance(ticket))
     }
 
     override fun onFavorClick(ticket: Ticket) {

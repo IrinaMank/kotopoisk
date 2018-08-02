@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
+import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.profile_content.*
@@ -78,15 +80,21 @@ class ProfileFragment : BaseFragment() {
 
 
         edit_profile_btn.setOnClickListener {
-            (parentFragment as BaseFragment).replaceFragment(EditProfileFragment.newInstance(user))
+            (parentFragment as? BaseFragment)?.replaceFragment(EditProfileFragment.newInstance
+            (user))
         }
 
         my_tickets_btn.setOnClickListener {
-            (parentFragment as BaseFragment).replaceFragment(MyTicketListFragment.newInstance(user))
+            if (user.id != KotopoiskApplication.preferencesManager.getString(LoginActivity.PREFS_ID)) {
+                val manager = (context as BaseActivity).supportFragmentManager
+                TransactionUtils.replaceFragment(manager, R.id.container, MyTicketListFragment.newInstance(user))
+            } else {
+                (parentFragment as? BaseFragment)?.replaceFragment(MyTicketListFragment.newInstance(user))
+            }
         }
 
         favorite_tickets_btn.setOnClickListener {
-            (parentFragment as BaseFragment).replaceFragment(FavoriteTicketsFragment.newInstance
+            (parentFragment as? BaseFragment)?.replaceFragment(FavoriteTicketsFragment.newInstance
             (user))
         }
 
@@ -99,6 +107,14 @@ class ProfileFragment : BaseFragment() {
         }
 
         toolbar_title.text = getString(R.string.toolbar_string_profile)
+
+        if(activity?.supportFragmentManager?.backStackEntryCount!! > 0)
+        {
+            back_button.visibility = View.VISIBLE
+            back_button.setOnClickListener {
+                activity?.onBackPressed()
+            }
+        }
 
     }
 

@@ -15,6 +15,34 @@ import io.reactivex.Single
 import org.slf4j.LoggerFactory
 
 class UserFirestoreController : UserFirestoreInterface {
+    override fun updateUser(user: User): Completable {
+        return Completable.create { emitter ->
+            if (emitter.isDisposed) {
+                return@create
+            }
+            db.collection("users")
+                    .document(user.id)
+                    .update(
+                            "nickname", user.nickname,
+                            "name", user.name,
+                            "email", user.email,
+                            "phone", user.phone
+                    )
+                    .addOnSuccessListener {
+                        logger.info("Get user is successful")
+                        if (emitter.isDisposed) {
+                            return@addOnSuccessListener
+                        }
+                        emitter.onComplete()
+                    }
+                    .addOnFailureListener {
+                        logger.error("Error updating user: $it")
+                        emitter.onError(UpdateUserExceptionApi())
+                    }
+                    .addOnCanceledListener {
+                        emitter.onError(UpdateUserExceptionApi())
+                    }
+        }    }
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
@@ -84,7 +112,7 @@ class UserFirestoreController : UserFirestoreInterface {
 
     }
 
-    override fun registerOrUpdateUser(user: User): Completable {
+    override fun registerUser(user: User): Completable {
         return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
