@@ -76,7 +76,7 @@
             app:layout_constraintTop_toBottomOf="@id/new_ticket_photo" />
 
         <TextView
-            android:id="@+id/location"
+            android:id="@+id/location_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="53dp"
@@ -198,7 +198,7 @@
             app:layout_constraintTop_toBottomOf="@id/spinner_furLength" />
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/collar_switch_compat"
+            android:id="@+id/collar_switch_compat_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -209,7 +209,7 @@
             app:layout_constraintTop_toBottomOf="@id/spinner_furLength" />
 
         <EditText
-            android:id="@+id/description"
+            android:id="@+id/description_new"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"

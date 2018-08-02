@@ -15,6 +15,7 @@ import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
+import com.example.zapir.kotopoisk.domain.photo.FileSystemManager
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
 import com.example.zapir.kotopoisk.ui.main.MainActivity
@@ -23,7 +24,9 @@ import com.fernandocejas.arrow.optional.Optional
 import com.google.android.gms.maps.model.LatLng
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_new_ticket.*
+import kotlinx.android.synthetic.main.fragment_ticket_overview.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,6 +34,8 @@ import java.util.concurrent.TimeUnit
 
 
 class NewTicketFragment : BaseFragment() {
+
+    private val fileSystemManager = FileSystemManager(getBaseActivity())
 
     companion object {
         private const val INSTANCE_MESSAGE_KEY = "arguments for NewTicketFragment"
@@ -68,7 +73,7 @@ class NewTicketFragment : BaseFragment() {
 
         toolbar_title.text = getString(R.string.new_ticket)
 
-        new_ticket_photo.setImageURI(Uri.parse(newTicket.photo.url))
+        new_ticket_photo.setImageBitmap(fileSystemManager.decodeImageFromUri((Uri.parse(newTicket.photo.url))))
         ticketController.uploadPhoto(Uri.parse(newTicket.photo.url))
                 .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -171,8 +176,8 @@ class NewTicketFragment : BaseFragment() {
                 ticket.type, getBaseActivity())
         ticket.color = TypesConverter.getColorFromString(spinner_color.selectedItem.toString(), getBaseActivity())
         ticket.furLength = TypesConverter.getFurLengthFromString(spinner_furLength.selectedItem.toString(), getBaseActivity())
-        ticket.hasCollar = collar_switch_compat.isChecked
-        ticket.overview = description.text.toString()
+        ticket.hasCollar = collar_switch_compat_new.isChecked
+        ticket.overview = description_new.text.toString()
         return userController.getUser(userId)
     }
 
@@ -274,11 +279,11 @@ class NewTicketFragment : BaseFragment() {
         if(show){
             new_ticket_publish_button.visibility = View.INVISIBLE
             new_ticket_save_button.visibility = View.INVISIBLE
-            progress_bar.visibility = View.VISIBLE
+            progress_bar_overview.visibility = View.VISIBLE
         } else {
             new_ticket_publish_button.visibility = View.VISIBLE
             new_ticket_save_button.visibility = View.VISIBLE
-            progress_bar.visibility = View.GONE
+            progress_bar_overview.visibility = View.GONE
         }
     }
 

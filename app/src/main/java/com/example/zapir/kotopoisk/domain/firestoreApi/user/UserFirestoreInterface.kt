@@ -10,7 +10,8 @@ interface UserFirestoreInterface {
 
     fun getUser(userId: String): Single<Optional<User>>
     fun getCurrentUser(): Single<User>
-    fun registerOrUpdateUser(user: User): Completable
+    fun registerUser(user: User): Completable
+    fun updateUser(user: User): Completable
     fun isAuthorized(): Single<Boolean>
     fun logInWithGoogle(account: GoogleSignInAccount): Single<User>
     fun logOut()

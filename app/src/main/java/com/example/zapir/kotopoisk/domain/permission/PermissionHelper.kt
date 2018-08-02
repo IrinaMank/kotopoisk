@@ -68,10 +68,9 @@ class PermissionHelper(private val context: BaseActivity,
     private fun handle(permissionName: String) {
         val prefKeyFirstAskingPermission = "pref_first_perm_ask"
         if (permissionExists(permissionName)) {
-            if (KotopoiskApplication.preferencesManager().getBoolean(prefKeyFirstAskingPermission)
-                    !!) {
+            if (KotopoiskApplication.preferencesManager().getBoolean(prefKeyFirstAskingPermission)) {
                 KotopoiskApplication.preferencesManager().putBoolean(prefKeyFirstAskingPermission,
-                        false)!!
+                        false)
                 ActivityCompat.requestPermissions(context, arrayOf(permissionName), REQUEST_PERMISSIONS)
             } else if (isPermissionBanned(permissionName)) {
                 permissionCallback.onPermissionReallyDeclined(permissionName)

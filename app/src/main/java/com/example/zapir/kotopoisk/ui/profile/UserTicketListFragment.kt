@@ -11,8 +11,6 @@ import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.data.model.User
-import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
-import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.map.LoadListener
 import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
@@ -24,16 +22,16 @@ import kotlinx.android.synthetic.main.fragment_my_ticket_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.concurrent.TimeUnit
 
-class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
+class UserTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
 
     companion object {
 
         private const val ARG_USER = "Arg_user"
-        private const val SAVED_LIST = "My_tickets_saved_list"
+        private const val SAVED_LIST = "USER_tickets_saved_list"
 
-        fun newInstance(user: User): MyTicketListFragment = MyTicketListFragment().apply {
+        fun newInstance(user: User): UserTicketListFragment = UserTicketListFragment().apply {
             val arguments = Bundle()
-            arguments.putParcelable(MyTicketListFragment.ARG_USER, user)
+            arguments.putParcelable(UserTicketListFragment.ARG_USER, user)
             this.arguments = arguments
         }
 
@@ -41,7 +39,7 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
 
     private val adapter = TicketAdapter(this)
     val user: User by lazy {
-        arguments?.getParcelable(MyTicketListFragment.ARG_USER) as? User ?: throw
+        arguments?.getParcelable(UserTicketListFragment.ARG_USER) as? User ?: throw
         RuntimeException("No user in arguments")
     }
 
@@ -99,14 +97,10 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
         my_tickets_recycler.layoutManager = LinearLayoutManager(activity)
         my_tickets_recycler.adapter = adapter
 
-        val helper = ItemTouchHelper(SwipeCallback({ onSwipe(it) }))
-        helper.attachToRecyclerView(my_tickets_recycler)
-
     }
 
     override fun onItemClick(ticket: Ticket) {
-        val manager = (context as BaseActivity).supportFragmentManager
-        TransactionUtils.replaceFragment(manager, R.id.container, OverviewTicketFragment.newInstance(ticket))
+        (parentFragment as BaseFragment).replaceFragment(OverviewTicketFragment.newInstance(ticket))
     }
 
     override fun onFavorClick(ticket: Ticket) {
@@ -148,33 +142,5 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
         my_tickets_progress_bar?.visibility = View.GONE
         my_tickets_recycler?.visibility = View.VISIBLE
     }
-
-
-    private val onSwipe = { position: Int ->
-        val builder = AlertDialog.Builder(context!!)
-        builder.setTitle(getString(R.string.delete_ticket))
-        builder.setMessage(getString(R.string.sure_delete_ticket))
-        builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
-            ticketController.deleteTicket(adapter.items[position])
-                    .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            {
-                                user.petCount --
-                            },
-                                {
-                                errorHandler.handleException(it, context!!)
-                            }
-                    )
-            adapter.removeAt(position)
-        }
-
-        builder.setNegativeButton(getString(R.string.cancel)) { _, _ ->
-            adapter.notifyItemChanged(position)
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-    }
-
 
 }

@@ -1,9 +1,11 @@
 package com.example.zapir.kotopoisk.ui.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.data.exceptions.ExceptionHandler
@@ -51,8 +53,7 @@ class EditProfileFragment : BaseFragment() {
         register_button.setOnClickListener {
             if (validateText()) {
                 fillUser()
-                disposables.add((parentFragment as BaseFragment).userController.registerOrUpdateUser
-                (user)
+                disposables.add((parentFragment as BaseFragment).userController.registerUser(user)
                         .timeout(5, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -60,8 +61,7 @@ class EditProfileFragment : BaseFragment() {
                                     fragmentManager?.popBackStack()
                                 },
                                 {
-                                    ExceptionHandler.defaultHandler(parentFragment as ErrorDialogDisplayer)
-                                            .handleException(it, context!!)
+                                    ExceptionHandler.defaultHandler(parentFragment as ErrorDialogDisplayer).handleException(it, context!!)
                                 }
                         ))
             }
@@ -102,4 +102,20 @@ class EditProfileFragment : BaseFragment() {
         user.email = email_edit_text.text.toString()
         user.phone = phone_edit_text.text.toString()
     }
+
+    override fun onResume() {
+        super.onResume()
+        val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE)
+                as InputMethodManager
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        nickname_edit_text.requestFocus()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE)
+                as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(nickname_edit_text.windowToken, 0)
+    }
+
 }

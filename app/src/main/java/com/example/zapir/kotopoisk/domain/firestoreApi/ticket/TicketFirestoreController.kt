@@ -73,7 +73,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
 
     override fun publishTicket(ticket: Ticket): Completable {
         ticket.user.petCount += 1
-        return userController.registerOrUpdateUser(ticket.user)
+        return userController.registerUser(ticket.user)
                 .concatWith(baseController.publishTicket(toBaseTicket(ticket)))
                 .concatWith(baseController.uploadPhotoBase(ticket.photo))
     }
@@ -85,7 +85,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
     override fun deleteTicket(ticket: Ticket): Completable {
         ticket.user.petCount -= 1
         var query = baseController.deleteTicket(toBaseTicket(ticket))
-                .concatWith(userController.registerOrUpdateUser(ticket.user))
+                .concatWith(userController.registerUser(ticket.user))
         if (ticket.isFavorite) {
             query = query.concatWith(baseController.makeTicketUnFavourite(ticket = toBaseTicket(ticket)))
         }
@@ -93,10 +93,12 @@ class TicketFirestoreController : TicketFirestoreInterface {
     }
 
     override fun makeTicketFavourite(ticket: Ticket): Completable {
+        ticket.isFavorite = true
         return baseController.makeTicketFavourite(toBaseTicket(ticket))
     }
 
     override fun makeTicketUnFavourite(ticket: Ticket): Completable {
+        ticket.isFavorite = false
         return baseController.makeTicketUnFavourite(toBaseTicket(ticket))
     }
 
@@ -141,7 +143,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
     override fun ticketIsFound(ticket: Ticket): Completable {
         ticket.user.foundPetCount += 1
         return baseController.ticketIsFound(toBaseTicket(ticket)).concatWith(userController
-                .registerOrUpdateUser(ticket.user))
+                .registerUser(ticket.user))
     }
 
 

@@ -194,10 +194,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:text="@string/owner"
+            android:clickable="true"
             android:textColor="@color/black"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_owner" />
+            app:layout_constraintTop_toBottomOf="@id/title_owner"
+            android:focusable="true" />
 
         <TextView
             android:id="@+id/title_collar"
@@ -267,7 +269,7 @@
 
 
         <View
-            android:id="@+id/progress_bar"
+            android:id="@+id/progress_bar_overview"
             android:layout_width="match_parent"
             android:layout_height="@dimen/map_fragment_load_anim_height"
             android:background="@drawable/load_anim"

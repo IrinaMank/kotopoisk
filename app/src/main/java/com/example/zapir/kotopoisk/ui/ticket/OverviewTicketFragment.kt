@@ -1,5 +1,6 @@
 package com.example.zapir.kotopoisk.ui.ticket
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +11,19 @@ import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
 import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
+import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
 import com.example.zapir.kotopoisk.ui.main.MainActivity
+import com.example.zapir.kotopoisk.ui.profile.MyTicketListFragment
+import com.example.zapir.kotopoisk.ui.profile.ProfileFragment
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_ticket_overview.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.concurrent.TimeUnit
@@ -79,7 +85,15 @@ class OverviewTicketFragment : BaseFragment() {
             overview_publish_button.setOnClickListener { publishTicket(ticket) }
         }
 
-        overview_go_button.setOnClickListener { navigateToMap(ticket) }
+        overview_go_button.setOnClickListener { }
+
+//        owner.paintFlags = owner.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+//        owner.setOnClickListener {
+//            val manager = (context as BaseActivity).supportFragmentManager
+//            TransactionUtils.replaceFragment(activity?.supportFragmentManager!!, R.id.container,
+//            ProfileFragment.newInstance
+//            (ticket.user))
+//        }
     }
 
     private fun publishTicket(ticket: Ticket) {

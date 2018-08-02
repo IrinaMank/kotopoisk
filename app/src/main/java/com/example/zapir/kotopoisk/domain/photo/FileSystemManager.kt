@@ -44,6 +44,7 @@ class FileSystemManager(private var context: BaseActivity) {
                 return bitmap
             }
         } catch (e: IOException) {
+            Log.e("FileSystemManager error", e.message)
         }
 
         return null

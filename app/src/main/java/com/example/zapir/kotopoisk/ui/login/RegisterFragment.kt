@@ -9,6 +9,7 @@ import com.example.zapir.kotopoisk.data.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.data.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -51,17 +52,43 @@ class RegisterFragment : BaseFragment() {
         register_button.setOnClickListener {
             if (validateText()) {
                 fillUser()
-                (activity as? LoginActivity)?.userController?.registerOrUpdateUser(user)
+                (activity as? LoginActivity)?.userController?.getUser(user.id)
                         ?.timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                         ?.observeOn(AndroidSchedulers.mainThread())
                         ?.subscribe(
                                 {
-                                    listener?.onRegister()
+                                    var query: Completable? = null
+                                    if (it.isPresent) {
+                                        query = (activity as? LoginActivity)?.userController?.updateUser(user)
+                                    } else {
+                                        query = (activity as? LoginActivity)?.userController?.registerUser(user)
+                                    }
+                                    query?.timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
+                                            ?.observeOn(AndroidSchedulers.mainThread())
+                                            ?.subscribe(
+                                                    {
+                                                        listener?.onRegister()
+                                                    },
+                                                    {
+                                                        ExceptionHandler.defaultHandler(listener as ErrorDialogDisplayer).handleException(it, context!!)
+                                                    }
+                                            )
                                 },
                                 {
                                     ExceptionHandler.defaultHandler(listener as ErrorDialogDisplayer).handleException(it, context!!)
                                 }
                         )
+//                (activity as? LoginActivity)?.userController?.registerUser(user)
+//                        ?.timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
+//                        ?.observeOn(AndroidSchedulers.mainThread())
+//                        ?.subscribe(
+//                                {
+//                                    listener?.onRegister()
+//                                },
+//                                {
+//                                    ExceptionHandler.defaultHandler(listener as ErrorDialogDisplayer).handleException(it, context!!)
+//                                }
+//                        )
             }
         }
 

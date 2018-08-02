@@ -6,6 +6,7 @@ import com.example.zapir.kotopoisk.data.model.BaseTicket
 import com.example.zapir.kotopoisk.data.model.FavoriteTicket
 import com.example.zapir.kotopoisk.data.model.Photo
 import com.fernandocejas.arrow.optional.Optional
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Completable
@@ -39,6 +40,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
     private val db = FirebaseFirestore.getInstance()
     private val storageRef = FirebaseStorage.getInstance().reference
     private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
+    private val auth = FirebaseAuth.getInstance()
 
     override fun getAllTickets(): Single<List<BaseTicket>> {
         return Single.create { emitter ->
@@ -101,9 +103,12 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
             if (emitter.isDisposed) {
                 return@create
             }
-            db.collection("tickets")
+            var query = db.collection("tickets")
                     .whereEqualTo("finderId", userId)
-                    .get()
+                    if (auth.uid.toString() != userId) {
+                        query = query.whereEqualTo("published", true)
+                    }
+            query.get()
                     .addOnSuccessListener {
                         val tickets = it.map { document -> document.toObject(BaseTicket::class.java) }
                         if (emitter.isDisposed) {
@@ -147,6 +152,7 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
                 return@create
             }
             db.collection("favouriteTickets")
+                    .whereEqualTo("userId", userId)
                     .get()
                     .addOnSuccessListener {
                         val tickets = it.map { document -> document.toObject(FavoriteTicket::class.java) }
