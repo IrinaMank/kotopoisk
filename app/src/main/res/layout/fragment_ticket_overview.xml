@@ -10,6 +10,9 @@
 
         android:layout_height="wrap_content">
 
+        <include layout="@layout/toolbar"
+            android:id="@+id/toolbar_overview"/>
+
         <ImageView
             android:id="@+id/overview_ticket_photo"
             android:layout_width="0dp"
@@ -24,7 +27,7 @@
             app:layout_constraintDimensionRatio="0.6:0.3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_overview" />
 
         <TextView
             android:id="@+id/title_animal_type"

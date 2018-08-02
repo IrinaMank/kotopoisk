@@ -11,6 +11,7 @@ import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.android.synthetic.main.toolbar.*
 import java.util.concurrent.TimeUnit
 
 class RegisterFragment : BaseFragment() {
@@ -40,6 +41,12 @@ class RegisterFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        back_button.visibility = View.VISIBLE
+        back_button.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        toolbar_title.text = getString(R.string.register)
 
         register_button.setOnClickListener {
             if (validateText()) {

@@ -32,6 +32,11 @@ class TicketAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Ti
         notifyItemRemoved(position)
     }
 
+    fun clearItems() {
+        items.clear()
+        notifyDataSetChanged()
+    }
+
 
 }
 
