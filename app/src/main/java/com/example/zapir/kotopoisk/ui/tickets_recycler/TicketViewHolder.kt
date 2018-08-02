@@ -4,6 +4,7 @@ import android.graphics.Paint
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
@@ -19,6 +20,10 @@ class TicketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
             Glide.with(this)
                     .load(ticket.photo.url)
+                    .apply(RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.drawable.profile_icon)
+                            .error(R.drawable.profile_icon).dontAnimate())
                     .into(this.iv_element)
 
             tv_element_type.text = TypesConverter.getStringFromType(ticket.type, itemView.context)

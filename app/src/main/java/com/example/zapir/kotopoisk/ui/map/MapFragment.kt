@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.util.concurrent.TimeUnit
 
 class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
 
@@ -105,6 +106,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
         mapController?.loadListeners?.add(this)
 
         ticketController.getAllTickets()
+                .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
                     setLoadStart()

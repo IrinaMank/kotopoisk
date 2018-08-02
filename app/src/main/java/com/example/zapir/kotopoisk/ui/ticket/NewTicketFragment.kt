@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_new_ticket.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class NewTicketFragment : BaseFragment() {
@@ -69,6 +70,7 @@ class NewTicketFragment : BaseFragment() {
 
         new_ticket_photo.setImageURI(Uri.parse(newTicket.photo.url))
         ticketController.uploadPhoto(Uri.parse(newTicket.photo.url))
+                .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
@@ -193,6 +195,7 @@ class NewTicketFragment : BaseFragment() {
                             ticket.isPublished = true
                             ticket.user = it.get()
                             ticketController.publishTicket(ticket)
+                                    .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(
                                             {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
@@ -19,6 +20,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_ticket_overview.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.util.concurrent.TimeUnit
 
 class OverviewTicketFragment : BaseFragment() {
 
@@ -52,7 +54,12 @@ class OverviewTicketFragment : BaseFragment() {
 
         Glide.with(view)
                 .load(ticket.photo.url)
+                .apply(RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.drawable.profile_icon)
+                        .error(R.drawable.profile_icon).dontAnimate())
                 .into(overview_ticket_photo)
+
         animal_type.text = TypesConverter.getStringFromType(ticket.type, getBaseActivity())
         breed.text = TypesConverter.getStringFromBreed(ticket.breed
                 ?: throw RuntimeException("ticket ${ticket.id} has no breed"),
@@ -83,6 +90,7 @@ class OverviewTicketFragment : BaseFragment() {
                             ticket.isPublished = true
                             ticket.user = it.get()
                             ticketController.publishTicket(ticket)
+                                    .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .doOnSubscribe {
                                         showLoading(true)
