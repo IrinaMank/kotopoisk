@@ -63,7 +63,7 @@ class ProfileFragment : BaseFragment() {
         }
 
         email_btn.setOnClickListener {
-            val callIntent = Intent(Intent.ACTION_SEND, Uri.parse("mailto:" + tv_email.text.toString()))
+            val callIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + tv_email.text.toString()))
             //callIntent.type = "application/octet-stream"
             startActivity(Intent.createChooser(callIntent, "Написать письмо"))
         }
