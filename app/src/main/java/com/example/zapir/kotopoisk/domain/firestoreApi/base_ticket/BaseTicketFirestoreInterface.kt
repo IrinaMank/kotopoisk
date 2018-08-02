@@ -22,8 +22,8 @@ interface BaseTicketFirestoreInterface<T> {
     fun updateTicket(newTicket: T): Completable
 
     fun deleteTicket(ticket: T): Completable
-    fun makeTicketFavourite(ticket: T): Completable
-    fun makeTicketUnFavourite(ticket: T): Completable
+    fun makeTicketFavourite(ticket: T, userId: String): Completable
+    fun makeTicketUnFavourite(ticket: T, userId: String): Completable
     fun isTicketFavorite(ticketId: String, userId: String): Single<Boolean>
     fun ticketIsFound(ticket: T): Completable
 

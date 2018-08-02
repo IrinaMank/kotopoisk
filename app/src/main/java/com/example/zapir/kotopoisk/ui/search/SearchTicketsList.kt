@@ -95,24 +95,26 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
 
     override fun onFavorClick(ticket: Ticket) {
         if (ticket.isFavorite) {
+            //ticket.isFavorite = false
             ticketController.makeTicketUnFavourite(ticket)
                     .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
-
+                                //ticket.isFavorite = false
                             },
                             {
                                 errorHandler.handleException(it, context!!)
                             }
                     )
         } else {
+            //ticket.isFavorite = true
             ticketController.makeTicketFavourite(ticket)
                     .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
-
+                                //ticket.isFavorite = true
                             },
                             {
                                 errorHandler.handleException(it, context!!)

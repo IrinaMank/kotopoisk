@@ -8,6 +8,7 @@ import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.domain.firestoreApi.base_ticket.BaseTicketFirestoreController
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
 import com.fernandocejas.arrow.optional.Optional
+import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -18,13 +19,14 @@ class TicketFirestoreController : TicketFirestoreInterface {
 
     private val baseController = BaseTicketFirestoreController()
     private val userController = UserFirestoreController()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun getAllTickets(): Single<List<Ticket>> {
         return baseController.getAllTickets()
                 .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
                 .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .flatMapSingle { t: Ticket -> isFavorite(t, t.user.id) }
+                .flatMapSingle { t: Ticket -> isFavorite(t, auth.uid.toString()) }
                 .toList()
     }
 
@@ -33,7 +35,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
         return baseController.getTicket(tickedId)
                 .flatMap { convertToTicket(it.get()) }
                 .flatMap { addPhotoToTicket(it) }
-                .flatMap { isFavorite(it, it.user.id) }
+                .flatMap { isFavorite(it, auth.uid.toString()) }
                 .map { Optional.of(it) }
     }
 
@@ -42,7 +44,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                 .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
                 .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .flatMapSingle { t: Ticket -> isFavorite(t, t.user.id) }
+                .flatMapSingle { t: Ticket -> isFavorite(t, auth.uid.toString()) }
                 .toList()
     }
 
@@ -51,7 +53,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                 .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
                 .flatMapSingle { ticket: BaseTicket -> convertToTicket(ticket) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .flatMapSingle { t: Ticket -> isFavorite(t, t.user.id) }
+                .flatMapSingle { t: Ticket -> isFavorite(t, auth.uid.toString()) }
                 .toList()
     }
 
@@ -61,7 +63,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                 .flatMapSingle { ticket: FavoriteTicket -> baseController.getTicket(ticket.ticketId) }
                 .flatMapSingle { ticket: Optional<BaseTicket> -> convertToTicket(ticket.get()) }
                 .flatMapSingle { ticket: Ticket -> addPhotoToTicket(ticket) }
-                .flatMapSingle { t: Ticket -> isFavorite(t, t.user.id) }
+                .flatMapSingle { t: Ticket -> isFavorite(t, auth.uid.toString()) }
                 .toList()
     }
 
@@ -87,19 +89,20 @@ class TicketFirestoreController : TicketFirestoreInterface {
         var query = baseController.deleteTicket(toBaseTicket(ticket))
                 .concatWith(userController.registerUser(ticket.user))
         if (ticket.isFavorite) {
-            query = query.concatWith(baseController.makeTicketUnFavourite(ticket = toBaseTicket(ticket)))
+            query = query.concatWith(baseController.makeTicketUnFavourite(toBaseTicket(ticket),
+                    auth.uid.toString()))
         }
         return query
     }
 
     override fun makeTicketFavourite(ticket: Ticket): Completable {
         ticket.isFavorite = true
-        return baseController.makeTicketFavourite(toBaseTicket(ticket))
+        return baseController.makeTicketFavourite(toBaseTicket(ticket), auth.uid.toString())
     }
 
     override fun makeTicketUnFavourite(ticket: Ticket): Completable {
         ticket.isFavorite = false
-        return baseController.makeTicketUnFavourite(toBaseTicket(ticket))
+        return baseController.makeTicketUnFavourite(toBaseTicket(ticket), auth.uid.toString())
     }
 
     override fun uploadPhoto(file: Uri): Single<String> {
@@ -115,6 +118,7 @@ class TicketFirestoreController : TicketFirestoreInterface {
                 .flatMapObservable { list: List<BaseTicket> -> Observable.fromIterable(list) }
                 .flatMapSingle { foundTicket: BaseTicket -> convertToTicket(foundTicket) }
                 .flatMapSingle { foundTicket: Ticket -> addPhotoToTicket(foundTicket) }
+                .flatMapSingle { t: Ticket -> isFavorite(t, auth.uid.toString()) }
                 .toList()
     }
 

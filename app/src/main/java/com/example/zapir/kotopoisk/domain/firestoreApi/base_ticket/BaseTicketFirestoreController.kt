@@ -255,12 +255,12 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
         }
     }
 
-    override fun makeTicketFavourite(ticket: BaseTicket): Completable {
+    override fun makeTicketFavourite(ticket: BaseTicket, userId: String): Completable {
         return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
-            val ticketFavor = FavoriteTicket(userId = ticket.finderId, ticketId = ticket.id)
+            val ticketFavor = FavoriteTicket(userId = userId, ticketId = ticket.id)
             db.collection("favouriteTickets")
                     .add(ticketFavor)
                     .addOnSuccessListener {
@@ -277,13 +277,14 @@ class BaseTicketFirestoreController : BaseTicketFirestoreInterface<BaseTicket> {
 
     }
 
-    override fun makeTicketUnFavourite(ticket: BaseTicket): Completable {
+    override fun makeTicketUnFavourite(ticket: BaseTicket, userId: String): Completable {
         return Completable.create { emitter ->
             if (emitter.isDisposed) {
                 return@create
             }
             db.collection("favouriteTickets")
                     .whereEqualTo("ticketId", ticket.id)
+                    .whereEqualTo("userId", userId)
                     .get()
                     .addOnSuccessListener {
                         if (emitter.isDisposed) {
