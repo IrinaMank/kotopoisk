@@ -61,6 +61,7 @@
     <string name="publish">ОПУБЛИКОВАТЬ</string>
     <string name="save_bold">СОХРАНИТЬ</string>
     <string name="confirm">ПОДТВЕРДИТЬ</string>
+    <string name="cancel_bold">ОТМЕНА</string>
     <string name="change">ИЗМЕНИТЬ</string>
     <string name="search">ПОИСК</string>
     <string name="go">ПЕРЕЙТИ</string>
@@ -86,6 +87,7 @@
     <string name="color">Окрас</string>
     <string name="size">Размер</string>
     <string name="fur_length">Длина шерсти</string>
+    <string name="owner">Автор</string>
     <string name="has_collar">Наличие ошейника</string>
     <string name="description">Описание</string>
 

@@ -5,12 +5,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.widget.Toast
+import com.example.zapir.kotopoisk.domain.common.PreferencesManager
 import com.example.zapir.kotopoisk.ui.base.BaseActivity
 
 class PermissionHelper(private val context: BaseActivity,
                        private val permissionCallback: OnPermissionCallback) {
 
     private val REQUEST_PERMISSIONS = 1
+    private val preferencesManager = PreferencesManager(context)
 
     private fun isPermissionDeclined(permissionsName: String): Boolean {
         return ActivityCompat.checkSelfPermission(context, permissionsName) !=
@@ -65,8 +67,12 @@ class PermissionHelper(private val context: BaseActivity,
     }
 
     private fun handle(permissionName: String) {
+        val prefKeyFirstAskingPermission = "pref_first_perm_ask"
         if (permissionExists(permissionName)) {
-            if (isPermissionBanned(permissionName)) {
+            if (preferencesManager.getBoolean(prefKeyFirstAskingPermission)) {
+                preferencesManager.putBoolean(prefKeyFirstAskingPermission, false)
+                ActivityCompat.requestPermissions(context, arrayOf(permissionName), REQUEST_PERMISSIONS)
+            } else if (isPermissionBanned(permissionName)) {
                 permissionCallback.onPermissionReallyDeclined(permissionName)
             } else if (isPermissionDeclined(permissionName)) {
                 if (isExplanationNeeded(permissionName)) {

@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Photo
 import com.example.zapir.kotopoisk.data.model.Ticket
+import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
+import com.example.zapir.kotopoisk.ui.main.MainActivity
 import com.example.zapir.kotopoisk.ui.ticket.NewTicketFragmentListener
 import kotlinx.android.synthetic.main.fragment_ensuring.*
 
@@ -46,6 +48,12 @@ class AddingPhotoFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         photo.setImageURI(photoUri)
         confirmation_button.setOnClickListener { listener.onCreateNewTicket(Ticket(photo = Photo(url = photoUri.toString()))) }
+        changing_button.setOnClickListener { returnToMap() }
+    }
+
+    private fun returnToMap(){
+        startActivity(MainActivity.newIntent(getBaseActivity(), SelectedPage.MAP))
+        getBaseActivity().finish()
     }
 
 }
