@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar_search"/>
+
     <TextView
         android:id="@+id/animal_type"
         android:layout_width="wrap_content"
@@ -14,7 +17,7 @@
         android:text="@string/animal_type"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_search" />
 
     <RadioGroup
         android:id="@+id/radio_type"

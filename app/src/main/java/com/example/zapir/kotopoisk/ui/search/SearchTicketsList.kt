@@ -16,6 +16,7 @@ import com.example.zapir.kotopoisk.ui.tickets_recycler.OnItemClickListener
 import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_my_ticket_list.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
 
@@ -43,6 +44,11 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
         super.onViewCreated(view, savedInstanceState)
         val ticket = arguments?.getParcelable<Ticket>(INSTANCE_MESSAGE_KEY)
                 ?: throw RuntimeException("SearchTicketsList has no ticket in arguments")
+        back_button.visibility = View.VISIBLE
+        back_button.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        toolbar_title.text = getString(R.string.search_results)
         configRecycler(ticket, savedInstanceState)
     }
 
@@ -111,13 +117,15 @@ class SearchTicketsList : BaseFragment(), OnItemClickListener, LoadListener {
     }
 
     override fun setLoadStart() {
-        my_tickets_progress_bar.visibility = View.VISIBLE
+        my_tickets_progress_bar?.visibility = View.VISIBLE
+        my_tickets_recycler?.visibility = View.GONE
         val animation = my_tickets_progress_bar.background as AnimationDrawable
         animation.start()
     }
 
     override fun setLoadGone() {
-        my_tickets_progress_bar.visibility = View.GONE
+        my_tickets_progress_bar?.visibility = View.GONE
+        my_tickets_recycler?.visibility = View.VISIBLE
     }
 
 }

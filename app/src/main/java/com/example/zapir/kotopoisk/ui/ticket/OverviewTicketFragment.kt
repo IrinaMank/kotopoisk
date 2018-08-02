@@ -10,6 +10,7 @@ import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_ticket_overview.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class OverviewTicketFragment : BaseFragment() {
 
@@ -31,6 +32,12 @@ class OverviewTicketFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        back_button.visibility = View.VISIBLE
+        back_button.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        toolbar_title.text = getString(R.string.ticket_overview)
 
         val ticket = arguments?.getParcelable<Ticket>(INSTANCE_MESSAGE_KEY)
                 ?: throw RuntimeException("OverviewTicketFragment has no ticket in arguments")

@@ -74,11 +74,9 @@ class TicketFirestoreController : TicketFirestoreInterface {
 
     override fun publishTicket(ticket: Ticket): Flowable<Unit> {
         ticket.user.petCount += 1
-        return baseController.publishTicket(toBaseTicket(ticket))
+        return userController.registerOrUpdateUser(ticket.user)
+                .concatWith(baseController.publishTicket(toBaseTicket(ticket)))
                 .concatWith(baseController.uploadPhotoBase(ticket.photo))
-                .concatWith(userController.registerOrUpdateUser(ticket.user))
-
-
     }
 
     override fun updateTicket(newTicket: Ticket): Single<Unit> {

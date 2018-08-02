@@ -10,6 +10,7 @@ import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_ticket_search.*
+import kotlinx.android.synthetic.main.toolbar.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,6 +52,7 @@ class SearchFragment : BaseFragment() {
         cat_radio.setOnClickListener { changeSpinnersForCat() }
         dog_radio.setOnClickListener { changeSpinnersForDog() }
         search_button.setOnClickListener { startSearch() }
+        toolbar_title.text = getString(R.string.toolbar_string_search)
     }
 
     private fun changeSpinnersForCat() {

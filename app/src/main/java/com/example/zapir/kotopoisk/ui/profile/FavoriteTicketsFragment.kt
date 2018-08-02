@@ -18,6 +18,7 @@ import com.example.zapir.kotopoisk.ui.tickets_recycler.SwipeCallback
 import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_my_ticket_list.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class FavoriteTicketsFragment : BaseFragment(), OnItemClickListener, LoadListener {
 
@@ -52,7 +53,11 @@ class FavoriteTicketsFragment : BaseFragment(), OnItemClickListener, LoadListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setLoadStart()
-
+        back_button.visibility = View.VISIBLE
+        back_button.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        toolbar_title.text = getString(R.string.favorite_tickets)
         setRecycler(savedInstanceState)
         setHasOptionsMenu(true)
     }
@@ -93,13 +98,15 @@ class FavoriteTicketsFragment : BaseFragment(), OnItemClickListener, LoadListene
     }
 
     override fun setLoadStart() {
-        my_tickets_progress_bar.visibility = View.VISIBLE
+        my_tickets_progress_bar?.visibility = View.VISIBLE
+        my_tickets_recycler?.visibility = View.GONE
         val animation = my_tickets_progress_bar.background as AnimationDrawable
         animation.start()
     }
 
     override fun setLoadGone() {
-        my_tickets_progress_bar.visibility = View.GONE
+        my_tickets_progress_bar?.visibility = View.GONE
+        my_tickets_recycler?.visibility = View.VISIBLE
     }
 
     override fun onFavorClick(ticket: Ticket) {

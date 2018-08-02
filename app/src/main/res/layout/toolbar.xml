@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tcu_layout"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize">
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?colorPrimary"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="start|center"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingEnd="@dimen/size_medium"
+        android:paddingStart="48dp"
+        android:singleLine="true"
+        android:textColor="@color/crystalWhite"
+        android:textSize="@dimen/text_size_large"
+        tools:text="Your text here"/>
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="?actionBarSize"
+        android:layout_height="?actionBarSize"
+        android:layout_alignBottom="@id/toolbar_title"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/toolbar_title"
+        android:background="?selectableItemBackground"
+        android:padding="@dimen/size_medium"
+        android:src="@drawable/ic_arrow"
+        android:visibility="gone"/>
+</RelativeLayout>

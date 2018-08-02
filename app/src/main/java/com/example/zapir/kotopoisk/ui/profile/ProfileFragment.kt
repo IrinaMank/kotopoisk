@@ -11,6 +11,7 @@ import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreControl
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.profile_content.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 
 class ProfileFragment : BaseFragment() {
@@ -77,6 +78,8 @@ class ProfileFragment : BaseFragment() {
             activity?.finish()
 
         }
+
+        toolbar_title.text = getString(R.string.toolbar_string_profile)
 
     }
 

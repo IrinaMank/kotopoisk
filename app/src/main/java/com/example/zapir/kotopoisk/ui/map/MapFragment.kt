@@ -16,6 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
 
@@ -46,6 +47,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
         map_view.onCreate(savedInstanceState)
         map_view.getMapAsync(this)
         map_fab.setOnClickListener { handlerFloatActionBar() }
+        toolbar_title.text = getString(R.string.toolbar_string_map)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

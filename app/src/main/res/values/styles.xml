@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -9,7 +9,7 @@
     </style>
 
     <!-- Custom application theme. -->
-    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DarkTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
@@ -20,13 +20,13 @@
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
 
-    <style name="SingleLineEditText" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="SingleLineEditText" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:inputType">text</item>
         <item name="android:singleLine">true</item>
     </style>
 
     <!-- For overview. -->
-     <style name="MultiLineEditText" parent="Theme.AppCompat.Light.DarkActionBar">
+     <style name="MultiLineEditText" parent="Theme.AppCompat.Light.NoActionBar">
          <item name="android:inputType">textMultiLine</item>
          <item name="android:maxHeight">@dimen/edit_text_max_height</item>
          <item name="android:scrollbars">vertical</item>

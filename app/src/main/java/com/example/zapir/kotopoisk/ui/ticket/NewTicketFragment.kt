@@ -11,18 +11,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.data.model.User
+import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
+import com.example.zapir.kotopoisk.ui.main.MainActivity
 import com.example.zapir.kotopoisk.ui.map.LocationActivity
 import com.fernandocejas.arrow.optional.Optional
 import com.google.android.gms.maps.model.LatLng
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_new_ticket.*
+import kotlinx.android.synthetic.main.toolbar.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,7 +60,7 @@ class NewTicketFragment : BaseFragment() {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
         override fun afterTextChanged(s: Editable?) {
-            updateTicket()
+            updateTicket(false)
         }
     }
 
@@ -69,6 +73,13 @@ class NewTicketFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val newTicket = arguments?.getParcelable<Ticket>(INSTANCE_MESSAGE_KEY)
                 ?: throw Exception("no Ticket in NewTicketFragment arguments")
+
+        back_button.visibility = View.VISIBLE
+        back_button.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
+        toolbar_title.text = getString(R.string.new_ticket)
 
         new_ticket_photo.setImageURI(Uri.parse(newTicket.photo.url))
         ticketController.uploadPhoto(Uri.parse(newTicket.photo.url))
@@ -108,16 +119,16 @@ class NewTicketFragment : BaseFragment() {
 
         cat_radio.setOnClickListener {
             ticket.type = 0
-            updateTicket()
+            updateTicket(false)
             changeSpinnersForCat()
         }
         dog_radio.setOnClickListener {
             ticket.type = 1
-            updateTicket()
+            updateTicket(false)
             changeSpinnersForDog()
         }
 
-        new_ticket_save_button.setOnClickListener { updateTicket() }
+        new_ticket_save_button.setOnClickListener { updateTicket(true) }
         new_ticket_publish_button.setOnClickListener { publishTicket() }
         location.setOnClickListener { handlerClickerListener() }
     }
@@ -171,16 +182,23 @@ class NewTicketFragment : BaseFragment() {
             return
         }
 
-        ticket.isPublished = true
+
         initTicket().observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
+                            ticket.isPublished = true
                             ticket.user = it.get()
                             ticketController.publishTicket(ticket)
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(
-                                            { showToast(getBaseActivity(), "ticket published") },
-                                            { errorHandler.handleException(it, getBaseActivity()) }
+                                            {
+                                                KotopoiskApplication.rxBus().postNewTicket(ticket)
+                                                navigateToMap()
+                                                //showToast(getBaseActivity(), "ticket published")
+                                            },
+                                            {
+                                                errorHandler.handleException(it, getBaseActivity())
+                                            }
                                     )
                         },
                         {
@@ -190,17 +208,24 @@ class NewTicketFragment : BaseFragment() {
 
     }
 
-    private fun updateTicket() {
+    private fun updateTicket(finish: Boolean) {
         initTicket()
         ticketController.updateTicket(ticket)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
-                            // TODO("Не понял, зачем здесь эта строка. Меняем кошку на собачку, например, зачем на карту то переходить?")
-                            //getBaseActivity().selectBottomBarTab(SelectedPage.MAP.value)
+                            if(!finish) {
+                                return@subscribe
+                            }
+                            navigateToMap()
                         },
                         { errorHandler.handleException(it, getBaseActivity()) }
                 )
+    }
+
+    private fun navigateToMap(){
+        startActivity(MainActivity.newIntent(context!!, SelectedPage.MAP))
+        getBaseActivity().finish()
     }
 
     private fun handlerClickerListener() {
