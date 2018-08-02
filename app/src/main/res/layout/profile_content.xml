@@ -6,7 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:backgroundTint="@color/crystalWhite">
 
         <include layout="@layout/toolbar" />
 
@@ -98,6 +99,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/number_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -119,9 +121,24 @@
                 android:layout_toEndOf="@id/ivContactItem1"
                 tools:text="(123) 456-7890"
                 style="@style/ProfileMainTextView" />
+
+            <ToggleButton
+                android:id="@+id/chkState_phones"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginStart="@dimen/size_small"
+                android:background="@drawable/ic_navigate_next_black_24dp"
+                android:checked="true"
+                android:padding="6dp"
+                android:textOff=""
+                android:textOn="" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/email_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -143,6 +160,20 @@
                 android:layout_toEndOf="@id/ivContactItem3"
                 tools:text="chintan@letsnurture.com"
                 style="@style/ProfileMainTextView" />
+
+            <ToggleButton
+                android:id="@+id/chkState_email"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginStart="@dimen/size_small"
+                android:background="@drawable/ic_navigate_next_black_24dp"
+                android:checked="true"
+                android:padding="6dp"
+                android:textOff=""
+                android:textOn="" />
 
         </RelativeLayout>
 
@@ -279,6 +310,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/size_small"
+                android:textColor="@color/crystalWhite"
                 android:backgroundTint="@color/colorAccent"
                 android:text="@string/log_out" />
     </LinearLayout>

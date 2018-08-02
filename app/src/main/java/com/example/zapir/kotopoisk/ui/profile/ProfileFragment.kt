@@ -1,6 +1,7 @@
 package com.example.zapir.kotopoisk.ui.profile
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,6 +54,17 @@ class ProfileFragment : BaseFragment() {
         tv_full_name.text = user.name
         tv_phone.text = user.phone
         tv_email.text = user.email
+        number_btn.setOnClickListener{
+            val number = Uri.parse("tel:"+tv_phone.text.toString())
+            val callIntent = Intent(Intent.ACTION_DIAL, number)
+            startActivity(Intent.createChooser(callIntent, "Позвонить"))
+        }
+
+        email_btn.setOnClickListener {
+            val callIntent = Intent(Intent.ACTION_SEND, Uri.parse("mailto:" + tv_email.text.toString()))
+            //callIntent.type = "application/octet-stream"
+            startActivity(Intent.createChooser(callIntent, "Написать письмо"))
+        }
 
         tv_photo_pets.text = getString(R.string.pets_discovered, user.petCount)
         tv_found_pets.text = getString(R.string.found_masters, user.foundPetCount)
