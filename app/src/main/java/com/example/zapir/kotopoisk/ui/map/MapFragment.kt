@@ -142,6 +142,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
 
     private fun handlerFloatActionBar() {
         logger.info("Click on float action bar")
+        invisible_view.visibility = View.GONE
         callDialog()
     }
 
@@ -152,6 +153,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, LoadListener {
 
     override fun setLoadStart() {
         progress_bar.visibility = View.VISIBLE
+        map_hint.visibility = View.GONE
         val animation = progress_bar.background as AnimationDrawable
         animation.start()
     }

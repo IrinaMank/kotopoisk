@@ -8,7 +8,7 @@
     <string name="toolbar_string_profile">Профиль</string>
     <string name="enter_your_nickname">Введите никнейм</string>
     <string name="enter_full_name">Введите полное имя</string>
-    <string name="enter_email">Ввеедите email</string>
+    <string name="enter_email">Введите email</string>
     <string name="enter_phone">Введите номер телефона</string>
     <string name="register">Регистрация</string>
     <string name="please_fill_field">Пожалуйста, заполните поле</string>
