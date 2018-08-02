@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit
 
 class NewTicketFragment : BaseFragment() {
 
-    private val fileSystemManager = FileSystemManager(getBaseActivity())
+    private val fileSystemManager by lazy { FileSystemManager(getBaseActivity()) }
 
     companion object {
         private const val INSTANCE_MESSAGE_KEY = "arguments for NewTicketFragment"
@@ -135,7 +135,7 @@ class NewTicketFragment : BaseFragment() {
                 showToast(getBaseActivity(), "Установите место обнаружения")
             }
         }
-        location.setOnClickListener { handlerClickerListener() }
+        location_new.setOnClickListener { handlerClickerListener() }
     }
 
     private fun changeSpinnersForCat() {
@@ -182,7 +182,7 @@ class NewTicketFragment : BaseFragment() {
     }
 
     private fun publishTicket() {
-        if (location.text != getString(R.string.location_map)) {
+        if (location_new.text != getString(R.string.location_map)) {
             showToast(getBaseActivity(), getString(R.string.error_location))
             return
         }
@@ -248,7 +248,7 @@ class NewTicketFragment : BaseFragment() {
 
     private fun handlerClickerListener() {
 
-        val position = if (location.text == getString(R.string.location_map)) {
+        val position = if (location_new.text == getString(R.string.location_map)) {
             LatLng(ticket.lat, ticket.lng)
         } else {
             null
@@ -265,7 +265,7 @@ class NewTicketFragment : BaseFragment() {
                 data != null) {
 
             val position = data.getParcelableExtra<LatLng>(Intent.EXTRA_TEXT + GET_LOCATION_KEY)
-            location.text = getString(R.string.location_map)
+            location_new.text = getString(R.string.location_map)
 
             new_ticket_save_button.isActivated = true
             new_ticket_publish_button.isActivated = true
@@ -279,11 +279,11 @@ class NewTicketFragment : BaseFragment() {
         if(show){
             new_ticket_publish_button.visibility = View.INVISIBLE
             new_ticket_save_button.visibility = View.INVISIBLE
-            progress_bar_overview.visibility = View.VISIBLE
+            progress_bar_new.visibility = View.VISIBLE
         } else {
             new_ticket_publish_button.visibility = View.VISIBLE
             new_ticket_save_button.visibility = View.VISIBLE
-            progress_bar_overview.visibility = View.GONE
+            progress_bar_new.visibility = View.GONE
         }
     }
 
