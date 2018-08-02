@@ -85,15 +85,7 @@ class OverviewTicketFragment : BaseFragment() {
             overview_publish_button.setOnClickListener { publishTicket(ticket) }
         }
 
-        overview_go_button.setOnClickListener { }
-
-//        owner.paintFlags = owner.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-//        owner.setOnClickListener {
-//            val manager = (context as BaseActivity).supportFragmentManager
-//            TransactionUtils.replaceFragment(activity?.supportFragmentManager!!, R.id.container,
-//            ProfileFragment.newInstance
-//            (ticket.user))
-//        }
+        overview_go_button.setOnClickListener { navigateToMap(ticket) }
     }
 
     private fun publishTicket(ticket: Ticket) {
@@ -148,14 +140,14 @@ class OverviewTicketFragment : BaseFragment() {
         return userController.getUser(userId)
     }
 
-    private fun navigateToMap(ticket: Ticket){
+    private fun navigateToMap(ticket: Ticket) {
         KotopoiskApplication.rxBus().postNewTicket(ticket)
         startActivity(MainActivity.newIntent(getBaseActivity(), SelectedPage.MAP))
         getBaseActivity().finish()
     }
 
-    private fun showLoading(show: Boolean){
-        if(show){
+    private fun showLoading(show: Boolean) {
+        if (show) {
             overview_publish_button.visibility = View.INVISIBLE
             progress_bar.visibility = View.VISIBLE
         } else {
