@@ -15,7 +15,7 @@ import com.example.zapir.kotopoisk.ui.main.MainActivity
 import com.example.zapir.kotopoisk.ui.ticket.NewTicketFragmentListener
 import kotlinx.android.synthetic.main.fragment_ensuring.*
 
-class AddingPhotoFragment: BaseFragment() {
+class AddingPhotoFragment : BaseFragment() {
 
     companion object {
         const val TAG = "adding photo to an advert"
@@ -32,7 +32,7 @@ class AddingPhotoFragment: BaseFragment() {
 
     }
 
-    private val listener  by lazy {
+    private val listener by lazy {
         context as? NewTicketFragmentListener
                 ?: throw Exception("Activity must implement " +
                         "BookFragmentListener")
@@ -51,7 +51,7 @@ class AddingPhotoFragment: BaseFragment() {
         changing_button.setOnClickListener { returnToMap() }
     }
 
-    private fun returnToMap(){
+    private fun returnToMap() {
         startActivity(MainActivity.newIntent(getBaseActivity(), SelectedPage.MAP))
         getBaseActivity().finish()
     }

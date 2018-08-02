@@ -5,7 +5,6 @@ import com.example.zapir.kotopoisk.data.model.Photo
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 
 interface TicketFirestoreInterface {

@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.data.model.Ticket
-import com.example.zapir.kotopoisk.data.model.User
 import com.example.zapir.kotopoisk.domain.photo.PhotoDialog
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.google.android.gms.maps.GoogleMap

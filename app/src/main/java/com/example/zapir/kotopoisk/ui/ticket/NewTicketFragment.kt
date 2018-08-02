@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -117,14 +115,14 @@ class NewTicketFragment : BaseFragment() {
         }
 
         new_ticket_save_button.setOnClickListener {
-            if(it.isActivated){
+            if (it.isActivated) {
                 updateTicket(true)
             } else {
                 showToast(getBaseActivity(), "Установите место обнаружения")
             }
         }
         new_ticket_publish_button.setOnClickListener {
-            if(it.isActivated){
+            if (it.isActivated) {
                 publishTicket()
             } else {
                 showToast(getBaseActivity(), "Установите место обнаружения")
@@ -158,7 +156,7 @@ class NewTicketFragment : BaseFragment() {
     }
 
     private fun initTicket(): Single<Optional<User>> {
-        val userId = preferencesManager.getString(LoginActivity.PREFS_ID)
+        val userId = KotopoiskApplication.preferencesManager.getString(LoginActivity.PREFS_ID)
         ticket.user.id = userId
         ticket.photo.userId = userId
         ticket.photo.ticketId = ticket.id
@@ -214,7 +212,7 @@ class NewTicketFragment : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
-                            if(!finish) {
+                            if (!finish) {
                                 return@subscribe
                             }
                             navigateToMap()
@@ -223,7 +221,7 @@ class NewTicketFragment : BaseFragment() {
                 )
     }
 
-    private fun navigateToMap(){
+    private fun navigateToMap() {
         startActivity(MainActivity.newIntent(context!!, SelectedPage.MAP))
         getBaseActivity().finish()
     }

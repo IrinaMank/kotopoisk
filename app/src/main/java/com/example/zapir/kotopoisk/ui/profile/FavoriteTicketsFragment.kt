@@ -3,7 +3,6 @@ package com.example.zapir.kotopoisk.ui.profile
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.map.LoadListener
 import com.example.zapir.kotopoisk.ui.ticket.OverviewTicketFragment
 import com.example.zapir.kotopoisk.ui.tickets_recycler.OnItemClickListener
-import com.example.zapir.kotopoisk.ui.tickets_recycler.SwipeCallback
 import com.example.zapir.kotopoisk.ui.tickets_recycler.TicketAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_my_ticket_list.*

@@ -6,11 +6,11 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
 import android.widget.Toast
+import com.example.zapir.kotopoisk.ui.main.MainActivity
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import com.example.zapir.kotopoisk.ui.main.MainActivity
 
 class PhotoHandler(private var context: MainActivity) {
 

@@ -66,7 +66,7 @@ class OverviewTicketFragment : BaseFragment() {
         }
         description.text = ticket.overview
 
-        if(!ticket.isPublished){
+        if (!ticket.isPublished) {
             overview_publish_button.visibility = View.VISIBLE
             overview_go_button.visibility = View.GONE
             overview_publish_button.setOnClickListener { publishTicket(ticket) }
@@ -76,11 +76,6 @@ class OverviewTicketFragment : BaseFragment() {
     }
 
     private fun publishTicket(ticket: Ticket) {
-        if (location.text != getString(R.string.location_map)) {
-            showToast(getBaseActivity(), getString(R.string.error_location))
-            return
-        }
-
 
         initTicket(ticket).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -108,7 +103,7 @@ class OverviewTicketFragment : BaseFragment() {
     }
 
     private fun initTicket(ticket: Ticket): Single<Optional<User>> {
-        val userId = preferencesManager.getString(LoginActivity.PREFS_ID)
+        val userId = KotopoiskApplication.preferencesManager.getString(LoginActivity.PREFS_ID)
         ticket.user.id = userId
         ticket.photo.userId = userId
         ticket.photo.ticketId = ticket.id
@@ -126,7 +121,7 @@ class OverviewTicketFragment : BaseFragment() {
         return userController.getUser(userId)
     }
 
-    private fun navigateToMap(){
+    private fun navigateToMap() {
         startActivity(MainActivity.newIntent(getBaseActivity(), SelectedPage.MAP))
         getBaseActivity().finish()
     }

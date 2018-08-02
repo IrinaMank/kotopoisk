@@ -9,8 +9,8 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.animation.AnimationUtils
+import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
-import com.example.zapir.kotopoisk.domain.common.PreferencesManager
 import com.example.zapir.kotopoisk.data.exceptions.ErrorDialogDisplayer
 import com.example.zapir.kotopoisk.data.exceptions.ExceptionHandler
 import com.example.zapir.kotopoisk.domain.firestoreApi.user.UserFirestoreController
@@ -23,12 +23,11 @@ import java.util.concurrent.TimeUnit
 class SplashActivity : AppCompatActivity(), ErrorDialogDisplayer {
 
     private val userController = UserFirestoreController()
-    private val preferencesManager = PreferencesManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        preferencesManager.init()
+        KotopoiskApplication.preferencesManager.init(this)
         scheduleSplashScreen()
     }
 
@@ -44,9 +43,9 @@ class SplashActivity : AppCompatActivity(), ErrorDialogDisplayer {
 
     private fun getSplashScreenDuration(): Long {
         val prefKeyFirstLaunch = "pref_first_launch"
-        return when (preferencesManager.getBoolean(prefKeyFirstLaunch)) {
+        return when (KotopoiskApplication.preferencesManager.getBoolean(prefKeyFirstLaunch)) {
             true -> {
-                preferencesManager.putBoolean(prefKeyFirstLaunch, false)
+                KotopoiskApplication.preferencesManager.putBoolean(prefKeyFirstLaunch, false)
                 val animation = paws_image_view.background as AnimationDrawable
                 animation.isOneShot = true
                 animation.start()

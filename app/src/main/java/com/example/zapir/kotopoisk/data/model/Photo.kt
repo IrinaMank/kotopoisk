@@ -8,4 +8,4 @@ import java.util.*
 data class Photo(val id: String = UUID.randomUUID().toString(),
                  var url: String = "",
                  var userId: String = "",
-                 var ticketId: String = ""): Parcelable
+                 var ticketId: String = "") : Parcelable

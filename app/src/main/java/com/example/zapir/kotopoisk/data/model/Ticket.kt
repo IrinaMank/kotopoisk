@@ -25,5 +25,5 @@ data class Ticket(val id: String = UUID.randomUUID().toString(),
                   var isFound: Boolean = false,
                   var isPublished: Boolean = false,
                   var isFavorite: Boolean = false
-): Parcelable
+) : Parcelable
 

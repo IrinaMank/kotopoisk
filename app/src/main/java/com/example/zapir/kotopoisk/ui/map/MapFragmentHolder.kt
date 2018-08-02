@@ -16,7 +16,7 @@ class MapFragmentHolder : BaseFragment() {
 
     }
 
-    override fun replaceFragment( fragment: BaseFragment) {
+    override fun replaceFragment(fragment: BaseFragment) {
         TransactionUtils.replaceFragment(childFragmentManager, R.id.container, fragment)
     }
 
