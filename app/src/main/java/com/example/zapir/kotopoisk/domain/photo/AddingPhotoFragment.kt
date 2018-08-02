@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_ensuring.*
 class AddingPhotoFragment : BaseFragment() {
 
     companion object {
-        const val TAG = "adding photo to an advert"
         private const val INSTANCE_MESSAGE_KEY = "arguments for AddingPhotoFragment"
 
         fun newInstance(photoUri: Uri): AddingPhotoFragment {
@@ -31,6 +30,8 @@ class AddingPhotoFragment : BaseFragment() {
         }
 
     }
+
+    private val fileSystemManager by lazy { FileSystemManager(getBaseActivity()) }
 
     private val listener by lazy {
         context as? NewTicketFragmentListener
@@ -46,7 +47,7 @@ class AddingPhotoFragment : BaseFragment() {
         val photoUri = arguments?.getParcelable<Uri>(INSTANCE_MESSAGE_KEY)
                 ?: throw Exception("no uri in AddingPhotoFragment arguments")
         super.onViewCreated(view, savedInstanceState)
-        photo.setImageURI(photoUri)
+        photo.setImageBitmap(fileSystemManager.decodeImageFromUri(photoUri))
         confirmation_button.setOnClickListener { listener.onCreateNewTicket(Ticket(photo = Photo(url = photoUri.toString()))) }
         changing_button.setOnClickListener { returnToMap() }
     }

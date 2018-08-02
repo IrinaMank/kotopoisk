@@ -104,10 +104,15 @@ class OverviewTicketFragment : BaseFragment() {
                             ticketController.publishTicket(ticket)
                                     .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
                                     .observeOn(AndroidSchedulers.mainThread())
+                                    .doOnSubscribe {
+                                        showLoading(true)
+                                    }
+                                    .doFinally {
+                                        showLoading(false)
+                                    }
                                     .subscribe(
                                             {
-                                                KotopoiskApplication.rxBus().postNewTicket(ticket)
-                                                navigateToMap()
+                                                navigateToMap(ticket)
                                                 //showToast(getBaseActivity(), "ticket published")
                                             },
                                             {
@@ -141,9 +146,20 @@ class OverviewTicketFragment : BaseFragment() {
         return userController.getUser(userId)
     }
 
-    private fun navigateToMap() {
+    private fun navigateToMap(ticket: Ticket){
+        KotopoiskApplication.rxBus().postNewTicket(ticket)
         startActivity(MainActivity.newIntent(getBaseActivity(), SelectedPage.MAP))
         getBaseActivity().finish()
+    }
+
+    private fun showLoading(show: Boolean){
+        if(show){
+            overview_publish_button.visibility = View.INVISIBLE
+            progress_bar.visibility = View.VISIBLE
+        } else {
+            overview_publish_button.visibility = View.VISIBLE
+            progress_bar.visibility = View.GONE
+        }
     }
 
 }

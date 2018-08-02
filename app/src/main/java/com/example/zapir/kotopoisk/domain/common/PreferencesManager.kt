@@ -8,7 +8,7 @@ import android.content.SharedPreferences
 class PreferencesManager {
 
     private var mSharedPreferences: SharedPreferences? = null
-    private val INVALID_VALUE = -1
+    private val HINT_MAP = "Hint map"
 
     private var mName: String = ""
 
@@ -25,6 +25,14 @@ class PreferencesManager {
         mSharedPreferences = mContext.getSharedPreferences(mName, MODE_PRIVATE)
     }
 
+    fun isMapHint(): Boolean {
+        return if (getBoolean(HINT_MAP, true)) {
+            putBoolean(HINT_MAP, false)
+            true
+        } else {
+            false
+        }
+    }
     fun putString(key: String, value: String) {
         mSharedPreferences?.let {
             val editor = it.edit()
