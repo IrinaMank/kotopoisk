@@ -154,9 +154,9 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
-
+                                user.petCount --
                             },
-                            {
+                                {
                                 errorHandler.handleException(it, context!!)
                             }
                     )

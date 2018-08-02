@@ -75,7 +75,7 @@
             android:layout_width="0dp"
             android:visibility="gone"
             android:text="@string/not_published"
-            android:textColor="@color/red"
+            android:textColor="@color/colorAccent"
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/size_small"
             android:paddingStart="@dimen/size_small"

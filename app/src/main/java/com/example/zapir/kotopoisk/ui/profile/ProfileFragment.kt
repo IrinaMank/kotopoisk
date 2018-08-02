@@ -39,6 +39,12 @@ class ProfileFragment : BaseFragment() {
         RuntimeException("No user in arguments")
     }
 
+    override fun onResume() {
+        super.onResume()
+        tv_photo_pets.text = getString(R.string.pets_discovered, user.petCount)
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
