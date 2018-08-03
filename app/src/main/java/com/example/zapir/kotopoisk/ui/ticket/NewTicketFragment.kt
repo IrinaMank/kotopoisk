@@ -175,7 +175,7 @@ class NewTicketFragment : BaseFragment() {
         ticket.breed = TypesConverter.getBreedFromString(spinner_breed.selectedItem.toString(),
                 ticket.type, getBaseActivity())
         ticket.color = TypesConverter.getColorFromString(spinner_color.selectedItem.toString(), getBaseActivity())
-        ticket.size = TypesConverter.getSizeFromString(spinner_size.selectedItem.toString(), ticket.type ,getBaseActivity())
+        ticket.size = TypesConverter.getSizeFromString(spinner_size.selectedItem.toString(), ticket.type, getBaseActivity())
         ticket.furLength = TypesConverter.getFurLengthFromString(spinner_furLength.selectedItem.toString(), getBaseActivity())
         ticket.hasCollar = collar_switch_compat_new.isChecked
         ticket.overview = description_new.text.toString()
@@ -222,15 +222,13 @@ class NewTicketFragment : BaseFragment() {
     }
 
     private fun updateTicket(finish: Boolean) {
-        if(finish){
+        if (finish) {
             if (location_new.text != getString(R.string.location_map)) {
                 showToast(getBaseActivity(), getString(R.string.error_location))
                 return
             }
         }
-        initTicket()
-        ticketController.updateTicket(ticket)
-                .observeOn(AndroidSchedulers.mainThread())
+        initTicket().observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
                     showLoading(true)
                 }
@@ -239,13 +237,29 @@ class NewTicketFragment : BaseFragment() {
                 }
                 .subscribe(
                         {
-                            if (!finish) {
-                                return@subscribe
-                            }
-                            navigateToMap()
+                            ticket.user = it.get()
+                            ticketController.updateTicket(ticket)
+                                    .timeout(R.integer.timeout.toLong(), TimeUnit.SECONDS)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .doOnSubscribe {
+                                        showLoading(true)
+                                    }
+                                    .doFinally {
+                                        showLoading(false)
+                                    }
+                                    .subscribe(
+                                            {
+                                                if (!finish) {
+                                                    return@subscribe
+                                                }
+                                                navigateToMap()
+                                            },
+                                            { errorHandler.handleException(it, getBaseActivity()) }
+                                    )
                         },
                         { errorHandler.handleException(it, getBaseActivity()) }
                 )
+
     }
 
     private fun navigateToMap() {
@@ -282,8 +296,8 @@ class NewTicketFragment : BaseFragment() {
         }
     }
 
-    private fun showLoading(show: Boolean){
-        if(show){
+    private fun showLoading(show: Boolean) {
+        if (show) {
             new_ticket_publish_button.visibility = View.INVISIBLE
             new_ticket_save_button.visibility = View.INVISIBLE
             progress_bar_new.visibility = View.VISIBLE
