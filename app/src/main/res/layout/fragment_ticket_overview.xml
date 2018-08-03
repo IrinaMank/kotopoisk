@@ -53,28 +53,6 @@
             app:layout_constraintTop_toBottomOf="@id/title_animal_type"/>
 
         <TextView
-            android:id="@+id/title_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/location"
-
-            app:layout_constraintStart_toEndOf="@id/title_animal_type"
-            app:layout_constraintTop_toBottomOf="@id/overview_ticket_photo" />
-
-        <TextView
-            android:id="@+id/location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/location"
-            android:textColor="@color/black"
-
-            app:layout_constraintStart_toStartOf="@id/title_location"
-            app:layout_constraintTop_toBottomOf="@id/title_location" />
-
-        <TextView
             android:id="@+id/title_breed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
