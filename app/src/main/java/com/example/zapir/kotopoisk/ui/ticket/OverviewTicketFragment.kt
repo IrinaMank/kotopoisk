@@ -11,19 +11,15 @@ import com.example.zapir.kotopoisk.KotopoiskApplication
 import com.example.zapir.kotopoisk.R
 import com.example.zapir.kotopoisk.data.model.Ticket
 import com.example.zapir.kotopoisk.data.model.User
-import com.example.zapir.kotopoisk.domain.bottomBarApi.TransactionUtils
 import com.example.zapir.kotopoisk.domain.common.SelectedPage
 import com.example.zapir.kotopoisk.domain.common.TypesConverter
 import com.example.zapir.kotopoisk.ui.base.BaseActivity
 import com.example.zapir.kotopoisk.ui.base.BaseFragment
 import com.example.zapir.kotopoisk.ui.login.LoginActivity
 import com.example.zapir.kotopoisk.ui.main.MainActivity
-import com.example.zapir.kotopoisk.ui.profile.MyTicketListFragment
-import com.example.zapir.kotopoisk.ui.profile.ProfileFragment
 import com.fernandocejas.arrow.optional.Optional
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_ticket_overview.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.concurrent.TimeUnit
@@ -135,7 +131,8 @@ class OverviewTicketFragment : BaseFragment() {
                 ticket.type, getBaseActivity())
         ticket.color = TypesConverter.getColorFromString(color.text.toString(), getBaseActivity())
         ticket.size = TypesConverter.getSizeFromString(size.text.toString(), ticket.type ,getBaseActivity())
-        ticket.furLength = TypesConverter.getFurLengthFromString(color.text.toString(), getBaseActivity())
+        ticket.furLength = TypesConverter.getFurLengthFromString(furLength.text.toString(),
+                getBaseActivity())
         ticket.hasCollar = collar_switch_compat.isChecked
         ticket.overview = description.text.toString()
         return userController.getUser(userId)
