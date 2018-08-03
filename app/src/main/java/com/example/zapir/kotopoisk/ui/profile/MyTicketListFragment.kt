@@ -105,8 +105,7 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
     }
 
     override fun onItemClick(ticket: Ticket) {
-        val manager = (context as BaseActivity).supportFragmentManager
-        TransactionUtils.replaceFragment(manager, R.id.container, OverviewTicketFragment.newInstance(ticket))
+        (parentFragment as BaseFragment).replaceFragment(OverviewTicketFragment.newInstance(ticket))
     }
 
     override fun onFavorClick(ticket: Ticket) {
@@ -160,9 +159,9 @@ class MyTicketListFragment : BaseFragment(), OnItemClickListener, LoadListener {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
-                                user.petCount --
+                                user.petCount--
                             },
-                                {
+                            {
                                 errorHandler.handleException(it, context!!)
                             }
                     )
