@@ -286,14 +286,10 @@ class NewTicketFragment : BaseFragment() {
         if(show){
             new_ticket_publish_button.visibility = View.INVISIBLE
             new_ticket_save_button.visibility = View.INVISIBLE
-            new_ticket_save_button.isActivated = false
-            new_ticket_publish_button.isActivated = false
             progress_bar_new.visibility = View.VISIBLE
         } else {
             new_ticket_publish_button.visibility = View.VISIBLE
             new_ticket_save_button.visibility = View.VISIBLE
-            new_ticket_save_button.isActivated = true
-            new_ticket_publish_button.isActivated = true
             progress_bar_new.visibility = View.GONE
         }
     }

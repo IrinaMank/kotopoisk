@@ -150,10 +150,10 @@ class OverviewTicketFragment : BaseFragment() {
     private fun showLoading(show: Boolean) {
         if (show) {
             overview_publish_button.visibility = View.INVISIBLE
-            progress_bar.visibility = View.VISIBLE
+            progress_bar_overview.visibility = View.VISIBLE
         } else {
             overview_publish_button.visibility = View.VISIBLE
-            progress_bar.visibility = View.GONE
+            progress_bar_overview.visibility = View.GONE
         }
     }
 
