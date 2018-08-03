@@ -134,6 +134,7 @@ class OverviewTicketFragment : BaseFragment() {
         ticket.breed = TypesConverter.getBreedFromString(breed.text.toString(),
                 ticket.type, getBaseActivity())
         ticket.color = TypesConverter.getColorFromString(color.text.toString(), getBaseActivity())
+        ticket.size = TypesConverter.getSizeFromString(size.text.toString(), ticket.type ,getBaseActivity())
         ticket.furLength = TypesConverter.getFurLengthFromString(color.text.toString(), getBaseActivity())
         ticket.hasCollar = collar_switch_compat.isChecked
         ticket.overview = description.text.toString()

@@ -175,6 +175,7 @@ class NewTicketFragment : BaseFragment() {
         ticket.breed = TypesConverter.getBreedFromString(spinner_breed.selectedItem.toString(),
                 ticket.type, getBaseActivity())
         ticket.color = TypesConverter.getColorFromString(spinner_color.selectedItem.toString(), getBaseActivity())
+        ticket.size = TypesConverter.getSizeFromString(spinner_size.selectedItem.toString(), ticket.type ,getBaseActivity())
         ticket.furLength = TypesConverter.getFurLengthFromString(spinner_furLength.selectedItem.toString(), getBaseActivity())
         ticket.hasCollar = collar_switch_compat_new.isChecked
         ticket.overview = description_new.text.toString()
@@ -221,6 +222,12 @@ class NewTicketFragment : BaseFragment() {
     }
 
     private fun updateTicket(finish: Boolean) {
+        if(finish){
+            if (location_new.text != getString(R.string.location_map)) {
+                showToast(getBaseActivity(), getString(R.string.error_location))
+                return
+            }
+        }
         initTicket()
         ticketController.updateTicket(ticket)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -279,10 +286,14 @@ class NewTicketFragment : BaseFragment() {
         if(show){
             new_ticket_publish_button.visibility = View.INVISIBLE
             new_ticket_save_button.visibility = View.INVISIBLE
+            new_ticket_save_button.isActivated = false
+            new_ticket_publish_button.isActivated = false
             progress_bar_new.visibility = View.VISIBLE
         } else {
             new_ticket_publish_button.visibility = View.VISIBLE
             new_ticket_save_button.visibility = View.VISIBLE
+            new_ticket_save_button.isActivated = true
+            new_ticket_publish_button.isActivated = true
             progress_bar_new.visibility = View.GONE
         }
     }
