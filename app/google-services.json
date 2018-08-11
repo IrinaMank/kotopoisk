@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:979610091334:android:e93e2afef98d4f18",
         "android_client_info": {
-          "package_name": "com.example.zapir.kotopoisk"
+          "package_name": "com.zapir.kotopoisk"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "979610091334-uvn6sp9odk8f8eikt0tpr79ag4i00ftf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.zapir.kotopoisk",
+            "package_name": "com.zapir.kotopoisk",
             "certificate_hash": "3af19fb09b282486b1b068791353711e51120ebc"
           }
         },
